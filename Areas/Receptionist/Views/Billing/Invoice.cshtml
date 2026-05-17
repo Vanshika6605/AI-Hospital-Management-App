@@ -1,0 +1,117 @@
+@model AIHospitalManagementSys.ViewModels.BillViewModel
+
+@{
+    ViewData["Title"] = "Invoice";
+}
+
+<div class="container py-5">
+    <div class="card shadow border-0" id="invoiceCard">
+        <div class="card-header bg-white p-4 border-bottom">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h2 class="text-primary fw-bold mb-0">AI HOSPITAL</h2>
+                    <p class="text-muted mb-0">Care with Technology</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h4 class="mb-0">INVOICE</h4>
+                    <p class="text-muted mb-0">#INV-@Model.Id.ToString("D5")</p>
+                    <p class="text-muted mb-0">Date: @Model.CreatedAt.ToString("MMM dd, yyyy")</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h6 class="text-muted text-uppercase small fw-bold">Billed To:</h6>
+                    <h5 class="mb-1">@Model.PatientName</h5>
+                    <p class="text-muted small">Patient ID: #PAT-@Model.AppointmentId</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h6 class="text-muted text-uppercase small fw-bold">Consultant:</h6>
+                    <h5 class="mb-1">@Model.DoctorName</h5>
+                    <p class="text-muted small">Date of Service: @Model.AppointmentDate.ToString("MMM dd, yyyy")</p>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-borderless">
+                    <thead class="border-bottom">
+                        <tr>
+                            <th class="py-3">Description</th>
+                            <th class="py-3 text-end">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="py-3">Consultation Fee</td>
+                            <td class="py-3 text-end">@Model.ConsultationCharges.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">Medicine Charges</td>
+                            <td class="py-3 text-end">@Model.MedicineCharges.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">Lab & Diagnostics</td>
+                            <td class="py-3 text-end">@Model.LabCharges.ToString("C")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">Miscellaneous Services</td>
+                            <td class="py-3 text-end">@Model.ServiceCharges.ToString("C")</td>
+                        </tr>
+                    </tbody>
+                    <tfoot class="border-top">
+                        <tr>
+                            <td class="py-4 h4 fw-bold">Total Amount</td>
+                            <td class="py-4 h4 fw-bold text-end text-primary">@Model.TotalAmount.ToString("C")</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="mt-4 p-3 bg-light rounded d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-muted me-2">Payment Status:</span>
+                    @if (Model.PaymentStatus == "Paid")
+                    {
+                        <span class="badge bg-success px-3 py-2">PAID</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark px-3 py-2">PENDING</span>
+                    }
+                </div>
+                <div>
+                    @if (Model.PaymentStatus != "Paid")
+                    {
+                        <form asp-action="MarkPaid" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-success"><i class="fas fa-money-bill-wave me-2"></i>Mark as Paid</button>
+                        </form>
+                    }
+                    <button class="btn btn-outline-secondary ms-2" onclick="window.print()"><i class="fas fa-print me-2"></i>Print Invoice</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-white p-4 border-top text-center text-muted small">
+            <p class="mb-0">Thank you for choosing AI Hospital Management System.</p>
+            <p class="mb-0">For any queries, please contact support@hospital.com</p>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        @@media print {
+            .btn, .navbar, footer { display: none !important; }
+            .container { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+            .card { border: none !important; box-shadow: none !important; }
+            .card-header, .card-footer { border: none !important; }
+            body { background: white !important; }
+        }
+    </style>
+}

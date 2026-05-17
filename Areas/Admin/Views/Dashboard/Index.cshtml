@@ -1,0 +1,244 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+@using AIHospitalManagementSys.Models.Enums
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Admin Dashboard Overview</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Stats Cards -->
+        <div class="col-md-3 mb-4">
+            <div class="card bg-primary text-white shadow h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-white-50 small">Total Doctors</div>
+                            <div class="text-lg fw-bold h3 mb-0">@ViewBag.TotalDoctors</div>
+                        </div>
+                        <i class="fas fa-user-md fa-2x opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between small">
+                    <a class="text-white stretched-link" asp-controller="Doctor" asp-action="Index">View Doctors</a>
+                    <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card bg-success text-white shadow h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-white-50 small">Total Patients</div>
+                            <div class="text-lg fw-bold h3 mb-0">@ViewBag.TotalPatients</div>
+                        </div>
+                        <i class="fas fa-user-injured fa-2x opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between small">
+                    <a class="text-white stretched-link" asp-controller="Patient" asp-action="Index">View Patients</a>
+                    <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card bg-info text-white shadow h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-white-50 small">Total Appointments</div>
+                            <div class="text-lg fw-bold h3 mb-0">@ViewBag.TotalAppointments</div>
+                        </div>
+                        <i class="fas fa-calendar-check fa-2x opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between small">
+                    <a class="text-white stretched-link" asp-controller="Appointment" asp-action="Index">View All</a>
+                    <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card bg-warning text-white shadow h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-white-50 small">Departments</div>
+                            <div class="text-lg fw-bold h3 mb-0">@ViewBag.TotalDepartments</div>
+                        </div>
+                        <i class="fas fa-hospital fa-2x opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between small">
+                    <a class="text-white stretched-link" asp-controller="Department" asp-action="Index">Manage Depts</a>
+                    <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Appointment Trends</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="myAreaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Department Distribution</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Appointments</h6>
+                    <a asp-controller="Appointment" asp-action="Index" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Doctor</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.RecentAppointments)
+                                {
+                                    <tr>
+                                        <td>@item.PatientName</td>
+                                        <td>@item.DoctorName</td>
+                                        <td>@item.AppointmentDate.ToString("yyyy-MM-dd")</td>
+                                        <td>
+                                            @switch (item.Status)
+                                            {
+                                                case AppointmentStatus.Pending:
+                                                    <span class="badge bg-warning text-dark">Pending</span>
+                                                    break;
+                                                case AppointmentStatus.Confirmed:
+                                                    <span class="badge bg-success">Confirmed</span>
+                                                    break;
+                                                case AppointmentStatus.Completed:
+                                                    <span class="badge bg-info">Completed</span>
+                                                    break;
+                                                case AppointmentStatus.Cancelled:
+                                                    <span class="badge bg-danger">Cancelled</span>
+                                                    break;
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Quick Management</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-3">
+                        <a asp-controller="Doctor" asp-action="Create" class="btn btn-primary btn-lg py-3"><i class="fas fa-user-plus me-2"></i> Add Doctor</a>
+                        <a asp-controller="Patient" asp-action="Create" class="btn btn-success btn-lg py-3"><i class="fas fa-user-injured me-2"></i> New Patient</a>
+                        <a asp-controller="Appointment" asp-action="Book" class="btn btn-info text-white btn-lg py-3"><i class="fas fa-calendar-alt me-2"></i> Book Slot</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Area Chart
+        var ctx = document.getElementById("myAreaChart");
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(ViewBag.MonthlyAppointmentLabels),
+                datasets: [{
+                    label: "Appointments",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(78, 115, 223, 0.05)",
+                    borderColor: "rgba(78, 115, 223, 1)",
+                    pointRadius: 3,
+                    pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                    pointBorderColor: "rgba(78, 115, 223, 1)",
+                    pointHoverRadius: 3,
+                    pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                    pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                    pointHitRadius: 10,
+                    pointBorderWidth: 2,
+                    data: @Html.Raw(ViewBag.MonthlyAppointmentData),
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Pie Chart
+        var ctxPie = document.getElementById("myPieChart");
+        var myPieChart = new Chart(ctxPie, {
+            type: 'doughnut',
+            data: {
+                labels: ["Cardiology", "Neurology", "Pediatrics"],
+                datasets: [{
+                    data: [55, 30, 15],
+                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                cutout: '80%',
+                plugins: { legend: { display: true, position: 'bottom' } }
+            },
+        });
+    </script>
+}
+
+@section Scripts {
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+}

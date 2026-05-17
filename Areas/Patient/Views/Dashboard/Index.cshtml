@@ -1,0 +1,149 @@
+@using AIHospitalManagementSys.Models.Enums
+@model AIHospitalManagementSys.ViewModels.PatientViewModel
+
+@{
+    ViewData["Title"] = "My Health Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h2 class="fw-bold">Hello, @Model.FullName</h2>
+            <p class="text-muted">Welcome to your health dashboard. Manage your appointments and health records here.</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a href="#" class="btn btn-primary btn-lg"><i class="fas fa-calendar-plus me-2"></i> Book Appointment</a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100 bg-white">
+                <div class="card-body">
+                    <h6 class="text-muted text-uppercase small fw-bold mb-3">Quick Info</h6>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Blood Group:</span>
+                        <span class="fw-bold text-danger">@Model.BloodGroup</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Age:</span>
+                        <span class="fw-bold">@(DateTime.Now.Year - Model.DateOfBirth.Year) yrs</span>
+                    </li>
+                    <div class="d-flex justify-content-between">
+                        <span>Contact:</span>
+                        <span class="fw-bold">@Model.ContactNumber</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100 bg-primary text-white">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <h6 class="text-white-50 text-uppercase small fw-bold mb-2">Pending Bills</h6>
+                    <h2 class="fw-bold mb-0">@(((IEnumerable<AIHospitalManagementSys.ViewModels.BillViewModel>)ViewBag.PendingBills).Count())</h2>
+                    <p class="small mb-0">Action Required</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Upcoming Appointments -->
+            <div class="card shadow mb-4 border-0">
+                <div class="card-header bg-white py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Upcoming Appointments</h6>
+                </div>
+                <div class="card-body">
+                    @foreach (var item in ViewBag.UpcomingAppointments)
+                    {
+                        <div class="d-flex align-items-center p-3 mb-3 border rounded">
+                            <div class="me-3 text-center bg-light p-2 rounded" style="min-width: 70px;">
+                                <div class="fw-bold">@item.AppointmentDate.ToString("MMM")</div>
+                                <div class="h4 mb-0 fw-bold">@item.AppointmentDate.Day</div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 fw-bold">Consultation with @item.DoctorName</h6>
+                                <p class="text-muted small mb-0"><i class="fas fa-clock me-1"></i> @item.AppointmentDate.ToString("hh:mm tt") | @item.DepartmentName</p>
+                            </div>
+                            <div>
+                                @if (item.Status == AppointmentStatus.Confirmed)
+                                {
+                                    <span class="badge bg-success">Confirmed</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @if (!((IEnumerable<AIHospitalManagementSys.ViewModels.AppointmentViewModel>)ViewBag.UpcomingAppointments).Any())
+                    {
+                        <div class="text-center py-4">
+                            <i class="fas fa-calendar-times fa-3x text-muted opacity-25 mb-3"></i>
+                            <p class="text-muted">No upcoming appointments scheduled.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Recent Prescriptions -->
+            <div class="card shadow mb-4 border-0">
+                <div class="card-header bg-white py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Prescriptions</h6>
+                </div>
+                <div class="card-body">
+                    @foreach (var item in ViewBag.RecentPrescriptions)
+                    {
+                        <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
+                            <div>
+                                <h6 class="mb-0 fw-bold">Prescription by @item.DoctorName</h6>
+                                <p class="small text-muted mb-0">@item.CreatedAt.ToString("MMM dd, yyyy")</p>
+                            </div>
+                            <a asp-area="Doctor" asp-controller="Prescription" asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">View Details</a>
+                        </div>
+                    }
+                    @if (!((IEnumerable<AIHospitalManagementSys.ViewModels.PrescriptionViewModel>)ViewBag.RecentPrescriptions).Any())
+                    {
+                        <p class="text-center text-muted py-3">No prescriptions found.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow mb-4 border-0">
+                <div class="card-header bg-white py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Health Profile</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h6 class="small fw-bold text-muted text-uppercase mb-2">Allergies</h6>
+                        <div class="text-danger small">
+                            <i class="fas fa-exclamation-triangle me-1"></i> @(Model.Allergies ?? "None reported")
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <h6 class="small fw-bold text-muted text-uppercase mb-2">Conditions</h6>
+                        <div class="text-info small">
+                            <i class="fas fa-info-circle me-1"></i> @(Model.ExistingConditions ?? "No chronic conditions")
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow border-0 bg-info text-white">
+                <div class="card-body">
+                    <h5 class="fw-bold"><i class="fas fa-lightbulb me-2"></i>Health Tip</h5>
+                    <p class="small mb-0">Drink at least 8 glasses of water a day and stay active for at least 30 minutes to maintain good health!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+}

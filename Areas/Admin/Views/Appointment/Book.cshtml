@@ -1,0 +1,83 @@
+@model AIHospitalManagementSys.ViewModels.AppointmentViewModel
+
+@{
+    ViewData["Title"] = "Book Appointment";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Book New Appointment</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Book" id="bookingForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PatientId" class="form-label"></label>
+                                <select asp-for="PatientId" class="form-select select2" asp-items="ViewBag.PatientId">
+                                    <option value="">-- Select Patient --</option>
+                                </select>
+                                <span asp-validation-for="PatientId" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DoctorId" class="form-label"></label>
+                                <select asp-for="DoctorId" class="form-select select2" asp-items="ViewBag.DoctorId" id="doctorId">
+                                    <option value="">-- Select Doctor --</option>
+                                </select>
+                                <span asp-validation-for="DoctorId" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="AppointmentDate" class="form-label"></label>
+                                <input asp-for="AppointmentDate" class="form-control" type="datetime-local" id="appointmentDate" />
+                                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                                <div id="availabilityMsg" class="small mt-1"></div>
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <label asp-for="Reason" class="form-label"></label>
+                                <textarea asp-for="Reason" class="form-control" rows="3" placeholder="Reason for visit..."></textarea>
+                                <span asp-validation-for="Reason" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                            <button type="submit" class="btn btn-primary px-5" id="bookBtn">Book Appointment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            $('#doctorId, #appointmentDate').change(function() {
+                var docId = $('#doctorId').val();
+                var date = $('#appointmentDate').val();
+                
+                if (docId && date) {
+                    $.get('/Admin/Appointment/CheckAvailability', { doctorId: docId, date: date }, function(data) {
+                        if (data.available) {
+                            $('#availabilityMsg').html('<span class="text-success"><i class="fas fa-check-circle me-1"></i> Slot is available</span>');
+                            $('#bookBtn').prop('disabled', false);
+                        } else {
+                            $('#availabilityMsg').html('<span class="text-danger"><i class="fas fa-times-circle me-1"></i> Doctor is not available at this time slot</span>');
+                            $('#bookBtn').prop('disabled', true);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

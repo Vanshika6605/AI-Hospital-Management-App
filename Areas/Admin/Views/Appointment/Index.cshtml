@@ -1,0 +1,116 @@
+@using AIHospitalManagementSys.Models.Enums
+@model IEnumerable<AIHospitalManagementSys.ViewModels.AppointmentViewModel>
+
+@{
+    ViewData["Title"] = "Manage Appointments";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Manage Appointments</h2>
+        <a asp-action="Book" class="btn btn-primary"><i class="fas fa-calendar-plus me-2"></i> Book New Appointment</a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Doctor</th>
+                            <th>Patient</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="fw-bold">@item.AppointmentDate.ToString("MMM dd, yyyy")</div>
+                                    <div class="small text-muted">@item.AppointmentDate.ToString("hh:mm tt")</div>
+                                </td>
+                                <td>
+                                    <div class="fw-bold">@item.DoctorName</div>
+                                    <div class="small text-muted">@item.DepartmentName</div>
+                                </td>
+                                <td>@item.PatientName</td>
+                                <td>
+                                    @switch (item.Status)
+                                    {
+                                        case AppointmentStatus.Pending:
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                            break;
+                                        case AppointmentStatus.Confirmed:
+                                            <span class="badge bg-success">Confirmed</span>
+                                            break;
+                                        case AppointmentStatus.Completed:
+                                            <span class="badge bg-info text-white">Completed</span>
+                                            break;
+                                        case AppointmentStatus.Cancelled:
+                                            <span class="badge bg-danger">Cancelled</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            @if (item.Status == AppointmentStatus.Pending)
+                                            {
+                                                <li>
+                                                    <form asp-action="UpdateStatus" method="post">
+                                                        <input type="hidden" name="id" value="@item.Id" />
+                                                        <input type="hidden" name="status" value="Confirmed" />
+                                                        <button type="submit" class="dropdown-item text-success"><i class="fas fa-check me-2"></i>Confirm</button>
+                                                    </form>
+                                                </li>
+                                            }
+                                            @if (item.Status == AppointmentStatus.Confirmed)
+                                            {
+                                                <li>
+                                                    <form asp-action="UpdateStatus" method="post">
+                                                        <input type="hidden" name="id" value="@item.Id" />
+                                                        <input type="hidden" name="status" value="Completed" />
+                                                        <button type="submit" class="dropdown-item text-info"><i class="fas fa-flag-checkered me-2"></i>Mark Completed</button>
+                                                    </form>
+                                                </li>
+                                            }
+                                            @if (item.Status != AppointmentStatus.Cancelled && item.Status != AppointmentStatus.Completed)
+                                            {
+                                                <li>
+                                                    <form asp-action="Cancel" method="post">
+                                                        <input type="hidden" name="id" value="@item.Id" />
+                                                        <button type="submit" class="dropdown-item text-danger"><i class="fas fa-times me-2"></i>Cancel</button>
+                                                    </form>
+                                                </li>
+                                            }
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Reschedule</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+}

@@ -1,0 +1,100 @@
+@model AIHospitalManagementSys.ViewModels.PatientViewModel
+
+@{
+    ViewData["Title"] = "Patient Details";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 120px; height: 120px;">
+                            <h1 class="display-3 mb-0">@Model.FullName.Substring(0, 1).ToUpper()</h1>
+                        </div>
+                    </div>
+                    <h4 class="fw-bold">@Model.FullName</h4>
+                    <p class="text-muted small">@Model.Email</p>
+                    
+                    <div class="mt-3">
+                        <span class="badge bg-danger fs-6 px-3">Blood Group: @Model.BloodGroup</span>
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span class="text-muted">Gender</span>
+                        <span class="fw-bold">@Model.Gender</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span class="text-muted">Age</span>
+                        <span class="fw-bold">@(DateTime.Now.Year - Model.DateOfBirth.Year) yrs</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span class="text-muted">Contact</span>
+                        <span class="fw-bold">@Model.ContactNumber</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card shadow mb-4 border-left-warning">
+                <div class="card-header py-3 bg-warning text-dark">
+                    <h6 class="m-0 font-weight-bold"><i class="fas fa-exclamation-circle me-2"></i>Emergency Contact</h6>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0 fw-bold">@Model.EmergencyContact</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-white py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Patient Profile & Medical History</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-sm-4 text-muted fw-bold">Address</div>
+                        <div class="col-sm-8 text-dark">@Model.Address</div>
+                    </div>
+                    <hr />
+                    <div class="row mb-4">
+                        <div class="col-sm-12 text-muted fw-bold mb-2 text-danger"><i class="fas fa-pills me-2"></i>Allergies</div>
+                        <div class="col-sm-12 text-dark bg-light p-3 rounded">
+                            @(string.IsNullOrEmpty(Model.Allergies) ? "No known allergies reported." : Model.Allergies)
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-sm-12 text-muted fw-bold mb-2 text-info"><i class="fas fa-notes-medical me-2"></i>Existing Conditions</div>
+                        <div class="col-sm-12 text-dark bg-light p-3 rounded">
+                            @(string.IsNullOrEmpty(Model.ExistingConditions) ? "No existing conditions reported." : Model.ExistingConditions)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Future: Appointment History -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Medical History / Appointments</h6>
+                    <span class="badge bg-info">Coming Soon</span>
+                </div>
+                <div class="card-body">
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-history fa-3x mb-3 opacity-25"></i>
+                        <p>Detailed medical history and appointment logs will be available in the next phase.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-3">
+        <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i> Back to Directory</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info text-white ms-2"><i class="fas fa-edit me-2"></i> Edit Profile</a>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+}

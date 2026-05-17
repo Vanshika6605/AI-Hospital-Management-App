@@ -1,0 +1,88 @@
+@model AIHospitalManagementSys.ViewModels.PrescriptionViewModel
+
+@{
+    ViewData["Title"] = "Prescription Details";
+}
+
+<div class="container py-5">
+    <div class="card shadow-lg border-0" id="prescriptionCard">
+        <div class="card-header bg-white p-4 border-bottom text-center">
+            <h2 class="text-primary fw-bold mb-0">AI HOSPITAL</h2>
+            <p class="text-muted mb-0">Medical Prescription</p>
+        </div>
+        <div class="card-body p-4">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h6 class="text-muted text-uppercase small fw-bold">Patient Details:</h6>
+                    <h5 class="mb-1">@Model.PatientName</h5>
+                    <p class="text-muted small">Date: @Model.CreatedAt.ToString("MMM dd, yyyy")</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h6 class="text-muted text-uppercase small fw-bold">Prescribed By:</h6>
+                    <h5 class="mb-1">Dr. @Model.DoctorName</h5>
+                </div>
+            </div>
+
+            <div class="bg-light p-3 rounded mb-4">
+                <h6 class="fw-bold"><i class="fas fa-notes-medical me-2"></i>Diagnosis & Notes:</h6>
+                <p class="mb-0">@Model.Notes</p>
+            </div>
+
+            <h6 class="fw-bold mb-3"><i class="fas fa-pills me-2"></i>Medicines:</h6>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Medicine</th>
+                            <th>Dosage</th>
+                            <th>Frequency</th>
+                            <th>Duration (Days)</th>
+                            <th>Special Instructions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td class="fw-bold">@item.MedicineName</td>
+                                <td>@item.Dosage</td>
+                                <td>@item.Frequency</td>
+                                <td>@item.DurationDays</td>
+                                <td class="text-muted">@item.SpecialInstructions</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-white p-4 border-top">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-muted small">
+                    <p class="mb-0">Valid only with doctor's signature and hospital seal.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="pt-3 border-top d-inline-block" style="min-width: 200px;">
+                        <p class="mb-0">Doctor's Signature</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4 no-print">
+        <button class="btn btn-primary" onclick="window.print()"><i class="fas fa-print me-2"></i>Print Prescription</button>
+        <a href="javascript:history.back()" class="btn btn-secondary ms-2">Back</a>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        @@media print {
+            .no-print, .navbar, footer { display: none !important; }
+            .container { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+            .card { border: none !important; box-shadow: none !important; }
+            body { background: white !important; }
+        }
+    </style>
+}

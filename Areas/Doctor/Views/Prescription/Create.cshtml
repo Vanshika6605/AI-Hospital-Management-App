@@ -1,0 +1,94 @@
+@model AIHospitalManagementSys.ViewModels.PrescriptionViewModel
+
+@{
+    ViewData["Title"] = "Write Prescription";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">New Prescription: @Model.PatientName</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" id="prescriptionForm">
+                        <input type="hidden" asp-for="AppointmentId" />
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <label asp-for="Notes" class="form-label fw-bold">Clinical Notes / Diagnosis</label>
+                                <textarea asp-for="Notes" class="form-control" rows="3" placeholder="Enter patient diagnosis and general advice..."></textarea>
+                            </div>
+                        </div>
+
+                        <h6 class="text-primary border-bottom pb-2 mb-3">Medicines & Dosage</h6>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="medicinesTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Medicine Name</th>
+                                        <th>Dosage</th>
+                                        <th>Frequency</th>
+                                        <th>Duration (Days)</th>
+                                        <th>Special Instructions</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="medicine-row">
+                                        <td><input name="Items[0].MedicineName" class="form-control" required /></td>
+                                        <td><input name="Items[0].Dosage" class="form-control" placeholder="500mg" required /></td>
+                                        <td><input name="Items[0].Frequency" class="form-control" placeholder="1-0-1" required /></td>
+                                        <td><input name="Items[0].DurationDays" class="form-control" placeholder="5 Days" required /></td>
+                                        <td><input name="Items[0].SpecialInstructions" class="form-control" placeholder="After food" /></td>
+                                        <td><button type="button" class="btn btn-outline-danger remove-row"><i class="fas fa-trash"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <button type="button" class="btn btn-sm btn-info text-white mt-2" id="addRow">
+                            <i class="fas fa-plus me-1"></i> Add Another Medicine
+                        </button>
+
+                        <div class="mt-5 d-flex justify-content-between">
+                            <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary px-5">Save & Complete Appointment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script>
+        $(document).ready(function() {
+            let rowIdx = 1;
+
+            $('#addRow').click(function() {
+                const newRow = `
+                    <tr class="medicine-row">
+                        <td><input name="Items[${rowIdx}].MedicineName" class="form-control" required /></td>
+                        <td><input name="Items[${rowIdx}].Dosage" class="form-control" required /></td>
+                        <td><input name="Items[${rowIdx}].Frequency" class="form-control" required /></td>
+                        <td><input name="Items[${rowIdx}].DurationDays" class="form-control" required /></td>
+                        <td><input name="Items[${rowIdx}].SpecialInstructions" class="form-control" /></td>
+                        <td><button type="button" class="btn btn-outline-danger remove-row"><i class="fas fa-trash"></i></button></td>
+                    </tr>`;
+                $('#medicinesTable tbody').append(newRow);
+                rowIdx++;
+            });
+
+            $(document).on('click', '.remove-row', function() {
+                if ($('.medicine-row').length > 1) {
+                    $(this).closest('tr').remove();
+                }
+            });
+        });
+    </script>
+}
