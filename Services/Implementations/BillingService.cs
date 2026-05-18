@@ -59,7 +59,7 @@ namespace AIHospitalManagementSys.Services.Implementations
                 LabCharges = model.LabCharges,
                 ServiceCharges = model.ServiceCharges,
                 TotalAmount = model.TotalAmount,
-                PaymentStatus = "Pending",
+                PaymentStatus = string.IsNullOrEmpty(model.PaymentStatus) ? "Draft" : model.PaymentStatus,
                 CreatedAt = DateTime.UtcNow
             };
 

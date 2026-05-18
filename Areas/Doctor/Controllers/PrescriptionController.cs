@@ -11,11 +11,16 @@ namespace AIHospitalManagementSys.Areas.Doctor.Controllers
     {
         private readonly IPrescriptionService _prescriptionService;
         private readonly IAppointmentService _appointmentService;
+        private readonly AIHospitalManagementSys.Repositories.Interfaces.IGenericRepository<AIHospitalManagementSys.Models.Domain.MedicineCatalog> _medicineRepo;
 
-        public PrescriptionController(IPrescriptionService prescriptionService, IAppointmentService appointmentService)
+        public PrescriptionController(
+            IPrescriptionService prescriptionService, 
+            IAppointmentService appointmentService,
+            AIHospitalManagementSys.Repositories.Interfaces.IGenericRepository<AIHospitalManagementSys.Models.Domain.MedicineCatalog> medicineRepo)
         {
             _prescriptionService = prescriptionService;
             _appointmentService = appointmentService;
+            _medicineRepo = medicineRepo;
         }
 
         public async Task<IActionResult> Create(int appointmentId)
@@ -28,6 +33,7 @@ namespace AIHospitalManagementSys.Areas.Doctor.Controllers
                 return RedirectToAction(nameof(Details), new { id = model.Id });
             }
             
+            ViewBag.Medicines = await _medicineRepo.GetAllAsync();
             return View(model);
         }
 
@@ -42,8 +48,9 @@ namespace AIHospitalManagementSys.Areas.Doctor.Controllers
                 await _appointmentService.UpdateAppointmentStatusAsync(model.AppointmentId, "Completed");
                 
                 TempData["Success"] = "Prescription added successfully";
-                return RedirectToAction("Index", "Appointment", new { area = "Admin" }); // Or Doctor Dashboard
+                return RedirectToAction("Index", "Dashboard", new { area = "Doctor" });
             }
+            ViewBag.Medicines = await _medicineRepo.GetAllAsync();
             return View(model);
         }
 

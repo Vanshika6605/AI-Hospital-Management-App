@@ -29,20 +29,27 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th>Medicine Name</th>
+                                        <th>Quantity</th>
                                         <th>Dosage</th>
                                         <th>Frequency</th>
-                                        <th>Duration (Days)</th>
-                                        <th>Special Instructions</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr class="medicine-row">
-                                        <td><input name="Items[0].MedicineName" class="form-control" required /></td>
+                                        <td>
+                                            <select name="Items[0].MedicineId" class="form-select" required>
+                                                <option value="">-- Select Medicine --</option>
+                                                @if(ViewBag.Medicines != null) {
+                                                    foreach(var med in ViewBag.Medicines) {
+                                                        <option value="@med.Id">@med.MedicineName</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </td>
+                                        <td><input type="number" name="Items[0].Quantity" class="form-control" value="1" min="1" required /></td>
                                         <td><input name="Items[0].Dosage" class="form-control" placeholder="500mg" required /></td>
                                         <td><input name="Items[0].Frequency" class="form-control" placeholder="1-0-1" required /></td>
-                                        <td><input name="Items[0].DurationDays" class="form-control" placeholder="5 Days" required /></td>
-                                        <td><input name="Items[0].SpecialInstructions" class="form-control" placeholder="After food" /></td>
                                         <td><button type="button" class="btn btn-outline-danger remove-row"><i class="fas fa-trash"></i></button></td>
                                     </tr>
                                 </tbody>
@@ -69,15 +76,22 @@
     <script>
         $(document).ready(function() {
             let rowIdx = 1;
+            
+            // Get the select HTML template for medicines
+            const medicineOptions = `@if(ViewBag.Medicines != null) { foreach(var med in ViewBag.Medicines) { <option value="@med.Id">@med.MedicineName</option> } }`;
 
             $('#addRow').click(function() {
                 const newRow = `
                     <tr class="medicine-row">
-                        <td><input name="Items[${rowIdx}].MedicineName" class="form-control" required /></td>
+                        <td>
+                            <select name="Items[${rowIdx}].MedicineId" class="form-select" required>
+                                <option value="">-- Select Medicine --</option>
+                                ${medicineOptions}
+                            </select>
+                        </td>
+                        <td><input type="number" name="Items[${rowIdx}].Quantity" class="form-control" value="1" min="1" required /></td>
                         <td><input name="Items[${rowIdx}].Dosage" class="form-control" required /></td>
                         <td><input name="Items[${rowIdx}].Frequency" class="form-control" required /></td>
-                        <td><input name="Items[${rowIdx}].DurationDays" class="form-control" required /></td>
-                        <td><input name="Items[${rowIdx}].SpecialInstructions" class="form-control" /></td>
                         <td><button type="button" class="btn btn-outline-danger remove-row"><i class="fas fa-trash"></i></button></td>
                     </tr>`;
                 $('#medicinesTable tbody').append(newRow);

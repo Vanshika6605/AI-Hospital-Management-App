@@ -1,0 +1,93 @@
+@model IEnumerable<AIHospitalManagementSys.ViewModels.AppointmentViewModel>
+@{ 
+    Layout = "_DoctorLayout"; 
+    ViewData["Title"] = "My Schedules";
+}
+
+<div class="mb-section-gap">
+    <h1 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">My Schedules</h1>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">View and manage your upcoming consultations.</p>
+</div>
+
+<div class="glass-panel glass-glow p-container-margin">
+    
+    <div class="flex justify-between items-center mb-section-gap border-b border-outline-variant/30 pb-4">
+        <h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">calendar_month</span>
+            All Appointments
+        </h2>
+        <div class="flex gap-2">
+            <button class="bg-surface-container text-on-surface px-4 py-2 rounded-xl font-label-md text-label-md border border-outline-variant/50 hover:bg-surface-variant transition-colors flex items-center gap-2" onclick="showComingSoon('Filter')">
+                <span class="material-symbols-outlined">filter_list</span> Filter
+            </button>
+            <button class="bg-primary text-on-primary px-4 py-2 rounded-xl font-label-md text-label-md font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2" onclick="showComingSoon('Block Time')">
+                <span class="material-symbols-outlined">block</span>
+                Block Time
+            </button>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-12">
+            <span class="material-symbols-outlined text-6xl text-on-surface-variant/50 mb-4">event_busy</span>
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-2">No Appointments Found</h3>
+            <p class="font-body-md text-body-md text-on-surface-variant">Your schedule is currently clear.</p>
+        </div>
+    }
+    else
+    {
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+            @foreach (var apt in Model)
+            {
+                var isUpcoming = apt.AppointmentDate > DateTime.Now;
+                var statusColor = apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Confirmed ? "bg-secondary-container text-on-secondary-container" :
+                                  apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Pending ? "bg-surface-variant text-on-surface-variant" :
+                                  apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Completed ? "bg-primary/10 text-primary" :
+                                  "bg-error-container text-on-error-container";
+
+                <div class="bg-surface-bright rounded-2xl border @(isUpcoming ? "border-primary/30 shadow-sm" : "border-outline-variant/30 opacity-75") p-stack-md flex flex-col transition-transform hover:scale-[1.01]">
+                    <div class="flex justify-between items-start mb-stack-md border-b border-outline-variant/30 pb-3">
+                        <div class="flex items-center gap-3">
+                             <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center font-bold">
+                                @(string.IsNullOrEmpty(apt.PatientName) ? "?" : apt.PatientName[0].ToString().ToUpper())
+                             </div>
+                            <div>
+                                <h3 class="font-headline-md text-headline-md text-on-surface">@apt.PatientName</h3>
+                                <span class="text-on-surface-variant font-label-sm flex items-center gap-1 mt-1">
+                                    <span class="material-symbols-outlined text-[14px]">schedule</span>
+                                    @apt.AppointmentDate.ToString("MMM dd, yyyy - hh:mm tt")
+                                </span>
+                            </div>
+                        </div>
+                        <span class="@statusColor px-3 py-1 rounded-full font-label-sm text-label-sm font-bold">@apt.Status</span>
+                    </div>
+                    
+                    <div class="flex-1 mb-stack-md">
+                        <p class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase tracking-wider font-bold">Reason for Visit</p>
+                        <p class="font-body-md text-body-md text-on-surface">@apt.Reason</p>
+                    </div>
+
+                    <div class="flex gap-2 mt-auto pt-3 border-t border-outline-variant/10">
+                        @if (isUpcoming && apt.Status != AIHospitalManagementSys.Models.Enums.AppointmentStatus.Cancelled && apt.Status != AIHospitalManagementSys.Models.Enums.AppointmentStatus.Completed)
+                        {
+                            <button class="flex-1 bg-primary text-on-primary px-4 py-2 rounded-xl font-label-md text-label-md font-bold shadow-sm hover:shadow transition-all" onclick="showComingSoon('Start Consultation')">
+                                Start Consultation
+                            </button>
+                        }
+                        else if (apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Completed)
+                        {
+                            <button class="flex-1 bg-surface-container text-on-surface px-4 py-2 rounded-xl font-label-md text-label-md border border-outline-variant/50 hover:bg-surface-variant transition-colors flex items-center justify-center gap-2" onclick="showComingSoon('View Notes')">
+                                <span class="material-symbols-outlined text-[20px]">edit_document</span>
+                                View Notes
+                            </button>
+                        }
+                        <button class="w-10 h-10 bg-surface-container text-on-surface rounded-xl border border-outline-variant/50 hover:bg-surface-variant transition-colors flex items-center justify-center" onclick="showComingSoon('More Options')">
+                            <span class="material-symbols-outlined">more_vert</span>
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

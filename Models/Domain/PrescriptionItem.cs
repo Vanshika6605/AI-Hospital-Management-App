@@ -12,11 +12,15 @@ namespace AIHospitalManagementSys.Models.Domain
         public virtual Prescription Prescription { get; set; } = null!;
         
         [Required]
-        public string MedicineName { get; set; } = string.Empty;
+        public int MedicineId { get; set; }
+        
+        [ForeignKey("MedicineId")]
+        public virtual MedicineCatalog Medicine { get; set; } = null!;
+
+        [Required]
+        public int Quantity { get; set; } = 1;
         
         public string Dosage { get; set; } = string.Empty; // e.g. 1-0-1
         public string Frequency { get; set; } = string.Empty; // e.g. Daily
-        public int DurationDays { get; set; }
-        public string? SpecialInstructions { get; set; }
     }
 }

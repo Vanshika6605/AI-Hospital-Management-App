@@ -21,6 +21,7 @@ namespace AIHospitalManagementSys.Data
         public DbSet<MedicalRecord> MedicalRecords { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<DoctorSchedule> DoctorSchedules { get; set; }
+        public DbSet<MedicineCatalog> MedicineCatalogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -59,6 +60,9 @@ namespace AIHospitalManagementSys.Data
             builder.Entity<Doctor>()
                 .Property(d => d.ConsultationFees)
                 .HasPrecision(18, 2);
+
+            builder.Entity<MedicineCatalog>()
+                .Property(m => m.Price).HasPrecision(18, 2);
 
             builder.Entity<Bill>()
                 .Property(b => b.ConsultationCharges).HasPrecision(18, 2);

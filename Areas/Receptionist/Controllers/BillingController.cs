@@ -65,5 +65,14 @@ namespace AIHospitalManagementSys.Areas.Receptionist.Controllers
             TempData["Success"] = "Payment recorded successfully";
             return RedirectToAction(nameof(Invoice), new { id = id });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MarkPending(int id)
+        {
+            await _billingService.UpdatePaymentStatusAsync(id, "Pending");
+            TempData["Success"] = "Bill finalized and marked as Pending";
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

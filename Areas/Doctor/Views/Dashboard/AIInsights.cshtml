@@ -1,0 +1,67 @@
+@{ 
+    Layout = "_DoctorLayout"; 
+    ViewData["Title"] = "AI Insights";
+}
+
+<div class="mb-section-gap">
+    <h1 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm flex items-center gap-2">
+        <span class="material-symbols-outlined text-tertiary">psychology</span>
+        Clinical AI Insights
+    </h1>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">Predictive modeling and diagnostics for your assigned patients.</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter mb-section-gap">
+    
+    <!-- High Risk Alert -->
+    <div class="glass-panel glass-glow p-container-margin ai-glow relative overflow-hidden bg-error-container/20 border-error/30">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-error/10 rounded-full blur-[40px] -z-10 -mr-10 -mt-10 animate-pulse"></div>
+        <div class="flex items-center justify-between mb-stack-md">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-error">warning</span>
+                <h3 class="font-headline-md text-headline-md text-on-surface">Critical Predictions</h3>
+            </div>
+            <span class="bg-error text-on-error px-3 py-1 rounded-full font-label-sm text-label-sm font-bold">Action Required</span>
+        </div>
+        
+        <div class="bg-surface-bright rounded-xl p-4 border border-outline-variant/30 mt-4">
+            <div class="flex justify-between items-start mb-2">
+                <p class="font-label-md font-bold text-on-surface">Patient #402 (Robert D.)</p>
+                <span class="text-error font-bold text-label-sm">94% Probability</span>
+            </div>
+            <p class="font-body-sm text-on-surface-variant mb-4">AI model predicts onset of sepsis within the next 4 hours based on rising lactate levels and dropping blood pressure.</p>
+            <button class="bg-error/10 text-error hover:bg-error hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors w-full" onclick="showComingSoon('Review Patient Data')">
+                Review Case Instantly
+            </button>
+        </div>
+    </div>
+
+    <!-- Treatment Efficacy -->
+    <div class="glass-panel glass-glow p-container-margin ai-glow relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[40px] -z-10 -mr-10 -mt-10"></div>
+        <div class="flex items-center justify-between mb-stack-md">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">auto_graph</span>
+                <h3 class="font-headline-md text-headline-md text-on-surface">Treatment Optimization</h3>
+            </div>
+            <span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-label-sm text-label-sm font-bold">2 Insights</span>
+        </div>
+        
+        <ul class="space-y-3">
+            <li class="bg-surface-bright rounded-xl p-3 border border-outline-variant/30 flex items-start gap-3">
+                <span class="material-symbols-outlined text-tertiary mt-0.5">medication</span>
+                <div>
+                    <p class="font-label-md font-bold text-on-surface">Patient #118 (Sarah M.)</p>
+                    <p class="font-body-sm text-on-surface-variant">Current ACE inhibitor dosage shows sub-optimal response. AI suggests increasing dosage by 5mg.</p>
+                </div>
+            </li>
+            <li class="bg-surface-bright rounded-xl p-3 border border-outline-variant/30 flex items-start gap-3">
+                <span class="material-symbols-outlined text-secondary mt-0.5">prescriptions</span>
+                <div>
+                    <p class="font-label-md font-bold text-on-surface">Patient #293 (James W.)</p>
+                    <p class="font-body-sm text-on-surface-variant">Potential mild interaction detected between newly prescribed Metformin and existing beta-blocker.</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

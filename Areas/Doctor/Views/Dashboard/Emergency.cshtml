@@ -1,0 +1,72 @@
+@{ 
+    Layout = "_DoctorLayout"; 
+    ViewData["Title"] = "Emergency Alert System";
+}
+
+<div class="mb-section-gap">
+    <h1 class="font-headline-lg text-headline-lg text-error mb-stack-sm flex items-center gap-2">
+        <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">emergency</span>
+        Emergency Alert System
+    </h1>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">Manage active hospital codes and critical patient alerts.</p>
+</div>
+
+<div class="glass-panel p-container-margin bg-error/5 border-error/30 relative overflow-hidden mb-section-gap">
+    <div class="absolute inset-0 bg-error/10 animate-pulse -z-10"></div>
+    <div class="flex items-center justify-between mb-4 border-b border-error/20 pb-4">
+        <h2 class="font-headline-md text-headline-md text-error flex items-center gap-2">
+            <span class="material-symbols-outlined">campaign</span> Active Codes (1)
+        </h2>
+    </div>
+    
+    <div class="bg-surface-bright rounded-xl p-6 border-l-4 border-error shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3 mb-1">
+                <span class="bg-error text-white px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">Code Blue</span>
+                <span class="text-on-surface font-label-md font-bold">ICU - Bed 4</span>
+            </div>
+            <p class="text-on-surface-variant font-body-sm">Cardiac arrest reported. CPR in progress.</p>
+            <p class="text-error/70 font-label-sm mt-2 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">schedule</span> Initiated 2 minutes ago
+            </p>
+        </div>
+        <div class="flex gap-2">
+            <button class="bg-surface-container text-on-surface hover:bg-surface-variant px-4 py-2 rounded-lg font-bold text-sm transition-colors border border-outline-variant/30" onclick="showComingSoon('Acknowledge')">
+                Acknowledge
+            </button>
+            <button class="bg-error text-white hover:bg-error/90 px-4 py-2 rounded-lg font-bold text-sm shadow-md transition-colors" onclick="showComingSoon('Respond to ICU')">
+                Respond
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="glass-panel glass-glow p-container-margin">
+    <h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md border-b border-outline-variant/30 pb-2">Trigger Protocols</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <button class="bg-surface-container-lowest border border-white/40 hover:border-error hover:bg-error/5 p-4 rounded-xl flex flex-col items-center gap-2 transition-all group" onclick="showComingSoon('Trigger Code Blue')">
+            <div class="w-12 h-12 rounded-full bg-error/10 text-error flex items-center justify-center group-hover:bg-error group-hover:text-white transition-colors">
+                <span class="material-symbols-outlined">monitor_heart</span>
+            </div>
+            <span class="font-label-md font-bold text-on-surface">Code Blue</span>
+        </button>
+        <button class="bg-surface-container-lowest border border-white/40 hover:border-error hover:bg-error/5 p-4 rounded-xl flex flex-col items-center gap-2 transition-all group" onclick="showComingSoon('Trigger Code Red')">
+            <div class="w-12 h-12 rounded-full bg-error/10 text-error flex items-center justify-center group-hover:bg-error group-hover:text-white transition-colors">
+                <span class="material-symbols-outlined">local_fire_department</span>
+            </div>
+            <span class="font-label-md font-bold text-on-surface">Code Red</span>
+        </button>
+        <button class="bg-surface-container-lowest border border-white/40 hover:border-secondary hover:bg-secondary/5 p-4 rounded-xl flex flex-col items-center gap-2 transition-all group" onclick="showComingSoon('Call Security')">
+            <div class="w-12 h-12 rounded-full bg-secondary/10 text-secondary flex items-center justify-center group-hover:bg-secondary group-hover:text-white transition-colors">
+                <span class="material-symbols-outlined">security</span>
+            </div>
+            <span class="font-label-md font-bold text-on-surface">Security</span>
+        </button>
+        <button class="bg-surface-container-lowest border border-white/40 hover:border-primary hover:bg-primary/5 p-4 rounded-xl flex flex-col items-center gap-2 transition-all group" onclick="showComingSoon('Rapid Response')">
+            <div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+                <span class="material-symbols-outlined">medical_services</span>
+            </div>
+            <span class="font-label-md font-bold text-on-surface">Rapid Response</span>
+        </button>
+    </div>
+</div>

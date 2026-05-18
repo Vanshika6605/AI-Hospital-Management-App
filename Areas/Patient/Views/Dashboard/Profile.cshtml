@@ -1,0 +1,116 @@
+@model AIHospitalManagementSys.ViewModels.PatientViewModel
+@{ 
+    Layout = "_PatientLayout"; 
+    ViewData["Title"] = "Patient Profile";
+}
+
+<div class="mb-section-gap">
+    <h1 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">Patient Profile</h1>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">Manage your personal and medical information securely.</p>
+</div>
+
+<div class="glass-panel glass-glow p-container-margin max-w-4xl">
+    
+    @if(TempData["Success"] != null)
+    {
+        <div class="bg-secondary-container text-on-secondary-container p-4 rounded-xl mb-section-gap flex items-center gap-3">
+            <span class="material-symbols-outlined">check_circle</span>
+            <span class="font-label-md text-label-md">@TempData["Success"]</span>
+        </div>
+    }
+
+    <form asp-action="Profile" method="post" class="space-y-section-gap">
+        <input type="hidden" asp-for="Id" />
+        
+        <!-- Personal Information Section -->
+        <div>
+            <div class="flex items-center gap-2 mb-stack-md border-b border-outline-variant/30 pb-2">
+                <span class="material-symbols-outlined text-primary">person</span>
+                <h3 class="font-headline-md text-headline-md text-on-surface">Personal Information</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+                <div class="flex flex-col gap-1">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">Full Name</label>
+                    <input asp-for="FullName" class="bg-surface-bright border border-outline-variant/50 rounded-lg p-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none" readonly />
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">Date of Birth</label>
+                    <input asp-for="DateOfBirth" type="date" class="bg-surface-bright border border-outline-variant/50 rounded-lg p-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
+                    <span asp-validation-for="DateOfBirth" class="text-error font-label-sm text-label-sm"></span>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">Gender</label>
+                    <select asp-for="Gender" class="bg-surface-bright border border-outline-variant/50 rounded-lg p-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-error font-label-sm text-label-sm"></span>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">Contact Number</label>
+                    <input asp-for="ContactNumber" class="bg-surface-bright border border-outline-variant/50 rounded-lg p-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
+                    <span asp-validation-for="ContactNumber" class="text-error font-label-sm text-label-sm"></span>
+                </div>
+                <div class="flex flex-col gap-1 md:col-span-2">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">Address</label>
+                    <input asp-for="Address" class="bg-surface-bright border border-outline-variant/50 rounded-lg p-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
+                    <span asp-validation-for="Address" class="text-error font-label-sm text-label-sm"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medical Information Section -->
+        <div>
+            <div class="flex items-center gap-2 mb-stack-md border-b border-outline-variant/30 pb-2">
+                <span class="material-symbols-outlined text-tertiary">medical_information</span>
+                <h3 class="font-headline-md text-headline-md text-on-surface">Medical History</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+                <div class="flex flex-col gap-1">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">Blood Group</label>
+                    <select asp-for="BloodGroup" class="bg-surface-bright border border-outline-variant/50 rounded-lg p-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+                        <option value="">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                    <span asp-validation-for="BloodGroup" class="text-error font-label-sm text-label-sm"></span>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">Emergency Contact</label>
+                    <input asp-for="EmergencyContact" class="bg-surface-bright border border-outline-variant/50 rounded-lg p-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
+                    <span asp-validation-for="EmergencyContact" class="text-error font-label-sm text-label-sm"></span>
+                </div>
+                <div class="flex flex-col gap-1 md:col-span-2">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">Allergies</label>
+                    <textarea asp-for="Allergies" rows="2" class="bg-surface-bright border border-outline-variant/50 rounded-lg p-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="E.g., Penicillin, Peanuts"></textarea>
+                    <span asp-validation-for="Allergies" class="text-error font-label-sm text-label-sm"></span>
+                </div>
+                <div class="flex flex-col gap-1 md:col-span-2">
+                    <label class="font-label-sm text-label-sm text-on-surface-variant">Existing Conditions</label>
+                    <textarea asp-for="ExistingConditions" rows="3" class="bg-surface-bright border border-outline-variant/50 rounded-lg p-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="E.g., Hypertension, Type 2 Diabetes"></textarea>
+                    <span asp-validation-for="ExistingConditions" class="text-error font-label-sm text-label-sm"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-end pt-4">
+            <button type="submit" class="bg-primary text-on-primary px-6 py-3 rounded-xl font-label-md text-label-md font-bold shadow-md hover:shadow-lg transition-all active:scale-[0.98]">
+                Save Changes
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

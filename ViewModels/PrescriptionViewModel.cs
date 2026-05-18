@@ -25,20 +25,18 @@ namespace AIHospitalManagementSys.ViewModels
         public int Id { get; set; }
         
         [Required]
-        [Display(Name = "Medicine Name")]
-        public string MedicineName { get; set; } = string.Empty;
+        [Display(Name = "Medicine")]
+        public int MedicineId { get; set; }
+        
+        public string? MedicineName { get; set; } // For display
+        
+        [Required]
+        public int Quantity { get; set; } = 1;
         
         [Required]
         public string Dosage { get; set; } = string.Empty;
         
         [Required]
         public string Frequency { get; set; } = string.Empty;
-        
-        [Required]
-        [Display(Name = "Duration (Days)")]
-        public int DurationDays { get; set; }
-        
-        [Display(Name = "Special Instructions")]
-        public string? SpecialInstructions { get; set; }
     }
 }

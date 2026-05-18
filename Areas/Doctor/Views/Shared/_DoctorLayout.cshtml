@@ -1,0 +1,198 @@
+@using Microsoft.AspNetCore.Identity
+@using AIHospitalManagementSys.Models.Domain
+@using AIHospitalManagementSys.Services.Interfaces
+@inject UserManager<ApplicationUser> UserManager
+@inject IDoctorService DoctorService
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var doctors = await DoctorService.GetAllDoctorsAsync();
+    var currentDoctor = doctors.FirstOrDefault(d => d.ApplicationUserId == user?.Id);
+    var fullName = currentDoctor?.FullName ?? user?.FullName ?? "Doctor";
+    var specialization = currentDoctor?.Specialization ?? "General";
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>MediAI - Doctor Dashboard - @ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff", "surface-bright": "#f7f9fb", "inverse-on-surface": "#eff1f3",
+                      "on-tertiary-fixed": "#23005c", "on-tertiary-container": "#3e0097", "on-primary": "#ffffff",
+                      "outline-variant": "#bec8d2", "secondary-container": "#6df5e1", "on-error-container": "#93000a",
+                      "surface-container-low": "#f2f4f6", "on-background": "#191c1e", "error": "#ba1a1a",
+                      "tertiary-fixed": "#e9ddff", "tertiary-fixed-dim": "#d0bcff", "primary-container": "#0ea5e9",
+                      "on-secondary-fixed-variant": "#005048", "surface-variant": "#e0e3e5", "surface": "#f7f9fb",
+                      "primary": "#006591", "on-tertiary-fixed-variant": "#5516be", "primary-fixed": "#c9e6ff",
+                      "error-container": "#ffdad6", "surface-container-highest": "#e0e3e5",
+                      "on-primary-container": "#003751", "on-primary-fixed-variant": "#004c6e",
+                      "surface-tint": "#006591", "on-error": "#ffffff", "on-secondary-container": "#006f64",
+                      "surface-container-high": "#e6e8ea", "surface-dim": "#d8dadc", "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#a986ff", "inverse-primary": "#89ceff", "on-surface-variant": "#3e4850",
+                      "on-tertiary": "#ffffff", "primary-fixed-dim": "#89ceff", "secondary-fixed-dim": "#4fdbc8",
+                      "on-secondary-fixed": "#00201c", "secondary": "#006b5f", "surface-container": "#eceef0",
+                      "background": "#f7f9fb", "tertiary": "#6d3bd7", "secondary-fixed": "#71f8e4",
+                      "outline": "#6e7881", "inverse-surface": "#2d3133", "on-primary-fixed": "#001e2f",
+                      "on-surface": "#191c1e"
+              },
+              "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+              "spacing": { "section-gap": "32px", "stack-sm": "8px", "container-margin": "24px", "gutter": "16px", "stack-md": "16px", "unit": "4px" },
+              "fontFamily": {
+                      "label-md": ["Inter"], "label-sm": ["Inter"], "body-lg": ["Inter"],
+                      "headline-md": ["Inter"], "body-md": ["Inter"], "headline-lg-mobile": ["Inter"],
+                      "display-lg": ["Inter"], "headline-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .ai-glow {
+            box-shadow: 0 0 40px rgba(0, 101, 145, 0.05);
+        }
+        .ai-pulse {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @@keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(233, 221, 255, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(233, 221, 255, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(233, 221, 255, 0); }
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #006591, #006b5f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        
+        #toast-container { z-index: 999999 !important; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md h-screen overflow-hidden flex">
+    <!-- SideNavBar -->
+    <nav class="hidden md:flex flex-col p-container-margin gap-section-gap bg-surface-container-lowest/60 backdrop-blur-2xl dark:bg-surface-container/40 fixed left-0 top-0 h-screen w-[280px] border-r border-white/20 shadow-[0_0_40px_rgba(0,101,145,0.05)] z-40">
+        <!-- Header -->
+        <div class="flex items-center gap-stack-md">
+            <img alt="Doctor Profile" class="w-12 h-12 rounded-full object-cover border-2 border-primary-fixed" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSptZHS3mlqdskOfPT8HgYzJIplQWF7eHnUK0m34VMyS1gA1IySmY30yAvIN39YBczhym8ygb9Zod85a1AfpFPJeOHaqUpc1cuSdv4ErFv3_lmnABQ2gRLMx6QT6ikseCJ87YVZ6VqI-p7GgeVdgEhYLiCZ-UFu4JdQ1MMWMWprxcFOlitki2GKNKp3KAwOLEyxqmyspPjb1F76WhVqzGKN0DCywvu8MR_q6qaOv1B7XLHuBWfZ3oBQOL1kLOIZXuUHFNcXFJ29ag"/>
+            <div>
+                <h1 class="font-headline-lg-mobile text-headline-lg-mobile font-black text-primary">@fullName</h1>
+                <p class="font-label-sm text-label-sm text-on-surface-variant">@specialization</p>
+            </div>
+        </div>
+        <!-- Navigation Links -->
+        <div class="flex-1 flex flex-col gap-stack-sm">
+            <a class="flex items-center gap-stack-md rounded-xl p-3 active:scale-[0.98] transition-transform @(currentAction == "Index" ? "bg-secondary-container/30 text-on-secondary-container border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]" : "text-on-surface-variant hover:bg-surface-container-high/40 hover:translate-x-1")" asp-area="Doctor" asp-controller="Dashboard" asp-action="Index">
+                <span class="material-symbols-outlined" style="@(currentAction == "Index" ? "font-variation-settings: 'FILL' 1;" : "")">dashboard</span>
+                <span class="font-label-md text-label-md @(currentAction == "Index" ? "font-bold" : "")">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-stack-md rounded-xl p-3 active:scale-[0.98] transition-transform @(currentAction == "Patients" ? "bg-secondary-container/30 text-on-secondary-container border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]" : "text-on-surface-variant hover:bg-surface-container-high/40 hover:translate-x-1")" asp-area="Doctor" asp-controller="Dashboard" asp-action="Patients">
+                <span class="material-symbols-outlined" style="@(currentAction == "Patients" ? "font-variation-settings: 'FILL' 1;" : "")">person</span>
+                <span class="font-label-md text-label-md @(currentAction == "Patients" ? "font-bold" : "")">Patients</span>
+            </a>
+            <a class="flex items-center gap-stack-md rounded-xl p-3 active:scale-[0.98] transition-transform @(currentAction == "AIInsights" ? "bg-secondary-container/30 text-on-secondary-container border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]" : "text-on-surface-variant hover:bg-surface-container-high/40 hover:translate-x-1")" asp-area="Doctor" asp-controller="Dashboard" asp-action="AIInsights">
+                <span class="material-symbols-outlined" style="@(currentAction == "AIInsights" ? "font-variation-settings: 'FILL' 1;" : "")">psychology</span>
+                <span class="font-label-md text-label-md @(currentAction == "AIInsights" ? "font-bold" : "")">AI Insights</span>
+            </a>
+            <a class="flex items-center gap-stack-md rounded-xl p-3 active:scale-[0.98] transition-transform @(currentAction == "Analytics" ? "bg-secondary-container/30 text-on-secondary-container border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]" : "text-on-surface-variant hover:bg-surface-container-high/40 hover:translate-x-1")" asp-area="Doctor" asp-controller="Dashboard" asp-action="Analytics">
+                <span class="material-symbols-outlined" style="@(currentAction == "Analytics" ? "font-variation-settings: 'FILL' 1;" : "")">monitoring</span>
+                <span class="font-label-md text-label-md @(currentAction == "Analytics" ? "font-bold" : "")">Analytics</span>
+            </a>
+            <a class="flex items-center gap-stack-md rounded-xl p-3 active:scale-[0.98] transition-transform @(currentAction == "Schedules" ? "bg-secondary-container/30 text-on-secondary-container border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]" : "text-on-surface-variant hover:bg-surface-container-high/40 hover:translate-x-1")" asp-area="Doctor" asp-controller="Dashboard" asp-action="Schedules">
+                <span class="material-symbols-outlined" style="@(currentAction == "Schedules" ? "font-variation-settings: 'FILL' 1;" : "")">calendar_month</span>
+                <span class="font-label-md text-label-md @(currentAction == "Schedules" ? "font-bold" : "")">Schedules</span>
+            </a>
+            <a class="flex items-center gap-stack-md rounded-xl p-3 active:scale-[0.98] transition-transform @(currentAction == "Emergency" ? "bg-secondary-container/30 text-on-secondary-container border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]" : "text-on-surface-variant hover:bg-surface-container-high/40 hover:translate-x-1")" asp-area="Doctor" asp-controller="Dashboard" asp-action="Emergency">
+                <span class="material-symbols-outlined @(currentAction == "Emergency" ? "text-error" : "text-error")" style="@(currentAction == "Emergency" ? "font-variation-settings: 'FILL' 1;" : "")">emergency</span>
+                <span class="font-label-md text-label-md text-error @(currentAction == "Emergency" ? "font-bold" : "")">Emergency</span>
+            </a>
+        </div>
+        <!-- CTA & Footer Links -->
+        <div class="flex flex-col gap-stack-md">
+            <button class="w-full bg-gradient-to-r from-primary to-secondary text-on-primary font-label-md text-label-md py-3 rounded-xl shadow-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2" onclick="showComingSoon('AI Consultant')">
+                <span class="material-symbols-outlined">smart_toy</span>
+                AI Consultant
+            </button>
+            <div class="h-px bg-outline-variant/30 w-full"></div>
+            <a class="flex items-center gap-stack-md rounded-xl p-3 active:scale-[0.98] transition-transform @(currentAction == "Settings" ? "bg-secondary-container/30 text-on-secondary-container border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]" : "text-on-surface-variant hover:bg-surface-container-high/40 hover:translate-x-1")" asp-area="Doctor" asp-controller="Dashboard" asp-action="Settings">
+                <span class="material-symbols-outlined" style="@(currentAction == "Settings" ? "font-variation-settings: 'FILL' 1;" : "")">settings</span>
+                <span class="font-label-md text-label-md @(currentAction == "Settings" ? "font-bold" : "")">Settings</span>
+            </a>
+            <form class="form-inline m-0 p-0 w-full" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 w-full border-0 bg-transparent text-left cursor-pointer">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="font-label-md text-label-md">Logout</span>
+                </button>
+            </form>
+        </div>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 ml-0 md:ml-[280px] h-screen overflow-y-auto p-container-margin relative">
+        <!-- Header area for Mobile (hidden on desktop) -->
+        <header class="md:hidden flex justify-between items-center mb-section-gap bg-surface-container-lowest/80 backdrop-blur-xl p-4 rounded-2xl shadow-sm border border-white/40 sticky top-0 z-30">
+            <span class="font-headline-lg-mobile text-headline-lg-mobile font-black text-primary">MediAI</span>
+            <button class="p-2 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </header>
+
+        @RenderBody()
+
+        <div class="h-8"></div> <!-- Bottom padding -->
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        function showComingSoon(featureName) {
+            toastr.info(`${featureName} is currently in development!`, "Coming Soon");
+        }
+
+        $(document).ready(function () {
+            // Mobile menu toggle
+            $('header button').on('click', function () {
+                var sidebar = $('nav');
+                sidebar.toggleClass('hidden flex');
+                if (sidebar.hasClass('flex')) {
+                    sidebar.css('z-index', '99999');
+                }
+            });
+            
+            // Hide sidebar on click outside for mobile
+            $(document).click(function(event) { 
+                var $target = $(event.target);
+                if(!$target.closest('nav').length && !$target.closest('header button').length && $('nav').hasClass('flex')) {
+                    $('nav').addClass('hidden').removeClass('flex');
+                }
+            });
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

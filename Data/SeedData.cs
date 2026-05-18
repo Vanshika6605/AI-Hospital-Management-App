@@ -69,6 +69,22 @@ namespace AIHospitalManagementSys.Data
                 await context.SaveChangesAsync();
             }
 
+            // Seed Medicine Catalog
+            if (!await context.MedicineCatalogs.AnyAsync())
+            {
+                Console.WriteLine("--> Seeding Medicine Catalog...");
+                var medicines = new List<MedicineCatalog>
+                {
+                    new MedicineCatalog { MedicineName = "Paracetamol 500mg", Price = 5.00m, Stock = 1000, Description = "Fever and mild pain relief", CreatedAt = DateTime.UtcNow },
+                    new MedicineCatalog { MedicineName = "Amoxicillin 250mg", Price = 15.50m, Stock = 500, Description = "Antibiotic", CreatedAt = DateTime.UtcNow },
+                    new MedicineCatalog { MedicineName = "Ibuprofen 400mg", Price = 8.00m, Stock = 800, Description = "Anti-inflammatory", CreatedAt = DateTime.UtcNow },
+                    new MedicineCatalog { MedicineName = "Cetirizine 10mg", Price = 4.00m, Stock = 600, Description = "Allergy relief", CreatedAt = DateTime.UtcNow },
+                    new MedicineCatalog { MedicineName = "Omeprazole 20mg", Price = 12.00m, Stock = 400, Description = "Acid reflux", CreatedAt = DateTime.UtcNow }
+                };
+                await context.MedicineCatalogs.AddRangeAsync(medicines);
+                await context.SaveChangesAsync();
+            }
+
             // Seed a Doctor for testing
             var doctorEmail = "doctor@hospital.com";
             var existingDoctorUser = await userManager.FindByEmailAsync(doctorEmail);

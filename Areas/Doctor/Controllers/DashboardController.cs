@@ -3,6 +3,7 @@ using AIHospitalManagementSys.Models.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using AIHospitalManagementSys.ViewModels;
 
 namespace AIHospitalManagementSys.Areas.Doctor.Controllers
 {
@@ -39,6 +40,54 @@ namespace AIHospitalManagementSys.Areas.Doctor.Controllers
             ViewBag.CompletedAppointments = appointments.Count(a => a.Status == Models.Enums.AppointmentStatus.Completed);
 
             return View(doctor);
+        }
+
+        public async Task<IActionResult> Patients()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Challenge();
+
+            var doctors = await _doctorService.GetAllDoctorsAsync();
+            var doctor = doctors.FirstOrDefault(d => d.ApplicationUserId == user.Id);
+            
+            if (doctor == null) return NotFound("Doctor profile not found.");
+
+            var appointments = await _appointmentService.GetDoctorAppointmentsAsync(doctor.Id);
+            return View(appointments);
+        }
+
+        public async Task<IActionResult> Schedules()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Challenge();
+
+            var doctors = await _doctorService.GetAllDoctorsAsync();
+            var doctor = doctors.FirstOrDefault(d => d.ApplicationUserId == user.Id);
+            
+            if (doctor == null) return NotFound("Doctor profile not found.");
+
+            var appointments = await _appointmentService.GetDoctorAppointmentsAsync(doctor.Id);
+            return View(appointments.OrderByDescending(a => a.AppointmentDate));
+        }
+
+        public IActionResult AIInsights()
+        {
+            return View();
+        }
+
+        public IActionResult Analytics()
+        {
+            return View();
+        }
+
+        public IActionResult Emergency()
+        {
+            return View();
+        }
+
+        public IActionResult Settings()
+        {
+            return View();
         }
     }
 }

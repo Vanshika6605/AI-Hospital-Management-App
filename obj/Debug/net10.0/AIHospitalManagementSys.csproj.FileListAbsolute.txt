@@ -579,3 +579,4 @@ D:\Projects\AI-Hospital-Management-App\obj\Debug\net10.0\swae.build.ex.cache
 D:\Projects\AI-Hospital-Management-App\obj\Debug\net10.0\AIHospit.3BF34FF9.Up2Date
 D:\Projects\AI-Hospital-Management-App\obj\Debug\net10.0\AIHospitalManagementSys.genruntimeconfig.cache
 D:\Projects\AI-Hospital-Management-App\obj\Debug\net10.0\ref\AIHospitalManagementSys.dll
+C:\Users\devag\OneDrive\Desktop\Hospital Management System\AIHospitalManagementSys\AIHospitalManagementSys\obj\Debug\net10.0\AIHospitalManagementSys.sourcelink.json

@@ -9,10 +9,20 @@ namespace AIHospitalManagementSys.Services.Implementations
     public class AppointmentService : IAppointmentService
     {
         private readonly IAppointmentRepository _appointmentRepo;
+        private readonly INotificationService _notificationService;
+        private readonly IGenericRepository<Patient> _patientRepo;
+        private readonly IGenericRepository<Doctor> _doctorRepo;
 
-        public AppointmentService(IAppointmentRepository appointmentRepo)
+        public AppointmentService(
+            IAppointmentRepository appointmentRepo,
+            INotificationService notificationService,
+            IGenericRepository<Patient> patientRepo,
+            IGenericRepository<Doctor> doctorRepo)
         {
             _appointmentRepo = appointmentRepo;
+            _notificationService = notificationService;
+            _patientRepo = patientRepo;
+            _doctorRepo = doctorRepo;
         }
 
         public async Task<IEnumerable<AppointmentViewModel>> GetAllAppointmentsAsync()
@@ -60,11 +70,23 @@ namespace AIHospitalManagementSys.Services.Implementations
 
             await _appointmentRepo.AddAsync(appointment);
             await _appointmentRepo.SaveAsync();
+
+            var patient = await _patientRepo.GetFirstOrDefaultAsync(p => p.Id == model.PatientId, "ApplicationUser");
+            var doctor = await _doctorRepo.GetFirstOrDefaultAsync(d => d.Id == model.DoctorId, "ApplicationUser");
+
+            if (patient?.ApplicationUserId != null)
+            {
+                await _notificationService.SendNotificationAsync(patient.ApplicationUserId, $"Your appointment is booked for {model.AppointmentDate:MMM dd, yyyy hh:mm tt}.");
+            }
+            if (doctor?.ApplicationUserId != null)
+            {
+                await _notificationService.SendNotificationAsync(doctor.ApplicationUserId, $"New appointment booked by {patient?.ApplicationUser?.FullName} for {model.AppointmentDate:MMM dd, yyyy hh:mm tt}.");
+            }
         }
 
         public async Task UpdateAppointmentStatusAsync(int id, string status)
         {
-            var appointment = await _appointmentRepo.GetByIdAsync(id);
+            var appointment = await _appointmentRepo.GetFirstOrDefaultAsync(a => a.Id == id, "Patient,Doctor");
             if (appointment != null)
             {
                 if (Enum.TryParse<AppointmentStatus>(status, out var newStatus))
@@ -73,6 +95,15 @@ namespace AIHospitalManagementSys.Services.Implementations
                     appointment.UpdatedAt = DateTime.UtcNow;
                     _appointmentRepo.Update(appointment);
                     await _appointmentRepo.SaveAsync();
+
+                    if (appointment.Patient != null)
+                    {
+                        var patient = await _patientRepo.GetFirstOrDefaultAsync(p => p.Id == appointment.PatientId);
+                        if (patient?.ApplicationUserId != null)
+                        {
+                            await _notificationService.SendNotificationAsync(patient.ApplicationUserId, $"Your appointment status has been updated to: {status}.");
+                        }
+                    }
                 }
             }
         }

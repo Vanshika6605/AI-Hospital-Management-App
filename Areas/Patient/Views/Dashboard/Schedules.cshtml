@@ -1,0 +1,81 @@
+@model IEnumerable<AIHospitalManagementSys.ViewModels.AppointmentViewModel>
+@{ 
+    Layout = "_PatientLayout"; 
+    ViewData["Title"] = "My Schedules";
+}
+
+<div class="mb-section-gap">
+    <h1 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">My Schedules</h1>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">View and manage your upcoming and past appointments.</p>
+</div>
+
+<div class="glass-panel glass-glow p-container-margin">
+    
+    <div class="flex justify-between items-center mb-section-gap border-b border-outline-variant/30 pb-4">
+        <h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">calendar_month</span>
+            All Appointments
+        </h2>
+        <button class="bg-primary text-on-primary px-4 py-2 rounded-xl font-label-md text-label-md font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2" onclick="showComingSoon('Book New Appointment')">
+            <span class="material-symbols-outlined">add</span>
+            Book Appointment
+        </button>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-12">
+            <span class="material-symbols-outlined text-6xl text-on-surface-variant/50 mb-4">event_busy</span>
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-2">No Appointments Found</h3>
+            <p class="font-body-md text-body-md text-on-surface-variant">You don't have any past or upcoming appointments.</p>
+        </div>
+    }
+    else
+    {
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-gutter">
+            @foreach (var apt in Model)
+            {
+                var isUpcoming = apt.AppointmentDate > DateTime.Now;
+                var statusColor = apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Confirmed ? "bg-secondary-container text-on-secondary-container" :
+                                  apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Pending ? "bg-surface-variant text-on-surface-variant" :
+                                  "bg-error-container text-on-error-container";
+
+                <div class="bg-surface-bright rounded-2xl border @(isUpcoming ? "border-primary/30 shadow-sm" : "border-outline-variant/30 opacity-75") p-stack-md flex flex-col transition-transform hover:scale-[1.02]">
+                    <div class="flex justify-between items-start mb-stack-md border-b border-outline-variant/30 pb-3">
+                        <div>
+                            <span class="bg-surface-container text-on-surface font-label-sm text-label-sm px-2 py-1 rounded-md mb-2 inline-block">
+                                @apt.AppointmentDate.ToString("MMM dd, yyyy - hh:mm tt")
+                            </span>
+                            <h3 class="font-headline-md text-headline-md text-on-surface">Dr. @apt.DoctorName</h3>
+                        </div>
+                        <span class="@statusColor px-3 py-1 rounded-full font-label-sm text-label-sm font-bold">@apt.Status</span>
+                    </div>
+                    
+                    <div class="flex-1 mb-stack-md">
+                        <p class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase tracking-wider font-bold">Reason</p>
+                        <p class="font-body-md text-body-md text-on-surface">@apt.Reason</p>
+                    </div>
+
+                    <div class="flex gap-2 mt-auto">
+                        @if (isUpcoming && apt.Status != AIHospitalManagementSys.Models.Enums.AppointmentStatus.Cancelled)
+                        {
+                            <button class="flex-1 bg-surface-container text-on-surface px-4 py-2 rounded-xl font-label-md text-label-md border border-outline-variant/50 hover:bg-surface-variant transition-colors" onclick="showComingSoon('Reschedule Appointment')">
+                                Reschedule
+                            </button>
+                            <button class="flex-1 bg-error/10 text-error px-4 py-2 rounded-xl font-label-md text-label-md border border-error/20 hover:bg-error/20 transition-colors" onclick="showComingSoon('Cancel Appointment')">
+                                Cancel
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="w-full bg-surface-container text-on-surface px-4 py-2 rounded-xl font-label-md text-label-md border border-outline-variant/50 hover:bg-surface-variant transition-colors flex items-center justify-center gap-2" onclick="showComingSoon('View Summary')">
+                                <span class="material-symbols-outlined text-[20px]">description</span>
+                                View Summary
+                            </button>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

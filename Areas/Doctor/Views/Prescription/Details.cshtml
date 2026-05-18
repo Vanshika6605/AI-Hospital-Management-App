@@ -34,10 +34,9 @@
                     <thead class="table-light">
                         <tr>
                             <th>Medicine</th>
+                            <th>Quantity</th>
                             <th>Dosage</th>
                             <th>Frequency</th>
-                            <th>Duration (Days)</th>
-                            <th>Special Instructions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,10 +44,9 @@
                         {
                             <tr>
                                 <td class="fw-bold">@item.MedicineName</td>
+                                <td>@item.Quantity</td>
                                 <td>@item.Dosage</td>
                                 <td>@item.Frequency</td>
-                                <td>@item.DurationDays</td>
-                                <td class="text-muted">@item.SpecialInstructions</td>
                             </tr>
                         }
                     </tbody>

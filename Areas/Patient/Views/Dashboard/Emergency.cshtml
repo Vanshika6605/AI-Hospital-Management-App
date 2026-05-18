@@ -1,0 +1,71 @@
+@{ 
+    Layout = "_PatientLayout"; 
+    ViewData["Title"] = "Emergency Services";
+}
+
+<div class="mb-section-gap">
+    <h1 class="font-headline-lg text-headline-lg text-error mb-stack-sm flex items-center gap-2">
+        <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">emergency</span>
+        Emergency Assistance
+    </h1>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">Immediate help for critical medical situations.</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter mb-section-gap">
+    <!-- Trigger Emergency -->
+    <div class="glass-panel p-container-margin bg-error/5 border-error/30 relative overflow-hidden flex flex-col justify-center items-center text-center">
+        <div class="absolute inset-0 bg-error/10 animate-pulse -z-10"></div>
+        <h2 class="font-headline-lg text-headline-lg text-error mb-4">Request Immediate Help</h2>
+        <p class="font-body-md text-body-md text-on-surface-variant mb-8 max-w-md">Clicking the button below will immediately dispatch an ambulance to your registered address and notify your emergency contacts.</p>
+        
+        <button class="w-48 h-48 rounded-full bg-error text-white font-headline-md font-bold shadow-[0_0_60px_rgba(186,26,26,0.6)] hover:scale-105 active:scale-95 transition-all flex flex-col items-center justify-center gap-2 border-4 border-error-container" onclick="showComingSoon('Dispatching Ambulance')">
+            <span class="material-symbols-outlined text-6xl">sos</span>
+            S.O.S
+        </button>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="glass-panel glass-glow p-container-margin flex flex-col gap-section-gap">
+        <div>
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md border-b border-outline-variant/30 pb-2">Hospital Hotlines</h3>
+            <div class="space-y-4">
+                <a href="tel:911" class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-white/40 hover:border-error transition-colors group">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-error bg-error/10 p-2 rounded-full">phone_in_talk</span>
+                        <div>
+                            <p class="font-label-md font-bold text-on-surface group-hover:text-error transition-colors">National Emergency</p>
+                            <p class="font-label-sm text-on-surface-variant">Immediate dispatch</p>
+                        </div>
+                    </div>
+                    <span class="font-headline-md text-error font-bold tracking-widest">911</span>
+                </a>
+                
+                <a href="tel:1-800-MEDIAI" class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-white/40 hover:border-primary transition-colors group">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-full">local_hospital</span>
+                        <div>
+                            <p class="font-label-md font-bold text-on-surface group-hover:text-primary transition-colors">MediAI Hospital Reception</p>
+                            <p class="font-label-sm text-on-surface-variant">24/7 Support line</p>
+                        </div>
+                    </div>
+                    <span class="font-label-md text-primary font-bold">1-800-MEDIAI</span>
+                </a>
+            </div>
+        </div>
+
+        <div>
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md border-b border-outline-variant/30 pb-2">My Emergency Contacts</h3>
+            <div class="bg-surface-container-lowest p-4 rounded-xl border border-white/40">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-label-md font-bold text-on-surface">Primary Contact</p>
+                        <p class="font-label-sm text-on-surface-variant">See Profile for details</p>
+                    </div>
+                    <button class="text-primary hover:bg-primary/10 p-2 rounded-full transition-colors" onclick="showComingSoon('Call Emergency Contact')">
+                        <span class="material-symbols-outlined">call</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 using AIHospitalManagementSys.Services.Interfaces;
 using AIHospitalManagementSys.Models.Domain;
+using AIHospitalManagementSys.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -43,13 +44,79 @@ namespace AIHospitalManagementSys.Areas.Patient.Controllers
             var appointments = await _appointmentService.GetPatientAppointmentsAsync(patient.Id);
             var prescriptions = await _prescriptionService.GetPatientPrescriptionsAsync(patient.Id);
             var bills = await _billingService.GetAllBillsAsync();
-            var patientBills = bills.Where(b => b.PatientName == patient.FullName); // In real app, filter by PatientId in service
+            var patientBills = bills.Where(b => b.PatientName == patient.FullName);
 
             ViewBag.UpcomingAppointments = appointments.Where(a => a.AppointmentDate > DateTime.Now).OrderBy(a => a.AppointmentDate).Take(5);
             ViewBag.RecentPrescriptions = prescriptions.OrderByDescending(p => p.CreatedAt).Take(5);
             ViewBag.PendingBills = patientBills.Where(b => b.PaymentStatus != "Paid");
 
             return View(patient);
+        }
+
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Challenge();
+
+            var patients = await _patientService.GetAllPatientsAsync();
+            var patient = patients.FirstOrDefault(p => p.ApplicationUserId == user.Id);
+            
+            if (patient == null) return NotFound("Patient profile not found.");
+
+            return View(patient);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Profile(PatientViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null) return Challenge();
+                
+                // Ensure they are only updating their own profile
+                model.ApplicationUserId = user.Id;
+                
+                await _patientService.UpdatePatientAsync(model);
+                TempData["Success"] = "Profile updated successfully.";
+                return RedirectToAction(nameof(Profile));
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> Schedules()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Challenge();
+
+            var patients = await _patientService.GetAllPatientsAsync();
+            var patient = patients.FirstOrDefault(p => p.ApplicationUserId == user.Id);
+            
+            if (patient == null) return NotFound("Patient profile not found.");
+
+            var appointments = await _appointmentService.GetPatientAppointmentsAsync(patient.Id);
+            return View(appointments.OrderByDescending(a => a.AppointmentDate));
+        }
+
+        public IActionResult AIInsights()
+        {
+            return View();
+        }
+
+        public IActionResult Analytics()
+        {
+            return View();
+        }
+
+        public IActionResult Emergency()
+        {
+            return View();
+        }
+
+        public IActionResult Settings()
+        {
+            return View();
         }
     }
 }

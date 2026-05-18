@@ -1,0 +1,53 @@
+@{ 
+    Layout = "_PatientLayout"; 
+    ViewData["Title"] = "Analytics";
+}
+
+<div class="mb-section-gap">
+    <h1 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">Health Analytics</h1>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">Visualize your vital metrics and medical history trends.</p>
+</div>
+
+<div class="glass-panel glass-glow p-container-margin mb-section-gap">
+    <div class="flex justify-between items-center mb-stack-md">
+        <h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">show_chart</span>
+            Heart Rate Trend (Last 30 Days)
+        </h3>
+        <select class="bg-surface-bright border border-outline-variant/50 rounded-lg p-1 text-sm font-label-sm">
+            <option>Last 30 Days</option>
+            <option>Last 6 Months</option>
+            <option>This Year</option>
+        </select>
+    </div>
+    
+    <!-- Placeholder for Chart.js -->
+    <div class="w-full h-64 bg-surface-container-low rounded-xl flex items-center justify-center border border-outline-variant/30">
+        <div class="text-center">
+            <span class="material-symbols-outlined text-6xl text-primary/30 mb-2">monitoring</span>
+            <p class="font-label-md text-label-md text-on-surface-variant">Interactive Chart Loading...</p>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+    <div class="glass-panel glass-glow p-container-margin">
+        <h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md flex items-center gap-2">
+            <span class="material-symbols-outlined text-error">water_drop</span>
+            Blood Pressure Analysis
+        </h3>
+        <div class="w-full h-48 bg-surface-container-low rounded-xl flex items-center justify-center border border-outline-variant/30">
+            <p class="font-label-md text-label-md text-on-surface-variant">Systolic vs Diastolic Scatter Plot</p>
+        </div>
+    </div>
+
+    <div class="glass-panel glass-glow p-container-margin">
+        <h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md flex items-center gap-2">
+            <span class="material-symbols-outlined text-secondary">monitor_weight</span>
+            BMI Tracking
+        </h3>
+        <div class="w-full h-48 bg-surface-container-low rounded-xl flex items-center justify-center border border-outline-variant/30">
+            <p class="font-label-md text-label-md text-on-surface-variant">BMI Line Graph</p>
+        </div>
+    </div>
+</div>

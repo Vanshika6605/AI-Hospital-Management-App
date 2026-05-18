@@ -1,0 +1,67 @@
+@{ 
+    Layout = "_PatientLayout"; 
+    ViewData["Title"] = "AI Insights";
+}
+
+<div class="mb-section-gap">
+    <h1 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">AI Health Insights</h1>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">Personalized recommendations powered by MediAI.</p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter mb-section-gap">
+    <!-- Cardiovascular Risk -->
+    <div class="glass-panel glass-glow p-container-margin ai-glow relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-error/10 rounded-full blur-[40px] -z-10 -mr-10 -mt-10"></div>
+        <div class="flex items-center justify-between mb-stack-md">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-error">favorite</span>
+                <h3 class="font-headline-md text-headline-md text-on-surface">Cardiovascular Risk</h3>
+            </div>
+            <span class="bg-surface-container-low text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm">Low Risk (12%)</span>
+        </div>
+        <p class="font-body-md text-body-md text-on-surface-variant mb-stack-md">Based on your recent BP of 118/76 and a stable heart rate, your 10-year cardiovascular risk is considered low.</p>
+        <div class="w-full bg-surface-container rounded-full h-2">
+            <div class="bg-error h-2 rounded-full" style="width: 12%"></div>
+        </div>
+    </div>
+
+    <!-- Nutritional Assessment -->
+    <div class="glass-panel glass-glow p-container-margin ai-glow relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full blur-[40px] -z-10 -mr-10 -mt-10"></div>
+        <div class="flex items-center justify-between mb-stack-md">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary">restaurant</span>
+                <h3 class="font-headline-md text-headline-md text-on-surface">Nutritional Analysis</h3>
+            </div>
+            <span class="bg-surface-container-low text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm">Optimal</span>
+        </div>
+        <p class="font-body-md text-body-md text-on-surface-variant mb-stack-md">Your most recent blood tests show excellent Vitamin D and Iron levels. AI suggests maintaining your current diet.</p>
+        <div class="w-full bg-surface-container rounded-full h-2">
+            <div class="bg-secondary h-2 rounded-full" style="width: 95%"></div>
+        </div>
+    </div>
+</div>
+
+<div class="glass-panel glass-glow p-container-margin">
+    <h3 class="font-headline-md text-headline-md text-on-surface mb-section-gap flex items-center gap-2">
+        <span class="material-symbols-outlined text-tertiary">auto_awesome</span>
+        AI Recommendations
+    </h3>
+    
+    <div class="space-y-stack-md">
+        <div class="flex items-start gap-stack-md bg-surface-container-lowest/50 p-4 rounded-xl border border-white/40">
+            <span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-full mt-1">directions_run</span>
+            <div>
+                <h4 class="font-label-md text-label-md font-bold text-on-surface mb-1">Increase Aerobic Activity</h4>
+                <p class="font-body-md text-body-md text-on-surface-variant">To optimize your resting heart rate, aim for 150 minutes of moderate-intensity aerobic activity per week.</p>
+            </div>
+        </div>
+        <div class="flex items-start gap-stack-md bg-surface-container-lowest/50 p-4 rounded-xl border border-white/40">
+            <span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-full mt-1">water_drop</span>
+            <div>
+                <h4 class="font-label-md text-label-md font-bold text-on-surface mb-1">Hydration Warning</h4>
+                <p class="font-body-md text-body-md text-on-surface-variant">Predictive models indicate a slight downward trend in hydration levels over the past 48 hours. Drink 8 glasses of water daily.</p>
+            </div>
+        </div>
+    </div>
+</div>
