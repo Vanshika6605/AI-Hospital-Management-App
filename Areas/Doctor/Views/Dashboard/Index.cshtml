@@ -1,144 +1,370 @@
-@using AIHospitalManagementSys.Models.Enums
 @model AIHospitalManagementSys.ViewModels.DoctorViewModel
+@{ Layout = null; }
+<!DOCTYPE html>
 
-@{
-    ViewData["Title"] = "Doctor Dashboard";
-}
-
-<div class="container-fluid py-4">
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <h2 class="fw-bold">Welcome, Dr. @Model.FullName</h2>
-            <p class="text-muted">You have @(((IEnumerable<AIHospitalManagementSys.ViewModels.AppointmentViewModel>)ViewBag.TodayAppointments).Count()) appointments scheduled for today.</p>
-        </div>
-        <div class="col-md-4 text-md-end">
-            <div class="badge bg-primary fs-6 px-3 py-2">@DateTime.Now.ToString("dddd, MMM dd, yyyy")</div>
-        </div>
-    </div>
-
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0 bg-white p-3 h-100">
-                <div class="d-flex align-items-center">
-                    <div class="rounded-circle bg-light-primary p-3 me-3">
-                        <i class="fas fa-calendar-check fa-2x text-primary"></i>
-                    </div>
-                    <div>
-                        <div class="text-muted small">Total Patients</div>
-                        <div class="h4 fw-bold mb-0">@ViewBag.TotalAppointments</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0 bg-white p-3 h-100">
-                <div class="d-flex align-items-center">
-                    <div class="rounded-circle bg-light-success p-3 me-3">
-                        <i class="fas fa-check-double fa-2x text-success"></i>
-                    </div>
-                    <div>
-                        <div class="text-muted small">Completed</div>
-                        <div class="h4 fw-bold mb-0">@ViewBag.CompletedAppointments</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card shadow mb-4">
-                <div class="card-header bg-white py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Today's Appointments</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Patient</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in ViewBag.TodayAppointments)
-                                {
-                                    <tr>
-                                        <td class="fw-bold">@item.AppointmentDate.ToString("hh:mm tt")</td>
-                                        <td>@item.PatientName</td>
-                                        <td>
-                                            @if (item.Status == AppointmentStatus.Confirmed)
-                                            {
-                                                <span class="badge bg-success">Confirmed</span>
-                                            }
-                                            else if (item.Status == AppointmentStatus.Pending)
-                                            {
-                                                <span class="badge bg-warning text-dark">Pending</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="badge bg-secondary">@item.Status</span>
-                                            }
-                                        </td>
-                                        <td>
-                                            @if (item.Status != AppointmentStatus.Completed && item.Status != AppointmentStatus.Cancelled)
-                                            {
-                                                <a asp-controller="Prescription" asp-action="Create" asp-route-appointmentId="@item.Id" class="btn btn-sm btn-primary">
-                                                    Check Patient
-                                                </a>
-                                            }
-                                            else if (item.Status == AppointmentStatus.Completed)
-                                            {
-                                                <span class="text-success small"><i class="fas fa-check me-1"></i> Finished</span>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                                @if (!((IEnumerable<AIHospitalManagementSys.ViewModels.AppointmentViewModel>)ViewBag.TodayAppointments).Any())
-                                {
-                                    <tr>
-                                        <td colspan="4" class="text-center py-4 text-muted">No appointments for today.</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-4">
-            <div class="card shadow mb-4">
-                <div class="card-header bg-white py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
-                </div>
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        <a href="#" class="list-group-item list-group-item-action border-0 px-0">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                <span><i class="fas fa-clock me-2 text-info"></i> Manage Schedule</span>
-                                <i class="fas fa-chevron-right small text-muted"></i>
-                            </div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action border-0 px-0">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                <span><i class="fas fa-user-edit me-2 text-success"></i> Edit My Profile</span>
-                                <i class="fas fa-chevron-right small text-muted"></i>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MediAI - Doctor Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "surface-bright": "#f7f9fb",
+                      "inverse-on-surface": "#eff1f3",
+                      "on-tertiary-fixed": "#23005c",
+                      "on-tertiary-container": "#3e0097",
+                      "on-primary": "#ffffff",
+                      "outline-variant": "#bec8d2",
+                      "secondary-container": "#6df5e1",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f2f4f6",
+                      "on-background": "#191c1e",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#e9ddff",
+                      "tertiary-fixed-dim": "#d0bcff",
+                      "primary-container": "#0ea5e9",
+                      "on-secondary-fixed-variant": "#005048",
+                      "surface-variant": "#e0e3e5",
+                      "surface": "#f7f9fb",
+                      "primary": "#006591",
+                      "on-tertiary-fixed-variant": "#5516be",
+                      "primary-fixed": "#c9e6ff",
+                      "error-container": "#ffdad6",
+                      "surface-container-highest": "#e0e3e5",
+                      "on-primary-container": "#003751",
+                      "on-primary-fixed-variant": "#004c6e",
+                      "surface-tint": "#006591",
+                      "on-error": "#ffffff",
+                      "on-secondary-container": "#006f64",
+                      "surface-container-high": "#e6e8ea",
+                      "surface-dim": "#d8dadc",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#a986ff",
+                      "inverse-primary": "#89ceff",
+                      "on-surface-variant": "#3e4850",
+                      "on-tertiary": "#ffffff",
+                      "primary-fixed-dim": "#89ceff",
+                      "secondary-fixed-dim": "#4fdbc8",
+                      "on-secondary-fixed": "#00201c",
+                      "secondary": "#006b5f",
+                      "surface-container": "#eceef0",
+                      "background": "#f7f9fb",
+                      "tertiary": "#6d3bd7",
+                      "secondary-fixed": "#71f8e4",
+                      "outline": "#6e7881",
+                      "inverse-surface": "#2d3133",
+                      "on-primary-fixed": "#001e2f",
+                      "on-surface": "#191c1e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "section-gap": "32px",
+                      "stack-sm": "8px",
+                      "container-margin": "24px",
+                      "gutter": "16px",
+                      "stack-md": "16px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "label-md": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .ai-glow {
+            box-shadow: 0 0 40px rgba(0, 101, 145, 0.05);
+        }
+        .ai-pulse {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @@keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(233, 221, 255, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(233, 221, 255, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(233, 221, 255, 0); }
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #006591, #006b5f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md h-screen overflow-hidden flex">
+<!-- SideNavBar (from JSON) -->
+<nav class="hidden md:flex flex-col p-container-margin gap-section-gap bg-surface-container-lowest/60 backdrop-blur-2xl dark:bg-surface-container/40 fixed left-0 top-0 h-screen w-[280px] border-r border-white/20 shadow-[0_0_40px_rgba(0,101,145,0.05)] z-40">
+<!-- Header -->
+<div class="flex items-center gap-stack-md">
+<img alt="Dr. Smith Profile" class="w-12 h-12 rounded-full object-cover border-2 border-primary-fixed" data-alt="Professional headshot of a male doctor in a crisp white coat against a modern clinic background. Soft, high-key lighting emphasizing a sterile, high-tech healthcare environment. Medical blue accents subtle in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSptZHS3mlqdskOfPT8HgYzJIplQWF7eHnUK0m34VMyS1gA1IySmY30yAvIN39YBczhym8ygb9Zod85a1AfpFPJeOHaqUpc1cuSdv4ErFv3_lmnABQ2gRLMx6QT6ikseCJ87YVZ6VqI-p7GgeVdgEhYLiCZ-UFu4JdQ1MMWMWprxcFOlitki2GKNKp3KAwOLEyxqmyspPjb1F76WhVqzGKN0DCywvu8MR_q6qaOv1B7XLHuBWfZ3oBQOL1kLOIZXuUHFNcXFJ29ag"/>
+<div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-black text-primary">@Model.FullName</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">@Model.Specialization</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 flex flex-col gap-stack-sm">
+<!-- Active: Dashboard -->
+<a class="flex items-center gap-stack-md bg-secondary-container/30 text-on-secondary-container rounded-xl p-3 border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)] active:scale-[0.98]" asp-area="Doctor" asp-controller="Dashboard" asp-action="Index">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-md text-label-md font-bold">Dashboard</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 active:scale-[0.98]" href="javascript:void(0)" onclick="showComingSoon('Patients Management')">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Patients</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 active:scale-[0.98]" href="javascript:void(0)" onclick="showComingSoon('AI Insights')">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-md text-label-md">AI Insights</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 active:scale-[0.98]" href="javascript:void(0)" onclick="showComingSoon('Analytics')">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-md text-label-md">Analytics</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 active:scale-[0.98]" href="javascript:void(0)" onclick="showComingSoon('Schedules')">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-md text-label-md">Schedules</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 active:scale-[0.98]" href="javascript:void(0)" onclick="showComingSoon('Emergency Services')">
+<span class="material-symbols-outlined text-error">emergency</span>
+<span class="font-label-md text-label-md text-error">Emergency</span>
+</a>
+</div>
+<!-- CTA & Footer Links -->
+<div class="flex flex-col gap-stack-md">
+<button class="w-full bg-gradient-to-r from-primary to-secondary text-on-primary font-label-md text-label-md py-3 rounded-xl shadow-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2" onclick="showComingSoon('AI Consultant')">
+<span class="material-symbols-outlined">smart_toy</span>
+                AI Consultant
+            </button>
+<div class="h-px bg-outline-variant/30 w-full"></div>
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200" href="javascript:void(0)" onclick="showComingSoon('Settings')">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 w-full" href="/logout">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 ml-0 md:ml-[280px] h-screen overflow-y-auto p-container-margin relative">
+<!-- Emergency Alert Banner (Floating) -->
+<div class="absolute top-container-margin right-container-margin z-50 glass-panel border-error/50 bg-error-container/80 rounded-xl p-4 shadow-[0_4px_20px_rgba(186,26,26,0.15)] flex items-start gap-3 w-80 animate-pulse">
+<span class="material-symbols-outlined text-error mt-0.5">warning</span>
+<div>
+<h4 class="font-label-md text-label-md text-on-error-container">Code Blue Alert</h4>
+<p class="font-label-sm text-label-sm text-on-error-container/80 mt-1">ICU Bed 4 - Immediate attention required. Patient vitals dropping rapidly.</p>
+</div>
+<button class="text-on-error-container hover:bg-error/10 rounded-full p-1 transition-colors ml-auto">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="max-w-7xl mx-auto flex flex-col gap-section-gap pt-8 md:pt-0">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">@DateTime.Today.ToString("dddd, MMMM dd")</p>
+<h2 class="font-display-lg text-display-lg text-on-surface">Good Morning, <span class="gradient-text">@Model.FullName</span></h2>
+</div>
+<!-- AI Insight Notification -->
+<div class="glass-panel rounded-full px-4 py-2 flex items-center gap-3 border-tertiary-fixed border shadow-sm w-fit ai-pulse">
+<div class="bg-tertiary-container rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-container text-[16px]">auto_awesome</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">AI detected <strong class="text-tertiary">3 predictive anomalies</strong> in today's rounds.</span>
+<button class="font-label-sm text-label-sm text-primary hover:underline ml-2">Review</button>
+</div>
+</header>
+<!-- Dashboard Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Patient Statistics (Line Chart Placeholder) - Spans 8 cols -->
+<div class="col-span-1 md:col-span-8 glass-panel rounded-xl p-6 flex flex-col h-[340px] ai-glow">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Patient Vitals Trend</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Ward C - Real-time monitoring</p>
+</div>
+<div class="flex gap-2 bg-surface-container-low rounded-lg p-1">
+<button class="px-3 py-1 rounded bg-surface shadow-sm font-label-sm text-label-sm text-on-surface">24h</button>
+<button class="px-3 py-1 rounded font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-variant/50">7d</button>
+</div>
+</div>
+<!-- Chart Area Placeholder (Stylized CSS) -->
+<div class="flex-1 w-full relative flex items-end pb-4 border-b border-l border-outline-variant/30 pl-2">
+<!-- Y-Axis labels -->
+<div class="absolute left-[-24px] bottom-4 top-0 flex flex-col justify-between font-label-sm text-label-sm text-outline h-full py-4">
+<span>120</span>
+<span>90</span>
+<span>60</span>
+</div>
+<!-- Line Graph SVG Graphic -->
+<div class="w-full h-full relative">
+<!-- Background Grid Lines -->
+<div class="absolute top-[10%] w-full h-px bg-outline-variant/10"></div>
+<div class="absolute top-[50%] w-full h-px bg-outline-variant/10"></div>
+<div class="absolute top-[90%] w-full h-px bg-outline-variant/10"></div>
+<!-- Area Fill -->
+<div class="absolute bottom-0 w-full h-[60%] bg-gradient-to-t from-secondary-container/20 to-transparent clip-path-polygon" style="clip-path: polygon(0 100%, 0 40%, 20% 30%, 40% 60%, 60% 10%, 80% 50%, 100% 20%, 100% 100%);"></div>
+<!-- The Line (CSS based approximation) -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<path class="drop-shadow-[0_4px_6px_rgba(0,107,95,0.3)]" d="M0,70 L20,60 L40,90 L60,40 L80,80 L100,50" fill="none" stroke="#006b5f" stroke-width="2"></path>
+</svg>
+<!-- Data Points -->
+<div class="absolute w-2 h-2 rounded-full bg-surface border-2 border-secondary left-[0%] top-[70%] transform -translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute w-2 h-2 rounded-full bg-surface border-2 border-secondary left-[20%] top-[60%] transform -translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute w-2 h-2 rounded-full bg-surface border-2 border-secondary left-[40%] top-[90%] transform -translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute w-2 h-2 rounded-full bg-surface border-2 border-secondary left-[60%] top-[40%] transform -translate-x-1/2 -translate-y-1/2 shadow-[0_0_8px_#006b5f]"></div>
+<div class="absolute w-2 h-2 rounded-full bg-surface border-2 border-secondary left-[80%] top-[80%] transform -translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute w-2 h-2 rounded-full bg-surface border-2 border-secondary left-[100%] top-[50%] transform -translate-x-1/2 -translate-y-1/2"></div>
+</div>
+</div>
+</div>
+<!-- Bed Occupancy Gauge - Spans 4 cols -->
+<div class="col-span-1 md:col-span-4 glass-panel rounded-xl p-6 flex flex-col items-center justify-center h-[340px] relative overflow-hidden">
+<h3 class="font-headline-md text-headline-md text-on-surface self-start w-full absolute top-6 left-6">Bed Capacity</h3>
+<!-- Circular Gauge CSS approximation -->
+<div class="relative w-48 h-48 mt-8">
+<svg class="w-full h-full" viewbox="0 0 36 36">
+<!-- Background Circle -->
+<path class="text-surface-variant" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<!-- Progress Circle -->
+<path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="82, 100" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-lg text-display-lg text-on-surface">82%</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">14 Beds Available</span>
+</div>
+</div>
+</div>
+<!-- AI Diagnosis Assistant Card - Spans 4 cols -->
+<div class="col-span-1 md:col-span-4 rounded-xl p-6 flex flex-col bg-gradient-to-br from-tertiary-fixed to-surface border border-tertiary-fixed-dim shadow-[0_8px_30px_rgba(109,59,215,0.12)] relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-tertiary/10 rounded-full blur-2xl group-hover:bg-tertiary/20 transition-colors"></div>
+<div class="flex items-center gap-2 mb-4 relative z-10">
+<span class="material-symbols-outlined text-tertiary">psychology</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">AI Diagnostics</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 relative z-10">Predictive modeling indicates a <strong class="text-error">94% probability</strong> of sepsis onset for Patient #402 (Room 2B) within the next 4 hours.</p>
+<div class="mt-auto space-y-2 relative z-10">
+<div class="flex items-center gap-2 text-label-sm font-label-sm bg-surface-bright/80 p-2 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
+<span>Review lactate levels</span>
+</div>
+<div class="flex items-center gap-2 text-label-sm font-label-sm bg-surface-bright/80 p-2 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
+<span>Administer broad-spectrum antibiotics</span>
+</div>
+</div>
+<button class="mt-6 w-full bg-tertiary text-on-tertiary font-label-md text-label-md py-2 rounded-lg shadow-sm hover:bg-tertiary/90 transition-colors relative z-10">
+                        Review Case Data
+                    </button>
+</div>
+<!-- Appointment Summary - Spans 8 cols -->
+<div class="col-span-1 md:col-span-8 glass-panel rounded-xl p-6 flex flex-col ai-glow">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface">Upcoming Appointments</h3>
+<button class="font-label-md text-label-md text-primary flex items-center gap-1 hover:underline">
+                            View All <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<!-- "Ghost" Table rows -->
+<div class="flex flex-col">
+<!-- Header -->
+<div class="grid grid-cols-12 gap-4 px-4 py-2 border-b border-outline-variant/30 font-label-sm text-label-sm text-on-surface-variant">
+<div class="col-span-4">Patient</div>
+<div class="col-span-3">Time</div>
+<div class="col-span-3">Reason</div>
+<div class="col-span-2 text-right">Status</div>
 </div>
 
-@section Scripts {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <style>
-        .bg-light-primary { background-color: rgba(78, 115, 223, 0.1); }
-        .bg-light-success { background-color: rgba(28, 200, 138, 0.1); }
-    </style>
+@if (ViewBag.UpcomingAppointments != null)
+{
+    foreach (var apt in (IEnumerable<AIHospitalManagementSys.ViewModels.AppointmentViewModel>)ViewBag.UpcomingAppointments)
+    {
+        var patientName = apt.PatientName ?? "Unknown";
+        var patientInitials = string.Join("", patientName.Split(' ').Select(n => n.Length > 0 ? n[0].ToString() : "")).ToUpper();
+        if (patientInitials.Length > 2) patientInitials = patientInitials.Substring(0, 2);
+
+        var statusClass = apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Completed ? "bg-secondary-container/50 text-secondary" : 
+                         (apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Pending ? "bg-surface-container-high text-on-surface-variant" : "bg-primary-fixed text-on-primary-fixed-variant");
+
+        <div class="grid grid-cols-12 gap-4 px-4 py-4 border-b border-outline-variant/10 items-center hover:bg-surface-container-lowest/50 transition-colors">
+            <div class="col-span-4 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-label-sm font-bold">@patientInitials</div>
+                <div>
+                    <p class="font-label-md text-label-md text-on-surface">@patientName</p>
+                    <p class="font-label-sm text-label-sm text-on-surface-variant">ID: #@apt.PatientId</p>
+                </div>
+            </div>
+            <div class="col-span-3 font-body-md text-body-md text-on-surface-variant">@apt.AppointmentDate.ToString("hh:mm tt")</div>
+            <div class="col-span-3 font-body-md text-body-md text-on-surface-variant truncate">@apt.Reason</div>
+            <div class="col-span-2 flex justify-end">
+                <span class="px-2 py-1 @statusClass rounded-full font-label-sm text-label-sm flex items-center gap-1">
+                    @if (apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Completed)
+                    {
+                        <span class="material-symbols-outlined text-[14px]">check</span>
+                    }
+                    else if (apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Pending)
+                    {
+                        <!-- dot -->
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                    }
+                    @apt.Status
+                </span>
+            </div>
+        </div>
+    }
 }
+</div>
+</div>
+</div>
+<div class="h-8"></div> <!-- Bottom padding -->
+</div>
+</main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    function showComingSoon(featureName) {
+        toastr.info(`${featureName} is currently in development!`, "Coming Soon");
+    }
+</script>
+</body></html>
+

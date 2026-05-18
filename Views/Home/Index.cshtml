@@ -1,8 +1,356 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+@{ Layout = null; }
+<!DOCTYPE html>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MediAI - Smart AI-Powered Hospital Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f7f9fb",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary-fixed": "#23005c",
+                        "on-tertiary-container": "#3e0097",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#bec8d2",
+                        "secondary-container": "#6df5e1",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f2f4f6",
+                        "on-background": "#191c1e",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#e9ddff",
+                        "tertiary-fixed-dim": "#d0bcff",
+                        "primary-container": "#0ea5e9",
+                        "on-secondary-fixed-variant": "#005048",
+                        "surface-variant": "#e0e3e5",
+                        "surface": "#f7f9fb",
+                        "primary": "#006591",
+                        "on-tertiary-fixed-variant": "#5516be",
+                        "primary-fixed": "#c9e6ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-primary-container": "#003751",
+                        "on-primary-fixed-variant": "#004c6e",
+                        "surface-tint": "#006591",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#006f64",
+                        "surface-container-high": "#e6e8ea",
+                        "surface-dim": "#d8dadc",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#a986ff",
+                        "inverse-primary": "#89ceff",
+                        "on-surface-variant": "#3e4850",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#89ceff",
+                        "secondary-fixed-dim": "#4fdbc8",
+                        "on-secondary-fixed": "#00201c",
+                        "secondary": "#006b5f",
+                        "surface-container": "#eceef0",
+                        "background": "#f7f9fb",
+                        "tertiary": "#6d3bd7",
+                        "secondary-fixed": "#71f8e4",
+                        "outline": "#6e7881",
+                        "inverse-surface": "#2d3133",
+                        "on-primary-fixed": "#001e2f",
+                        "on-surface": "#191c1e"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem"
+                    },
+                    spacing: {
+                        "section-gap": "32px",
+                        "stack-sm": "8px",
+                        "container-margin": "24px",
+                        "gutter": "16px",
+                        "stack-md": "16px",
+                        "unit": "4px"
+                    },
+                    fontFamily: {
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    fontSize: {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .glow-primary {
+            box-shadow: 0 0 40px rgba(0, 101, 145, 0.15);
+        }
+        .mesh-bg {
+            background-color: #f7f9fb;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(199,100%,88%,0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(172,92%,78%,0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(258,66%,87%,0.4) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(199,100%,88%,0.4) 0px, transparent 50%);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #006591, #006b5f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .primary-gradient-btn {
+            background: linear-gradient(135deg, #006591 0%, #006b5f 100%);
+            box-shadow: 0 4px 14px 0 rgba(0, 101, 145, 0.39);
+        }
+        .primary-gradient-btn:hover {
+            box-shadow: 0 6px 20px rgba(0, 101, 145, 0.23);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col mesh-bg">
+<!-- TopNavBar (Generated from JSON) -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-on-surface/10 shadow-sm transition-all duration-300">
+<div class="flex justify-between items-center px-container-margin h-20 w-full max-w-7xl mx-auto">
+<!-- Brand -->
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+<span class="font-headline-md text-headline-md font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">MediAI</span>
 </div>
+<!-- Nav Links (Desktop) -->
+<div class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Product</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Solutions</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Intelligence</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Pricing</a>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<a href="/Identity/Account/Login" class="hidden md:block font-label-md text-label-md text-primary hover:bg-surface-container-high/50 transition-all duration-300 px-4 py-2 rounded-lg scale-95 active:scale-90 transition-transform">Sign In</a>
+<a href="/Identity/Account/Register" class="primary-gradient-btn text-on-primary font-label-md text-label-md px-6 py-2.5 rounded-full scale-95 active:scale-90 transition-transform inline-block">Get Started</a>
+</div>
+</div>
+</nav>
+<main class="flex-grow pt-24">
+<!-- Hero Section -->
+<section class="relative w-full max-w-7xl mx-auto px-container-margin py-20 lg:py-32 flex flex-col lg:flex-row items-center gap-12">
+<div class="w-full lg:w-1/2 flex flex-col gap-6 z-10">
+<div class="inline-flex items-center gap-2 bg-primary-fixed/50 text-on-primary-container px-3 py-1 rounded-full w-fit border border-primary/20 backdrop-blur-md">
+<span class="material-symbols-outlined text-[16px] text-primary">auto_awesome</span>
+<span class="font-label-sm text-label-sm">Next-Gen Healthcare AI</span>
+</div>
+<h1 class="font-display-lg text-display-lg md:text-[56px] md:leading-[64px] text-on-surface tracking-tight">
+                    Smart AI-Powered <br/>
+<span class="gradient-text">Hospital Management</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                    Elevate patient care and operational efficiency with our unified, intelligent platform. Predictive insights, automated scheduling, and seamless records integration designed for modern clinical precision.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 mt-4">
+<button class="primary-gradient-btn text-on-primary font-label-md text-label-md px-8 py-4 rounded-full flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-transform">
+                        Request a Demo
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="glass-panel text-primary font-label-md text-label-md px-8 py-4 rounded-full flex items-center justify-center gap-2 hover:bg-surface-container-high/40 transition-colors">
+<span class="material-symbols-outlined">play_circle</span>
+                        Watch Platform Tour
+                    </button>
+</div>
+</div>
+<div class="w-full lg:w-1/2 relative z-10 flex justify-center">
+<!-- Abstract Hero Graphic (Glassmorphism) -->
+<div class="relative w-full max-w-md aspect-square">
+<div class="absolute inset-0 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
+<div class="glass-panel w-full h-full rounded-[2rem] p-8 flex flex-col justify-center items-center relative glow-primary overflow-hidden shadow-2xl">
+<!-- Simulated Chart/Brain Graphic -->
+<div class="relative w-48 h-48 mb-8">
+<div class="absolute inset-0 rounded-full border-4 border-secondary/20 border-t-secondary animate-spin" style="animation-duration: 3s;"></div>
+<div class="absolute inset-4 rounded-full border-4 border-primary/20 border-b-primary animate-spin" style="animation-duration: 4s; animation-direction: reverse;"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-[80px] text-primary" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+</div>
+<div class="w-full space-y-4">
+<div class="h-2 bg-surface-container-highest rounded-full w-3/4 mx-auto overflow-hidden">
+<div class="h-full bg-primary w-2/3 rounded-full"></div>
+</div>
+<div class="flex justify-between items-center px-4">
+<span class="font-label-sm text-label-sm text-on-surface-variant">System Status</span>
+<span class="font-label-sm text-label-sm text-secondary flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span> Optimal</span>
+</div>
+</div>
+<!-- Floating Chip -->
+<div class="absolute top-8 -right-4 glass-panel px-4 py-2 rounded-xl flex items-center gap-2 shadow-lg border border-white/50">
+<span class="material-symbols-outlined text-tertiary">trending_up</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">Efficiency</span>
+<span class="font-label-md text-label-md text-tertiary">+34%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features (Bento Grid) -->
+<section class="w-full max-w-7xl mx-auto px-container-margin py-20">
+<div class="text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Intelligent Infrastructure</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">Transform your facility with tools that learn, adapt, and streamline every aspect of patient care and administration.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Feature 1 -->
+<div class="glass-panel rounded-3xl p-8 flex flex-col gap-4 hover:-translate-y-1 transition-transform duration-300">
+<div class="w-12 h-12 rounded-2xl bg-primary-container/30 flex items-center justify-center text-primary mb-2">
+<span class="material-symbols-outlined">query_stats</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Predictive Diagnostics</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">AI models analyze historical patient data to predict potential health risks, enabling proactive intervention strategies before conditions worsen.</p>
+</div>
+<!-- Feature 2 -->
+<div class="glass-panel rounded-3xl p-8 flex flex-col gap-4 hover:-translate-y-1 transition-transform duration-300">
+<div class="w-12 h-12 rounded-2xl bg-secondary-container/30 flex items-center justify-center text-secondary mb-2">
+<span class="material-symbols-outlined">event_available</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Smart Scheduling</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Optimize resource allocation with dynamic scheduling algorithms that reduce wait times and maximize physician availability seamlessly.</p>
+</div>
+<!-- Feature 3 -->
+<div class="glass-panel rounded-3xl p-8 flex flex-col gap-4 hover:-translate-y-1 transition-transform duration-300">
+<div class="w-12 h-12 rounded-2xl bg-tertiary-container/30 flex items-center justify-center text-tertiary mb-2">
+<span class="material-symbols-outlined">folder_shared</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Unified Patient Records</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">A centralized, secure vault for all patient interactions, accessible instantly by authorized personnel with automated summarization.</p>
+</div>
+</div>
+</section>
+<!-- Pricing -->
+<section class="w-full max-w-7xl mx-auto px-container-margin py-20">
+<div class="text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Enterprise-Ready Pricing</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">Scalable solutions designed for clinics of all sizes, from private practices to multi-facility hospital networks.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+<!-- Starter -->
+<div class="glass-panel rounded-3xl p-8 border border-outline-variant/30">
+<div class="mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface">Starter</h3>
+<p class="font-body-sm text-on-surface-variant mt-2">For small clinics</p>
+</div>
+<div class="mb-8">
+<span class="font-display-lg text-display-lg text-on-surface">$499</span>
+<span class="text-on-surface-variant">/mo</span>
+</div>
+<ul class="space-y-4 mb-8">
+<li class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+                            Up to 5 Physicians
+                        </li>
+<li class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+                            Basic Patient Records
+                        </li>
+</ul>
+<button class="w-full py-3 rounded-xl border border-primary text-primary font-label-md text-label-md hover:bg-primary/5 transition-colors">Start Trial</button>
+</div>
+<!-- Professional (Highlighted) -->
+<div class="glass-panel rounded-3xl p-8 border-2 border-primary glow-primary relative transform md:-translate-y-4">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-on-primary px-4 py-1 rounded-full font-label-sm text-label-sm">Most Popular</div>
+<div class="mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">Professional</h3>
+<p class="font-body-sm text-on-surface-variant mt-2">For growing hospitals</p>
+</div>
+<div class="mb-8">
+<span class="font-display-lg text-display-lg text-on-surface">$1,299</span>
+<span class="text-on-surface-variant">/mo</span>
+</div>
+<ul class="space-y-4 mb-8">
+<li class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+                            Unlimited Physicians
+                        </li>
+<li class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+                            Predictive Diagnostics AI
+                        </li>
+<li class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+                            Smart Scheduling
+                        </li>
+</ul>
+<button class="w-full py-3 rounded-xl primary-gradient-btn text-on-primary font-label-md text-label-md">Get Professional</button>
+</div>
+<!-- Enterprise -->
+<div class="glass-panel rounded-3xl p-8 border border-outline-variant/30">
+<div class="mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface">Enterprise</h3>
+<p class="font-body-sm text-on-surface-variant mt-2">Custom deployment</p>
+</div>
+<div class="mb-8">
+<span class="font-display-lg text-display-lg text-on-surface">Custom</span>
+</div>
+<ul class="space-y-4 mb-8">
+<li class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+                            Multi-Facility Support
+                        </li>
+<li class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+                            Dedicated Account Manager
+                        </li>
+</ul>
+<button class="w-full py-3 rounded-xl border border-primary text-primary font-label-md text-label-md hover:bg-primary/5 transition-colors">Contact Sales</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (Generated from JSON) -->
+<footer class="w-full py-section-gap mt-auto bg-surface-bright border-t border-outline-variant/30">
+<div class="flex flex-col md:flex-row justify-between items-center px-container-margin gap-stack-md max-w-7xl mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">medical_services</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">MediAI</span>
+</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary underline-offset-4 hover:underline transition-opacity hover:opacity-80" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary underline-offset-4 hover:underline transition-opacity hover:opacity-80" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary underline-offset-4 hover:underline transition-opacity hover:opacity-80 flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+                    HIPAA Compliance
+                </a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary underline-offset-4 hover:underline transition-opacity hover:opacity-80" href="#">Contact Support</a>
+</div>
+<div class="font-label-sm text-label-sm text-secondary">
+                Â© 2024 MediAI Quantum Health. All rights reserved.
+            </div>
+</div>
+</footer>
+</body></html>
