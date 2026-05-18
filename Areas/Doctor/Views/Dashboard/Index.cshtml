@@ -6,172 +6,132 @@
 
 <!-- Emergency Alert Banner (Floating) -->
 <div class="absolute top-container-margin right-container-margin z-50 glass-panel border-error/50 bg-error-container/80 rounded-xl p-4 shadow-[0_4px_20px_rgba(186,26,26,0.15)] flex items-start gap-3 w-80 animate-pulse">
-<span class="material-symbols-outlined text-error mt-0.5">warning</span>
-<div>
-<h4 class="font-label-md text-label-md text-on-error-container">Code Blue Alert</h4>
-<p class="font-label-sm text-label-sm text-on-error-container/80 mt-1">ICU Bed 4 - Immediate attention required. Patient vitals dropping rapidly.</p>
+    <span class="material-symbols-outlined text-error mt-0.5">warning</span>
+    <div>
+        <h4 class="font-label-md text-label-md text-on-error-container">Code Blue Alert</h4>
+        <p class="font-label-sm text-label-sm text-on-error-container/80 mt-1">ICU Bed 4 - Immediate attention required. Patient vitals dropping rapidly.</p>
+    </div>
+    <button class="text-on-error-container hover:bg-error/10 rounded-full p-1 transition-colors ml-auto" onclick="this.parentElement.style.display='none'">
+        <span class="material-symbols-outlined">close</span>
+    </button>
 </div>
-<button class="text-on-error-container hover:bg-error/10 rounded-full p-1 transition-colors ml-auto">
-<span class="material-symbols-outlined">close</span>
-</button>
-</div>
+
 <div class="max-w-7xl mx-auto flex flex-col gap-section-gap pt-8 md:pt-0">
-<!-- Header Section -->
-<header class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
-<div>
-<p class="font-label-md text-label-md text-on-surface-variant mb-1">@DateTime.Today.ToString("dddd, MMMM dd")</p>
-<h2 class="font-display-lg text-display-lg text-on-surface">Good Morning, <span class="gradient-text">@Model.FullName</span></h2>
-</div>
-<!-- AI Insight Notification -->
-<div class="glass-panel rounded-full px-4 py-2 flex items-center gap-3 border-tertiary-fixed border shadow-sm w-fit ai-pulse">
-<div class="bg-tertiary-container rounded-full p-1 flex items-center justify-center">
-<span class="material-symbols-outlined text-on-tertiary-container text-[16px]">auto_awesome</span>
-</div>
-<span class="font-label-md text-label-md text-on-surface-variant">AI detected <strong class="text-tertiary">3 predictive anomalies</strong> in today's rounds.</span>
-<button class="font-label-sm text-label-sm text-primary hover:underline ml-2">Review</button>
-</div>
-</header>
-<!-- Dashboard Bento Grid -->
-<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-<!-- Patient Statistics (Line Chart Placeholder) - Spans 8 cols -->
-<div class="col-span-1 md:col-span-8 glass-panel rounded-xl p-6 flex flex-col h-[340px] ai-glow">
-<div class="flex justify-between items-center mb-6">
-<div>
-<h3 class="font-headline-md text-headline-md text-on-surface">Patient Vitals Trend</h3>
-<p class="font-label-sm text-label-sm text-on-surface-variant">Ward C - Real-time monitoring</p>
-</div>
-<div class="flex gap-2 bg-surface-container-low rounded-lg p-1">
-<button class="px-3 py-1 rounded bg-surface shadow-sm font-label-sm text-label-sm text-on-surface">24h</button>
-<button class="px-3 py-1 rounded font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-variant/50">7d</button>
-</div>
-</div>
-<!-- Chart Area Placeholder (Stylized CSS) -->
-<div class="flex-1 w-full relative flex items-end pb-4 border-b border-l border-outline-variant/30 pl-2">
-<!-- Y-Axis labels -->
-<div class="absolute left-[-24px] bottom-4 top-0 flex flex-col justify-between font-label-sm text-label-sm text-outline h-full py-4">
-<span>120</span>
-<span>90</span>
-<span>60</span>
-</div>
-<!-- Line Graph SVG Graphic -->
-<div class="w-full h-full relative">
-<!-- Background Grid Lines -->
-<div class="absolute top-[10%] w-full h-px bg-outline-variant/10"></div>
-<div class="absolute top-[50%] w-full h-px bg-outline-variant/10"></div>
-<div class="absolute top-[90%] w-full h-px bg-outline-variant/10"></div>
-<!-- Area Fill -->
-<div class="absolute bottom-0 w-full h-[60%] bg-gradient-to-t from-secondary-container/20 to-transparent clip-path-polygon" style="clip-path: polygon(0 100%, 0 40%, 20% 30%, 40% 60%, 60% 10%, 80% 50%, 100% 20%, 100% 100%);"></div>
-<!-- The Line (CSS based approximation) -->
-<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
-<path class="drop-shadow-[0_4px_6px_rgba(0,107,95,0.3)]" d="M0,70 L20,60 L40,90 L60,40 L80,80 L100,50" fill="none" stroke="#006b5f" stroke-width="2"></path>
-</svg>
-<!-- Data Points -->
-<div class="absolute w-2 h-2 rounded-full bg-surface border-2 border-secondary left-[0%] top-[70%] transform -translate-x-1/2 -translate-y-1/2"></div>
-<div class="absolute w-2 h-2 rounded-full bg-surface border-2 border-secondary left-[20%] top-[60%] transform -translate-x-1/2 -translate-y-1/2"></div>
-<div class="absolute w-2 h-2 rounded-full bg-surface border-2 border-secondary left-[40%] top-[90%] transform -translate-x-1/2 -translate-y-1/2"></div>
-<div class="absolute w-2 h-2 rounded-full bg-surface border-2 border-secondary left-[60%] top-[40%] transform -translate-x-1/2 -translate-y-1/2 shadow-[0_0_8px_#006b5f]"></div>
-<div class="absolute w-2 h-2 rounded-full bg-surface border-2 border-secondary left-[80%] top-[80%] transform -translate-x-1/2 -translate-y-1/2"></div>
-<div class="absolute w-2 h-2 rounded-full bg-surface border-2 border-secondary left-[100%] top-[50%] transform -translate-x-1/2 -translate-y-1/2"></div>
-</div>
-</div>
-</div>
-<!-- Bed Occupancy Gauge - Spans 4 cols -->
-<div class="col-span-1 md:col-span-4 glass-panel rounded-xl p-6 flex flex-col items-center justify-center h-[340px] relative overflow-hidden">
-<h3 class="font-headline-md text-headline-md text-on-surface self-start w-full absolute top-6 left-6">Bed Capacity</h3>
-<!-- Circular Gauge CSS approximation -->
-<div class="relative w-48 h-48 mt-8">
-<svg class="w-full h-full" viewbox="0 0 36 36">
-<!-- Background Circle -->
-<path class="text-surface-variant" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
-<!-- Progress Circle -->
-<path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="82, 100" stroke-linecap="round" stroke-width="3"></path>
-</svg>
-<div class="absolute inset-0 flex flex-col items-center justify-center">
-<span class="font-display-lg text-display-lg text-on-surface">82%</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">14 Beds Available</span>
-</div>
-</div>
-</div>
-<!-- AI Diagnosis Assistant Card - Spans 4 cols -->
-<div class="col-span-1 md:col-span-4 rounded-xl p-6 flex flex-col bg-gradient-to-br from-tertiary-fixed to-surface border border-tertiary-fixed-dim shadow-[0_8px_30px_rgba(109,59,215,0.12)] relative overflow-hidden group">
-<div class="absolute top-0 right-0 w-32 h-32 bg-tertiary/10 rounded-full blur-2xl group-hover:bg-tertiary/20 transition-colors"></div>
-<div class="flex items-center gap-2 mb-4 relative z-10">
-<span class="material-symbols-outlined text-tertiary">psychology</span>
-<h3 class="font-headline-md text-headline-md text-on-surface">AI Diagnostics</h3>
-</div>
-<p class="font-body-md text-body-md text-on-surface-variant mb-6 relative z-10">Predictive modeling indicates a <strong class="text-error">94% probability</strong> of sepsis onset for Patient #402 (Room 2B) within the next 4 hours.</p>
-<div class="mt-auto space-y-2 relative z-10">
-<div class="flex items-center gap-2 text-label-sm font-label-sm bg-surface-bright/80 p-2 rounded-lg">
-<span class="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
-<span>Review lactate levels</span>
-</div>
-<div class="flex items-center gap-2 text-label-sm font-label-sm bg-surface-bright/80 p-2 rounded-lg">
-<span class="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
-<span>Administer broad-spectrum antibiotics</span>
-</div>
-</div>
-<button class="mt-6 w-full bg-tertiary text-on-tertiary font-label-md text-label-md py-2 rounded-lg shadow-sm hover:bg-tertiary/90 transition-colors relative z-10">
-                        Review Case Data
-                    </button>
-</div>
-<!-- Appointment Summary - Spans 8 cols -->
-<div class="col-span-1 md:col-span-8 glass-panel rounded-xl p-6 flex flex-col ai-glow">
-<div class="flex justify-between items-center mb-6">
-<h3 class="font-headline-md text-headline-md text-on-surface">Upcoming Appointments</h3>
-<a asp-action="Schedules" class="font-label-md text-label-md text-primary flex items-center gap-1 hover:underline">
-                            View All <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-</a>
-</div>
-<!-- "Ghost" Table rows -->
-<div class="flex flex-col">
-<!-- Header -->
-<div class="grid grid-cols-12 gap-4 px-4 py-2 border-b border-outline-variant/30 font-label-sm text-label-sm text-on-surface-variant">
-<div class="col-span-4">Patient</div>
-<div class="col-span-3">Time</div>
-<div class="col-span-3">Reason</div>
-<div class="col-span-2 text-right">Status</div>
-</div>
+    <!-- Header Section -->
+    <header class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
+        <div>
+            <p class="font-label-md text-label-md text-on-surface-variant mb-1">@DateTime.Today.ToString("dddd, MMMM dd")</p>
+            <h2 class="font-display-lg text-display-lg text-on-surface">Good Morning, <span class="gradient-text">@Model.FullName</span></h2>
+        </div>
+    </header>
 
-@if (ViewBag.UpcomingAppointments != null)
-{
-    foreach (var apt in (IEnumerable<AIHospitalManagementSys.ViewModels.AppointmentViewModel>)ViewBag.UpcomingAppointments)
-    {
-        var patientName = apt.PatientName ?? "Unknown";
-        var patientInitials = string.Join("", patientName.Split(' ').Select(n => n.Length > 0 ? n[0].ToString() : "")).ToUpper();
-        if (patientInitials.Length > 2) patientInitials = patientInitials.Substring(0, 2);
-
-        var statusClass = apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Completed ? "bg-secondary-container/50 text-secondary" : 
-                         (apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Pending ? "bg-surface-container-high text-on-surface-variant" : "bg-primary-fixed text-on-primary-fixed-variant");
-
-        <div class="grid grid-cols-12 gap-4 px-4 py-4 border-b border-outline-variant/10 items-center hover:bg-surface-container-lowest/50 transition-colors">
-            <div class="col-span-4 flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-label-sm font-bold">@patientInitials</div>
-                <div>
-                    <p class="font-label-md text-label-md text-on-surface">@patientName</p>
-                    <p class="font-label-sm text-label-sm text-on-surface-variant">ID: #@apt.PatientId</p>
+    <!-- Dashboard Bento Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+        
+        <!-- Summary Cards (Spans 12 cols, 3 items) -->
+        <div class="col-span-1 md:col-span-4 glass-panel rounded-xl p-6 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined">event</span>
                 </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface">Appointments</h3>
             </div>
-            <div class="col-span-3 font-body-md text-body-md text-on-surface-variant">@apt.AppointmentDate.ToString("hh:mm tt")</div>
-            <div class="col-span-3 font-body-md text-body-md text-on-surface-variant truncate">@apt.Reason</div>
-            <div class="col-span-2 flex justify-end">
-                <span class="px-2 py-1 @statusClass rounded-full font-label-sm text-label-sm flex items-center gap-1">
-                    @if (apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Completed)
-                    {
-                        <span class="material-symbols-outlined text-[14px]">check</span>
-                    }
-                    else if (apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Pending)
-                    {
-                        <!-- dot -->
-                        <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                    }
-                    @apt.Status
-                </span>
+            <div class="flex items-baseline gap-2 mt-2">
+                <span class="font-display-lg text-display-lg font-bold text-on-surface">@(ViewBag.UpcomingAppointments != null ? ((IEnumerable<AIHospitalManagementSys.ViewModels.AppointmentViewModel>)ViewBag.UpcomingAppointments).Count() : 0)</span>
+                <span class="font-label-md text-label-md text-on-surface-variant">Scheduled for today</span>
             </div>
         </div>
-    }
-}
-</div>
-</div>
-</div>
-<div class="h-8"></div> <!-- Bottom padding -->
+
+        <div class="col-span-1 md:col-span-4 glass-panel rounded-xl p-6 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+                    <span class="material-symbols-outlined">groups</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface">Consultations</h3>
+            </div>
+            <div class="flex items-baseline gap-2 mt-2">
+                <span class="font-display-lg text-display-lg font-bold text-on-surface">@(ViewBag.TotalAppointments ?? 0)</span>
+                <span class="font-label-md text-label-md text-on-surface-variant">Under your care</span>
+            </div>
+        </div>
+
+        <div class="col-span-1 md:col-span-4 glass-panel rounded-xl p-6 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary">
+                    <span class="material-symbols-outlined">psychology</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface">AI Diagnostics</h3>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface-variant mt-2">
+                Advanced predictive modeling will activate as more clinical data is gathered.
+            </p>
+        </div>
+
+        <!-- Appointment Summary - Spans 12 cols -->
+        <div class="col-span-1 md:col-span-12 glass-panel rounded-xl p-6 flex flex-col ai-glow mt-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-headline-md text-headline-md text-on-surface">Upcoming Appointments</h3>
+                <a asp-action="Schedules" class="font-label-md text-label-md text-primary flex items-center gap-1 hover:underline">
+                    View All <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </a>
+            </div>
+
+            <!-- Table rows -->
+            <div class="flex flex-col">
+                <!-- Header -->
+                <div class="grid grid-cols-12 gap-4 px-4 py-2 border-b border-outline-variant/30 font-label-sm text-label-sm text-on-surface-variant">
+                    <div class="col-span-4">Patient</div>
+                    <div class="col-span-3">Time</div>
+                    <div class="col-span-3">Reason</div>
+                    <div class="col-span-2 text-right">Status</div>
+                </div>
+
+                @if (ViewBag.UpcomingAppointments != null)
+                {
+                    var upcoming = (IEnumerable<AIHospitalManagementSys.ViewModels.AppointmentViewModel>)ViewBag.UpcomingAppointments;
+                    if (!upcoming.Any())
+                    {
+                        <div class="py-12 text-center">
+                            <span class="material-symbols-outlined text-4xl text-outline-variant mb-2">event_busy</span>
+                            <p class="font-body-md text-body-md text-on-surface-variant">No appointments scheduled for today.</p>
+                        </div>
+                    }
+                    foreach (var apt in upcoming)
+                    {
+                        var patientName = apt.PatientName ?? "Unknown";
+                        var patientInitials = string.Join("", patientName.Split(' ').Select(n => n.Length > 0 ? n[0].ToString() : "")).ToUpper();
+                        if (patientInitials.Length > 2) patientInitials = patientInitials.Substring(0, 2);
+
+                        var statusClass = apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Completed ? "badge-completed" : 
+                                         (apt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Pending ? "badge-pending" : "badge-confirmed");
+
+                        <div class="grid grid-cols-12 gap-4 px-4 py-4 border-b border-outline-variant/10 items-center hover:bg-surface-container-lowest/50 transition-colors">
+                            <div class="col-span-4 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-label-sm font-bold">@patientInitials</div>
+                                <div>
+                                    <p class="font-label-md text-label-md text-on-surface">@patientName</p>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">ID: #@apt.PatientId</p>
+                                </div>
+                            </div>
+                            <div class="col-span-3 font-body-md text-body-md text-on-surface-variant">@apt.AppointmentDate.ToString("hh:mm tt")</div>
+                            <div class="col-span-3 font-body-md text-body-md text-on-surface-variant truncate" title="@apt.Reason">@apt.Reason</div>
+                            <div class="col-span-2 flex justify-end">
+                                <span class="badge @statusClass px-3 py-1 rounded-full font-label-sm text-label-sm flex items-center gap-1">
+                                    @apt.Status
+                                </span>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="py-12 text-center">
+                        <span class="material-symbols-outlined text-4xl text-outline-variant mb-2">event_busy</span>
+                        <p class="font-body-md text-body-md text-on-surface-variant">No appointments found.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="h-8"></div> <!-- Bottom padding -->
 </div>

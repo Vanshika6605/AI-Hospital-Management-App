@@ -43,7 +43,12 @@
                       "on-secondary-fixed": "#00201c", "secondary": "#006b5f", "surface-container": "#eceef0",
                       "background": "#f7f9fb", "tertiary": "#6d3bd7", "secondary-fixed": "#71f8e4",
                       "outline": "#6e7881", "inverse-surface": "#2d3133", "on-primary-fixed": "#001e2f",
-                      "on-surface": "#191c1e"
+                      "on-surface": "#191c1e",
+                      /* Semantic Status Colors */
+                      "status-pending-bg": "#fef9c3", "status-pending-text": "#854d0e",
+                      "status-confirmed-bg": "#dbeafe", "status-confirmed-text": "#1e40af",
+                      "status-completed-bg": "#d1fae5", "status-completed-text": "#065f46",
+                      "status-cancelled-bg": "#fee2e2", "status-cancelled-text": "#991b1b"
               },
               "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
               "spacing": { "section-gap": "32px", "stack-sm": "8px", "container-margin": "24px", "gutter": "16px", "stack-md": "16px", "unit": "4px" },
@@ -66,15 +71,20 @@
           }
         }
     </script>
-    <style>
-        .glass-panel {
-            background-color: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+    <style type="text/tailwindcss">
+        @@layer utilities {
+            .glass-panel { @@apply bg-surface-container-lowest/80 backdrop-blur-[20px] border border-white/40 shadow-sm rounded-xl; }
+            .glass-glow { @@apply shadow-[0_0_40px_rgba(0,101,145,0.05)]; }
+            .ai-glow { @@apply relative; }
+            .ai-glow::after { content: ''; @@apply absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-[inherit] blur opacity-20 -z-10; }
+            
+            /* Status Badges */
+            .badge-pending { @@apply bg-status-pending-bg text-status-pending-text; }
+            .badge-confirmed { @@apply bg-status-confirmed-bg text-status-confirmed-text; }
+            .badge-completed { @@apply bg-status-completed-bg text-status-completed-text; }
+            .badge-cancelled { @@apply bg-status-cancelled-bg text-status-cancelled-text; }
         }
-        .ai-glow {
-            box-shadow: 0 0 40px rgba(0, 101, 145, 0.05);
-        }
+        
         .ai-pulse {
             animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
         }
@@ -115,34 +125,17 @@
                 <span class="material-symbols-outlined" style="@(currentAction == "Patients" ? "font-variation-settings: 'FILL' 1;" : "")">person</span>
                 <span class="font-label-md text-label-md @(currentAction == "Patients" ? "font-bold" : "")">Patients</span>
             </a>
-            <a class="flex items-center gap-stack-md rounded-xl p-3 active:scale-[0.98] transition-transform @(currentAction == "AIInsights" ? "bg-secondary-container/30 text-on-secondary-container border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]" : "text-on-surface-variant hover:bg-surface-container-high/40 hover:translate-x-1")" asp-area="Doctor" asp-controller="Dashboard" asp-action="AIInsights">
-                <span class="material-symbols-outlined" style="@(currentAction == "AIInsights" ? "font-variation-settings: 'FILL' 1;" : "")">psychology</span>
-                <span class="font-label-md text-label-md @(currentAction == "AIInsights" ? "font-bold" : "")">AI Insights</span>
-            </a>
-            <a class="flex items-center gap-stack-md rounded-xl p-3 active:scale-[0.98] transition-transform @(currentAction == "Analytics" ? "bg-secondary-container/30 text-on-secondary-container border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]" : "text-on-surface-variant hover:bg-surface-container-high/40 hover:translate-x-1")" asp-area="Doctor" asp-controller="Dashboard" asp-action="Analytics">
-                <span class="material-symbols-outlined" style="@(currentAction == "Analytics" ? "font-variation-settings: 'FILL' 1;" : "")">monitoring</span>
-                <span class="font-label-md text-label-md @(currentAction == "Analytics" ? "font-bold" : "")">Analytics</span>
-            </a>
             <a class="flex items-center gap-stack-md rounded-xl p-3 active:scale-[0.98] transition-transform @(currentAction == "Schedules" ? "bg-secondary-container/30 text-on-secondary-container border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]" : "text-on-surface-variant hover:bg-surface-container-high/40 hover:translate-x-1")" asp-area="Doctor" asp-controller="Dashboard" asp-action="Schedules">
                 <span class="material-symbols-outlined" style="@(currentAction == "Schedules" ? "font-variation-settings: 'FILL' 1;" : "")">calendar_month</span>
                 <span class="font-label-md text-label-md @(currentAction == "Schedules" ? "font-bold" : "")">Schedules</span>
             </a>
-            <a class="flex items-center gap-stack-md rounded-xl p-3 active:scale-[0.98] transition-transform @(currentAction == "Emergency" ? "bg-secondary-container/30 text-on-secondary-container border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]" : "text-on-surface-variant hover:bg-surface-container-high/40 hover:translate-x-1")" asp-area="Doctor" asp-controller="Dashboard" asp-action="Emergency">
-                <span class="material-symbols-outlined @(currentAction == "Emergency" ? "text-error" : "text-error")" style="@(currentAction == "Emergency" ? "font-variation-settings: 'FILL' 1;" : "")">emergency</span>
-                <span class="font-label-md text-label-md text-error @(currentAction == "Emergency" ? "font-bold" : "")">Emergency</span>
-            </a>
         </div>
         <!-- CTA & Footer Links -->
-        <div class="flex flex-col gap-stack-md">
-            <button class="w-full bg-gradient-to-r from-primary to-secondary text-on-primary font-label-md text-label-md py-3 rounded-xl shadow-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2" onclick="showComingSoon('AI Consultant')">
+        <div class="flex flex-col gap-stack-md mt-auto pt-4 border-t border-outline-variant/30">
+            <button class="w-full bg-gradient-to-r from-primary to-secondary text-on-primary font-label-md text-label-md py-3 rounded-xl shadow-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2" onclick="toggleDoctorAIChat()">
                 <span class="material-symbols-outlined">smart_toy</span>
                 AI Consultant
             </button>
-            <div class="h-px bg-outline-variant/30 w-full"></div>
-            <a class="flex items-center gap-stack-md rounded-xl p-3 active:scale-[0.98] transition-transform @(currentAction == "Settings" ? "bg-secondary-container/30 text-on-secondary-container border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]" : "text-on-surface-variant hover:bg-surface-container-high/40 hover:translate-x-1")" asp-area="Doctor" asp-controller="Dashboard" asp-action="Settings">
-                <span class="material-symbols-outlined" style="@(currentAction == "Settings" ? "font-variation-settings: 'FILL' 1;" : "")">settings</span>
-                <span class="font-label-md text-label-md @(currentAction == "Settings" ? "font-bold" : "")">Settings</span>
-            </a>
             <form class="form-inline m-0 p-0 w-full" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button type="submit" class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 w-full border-0 bg-transparent text-left cursor-pointer">
                     <span class="material-symbols-outlined">logout</span>
@@ -165,6 +158,45 @@
         @RenderBody()
 
         <div class="h-8"></div> <!-- Bottom padding -->
+
+        <!-- AI Chatbot Window (Hidden by default) -->
+        <div id="aiDoctorChatWindow" class="fixed bottom-[24px] right-container-margin w-[380px] h-[550px] glass-panel flex flex-col overflow-hidden shadow-2xl transition-all duration-300 transform scale-0 origin-bottom-right z-50 border-tertiary/30 hidden">
+            <!-- Chat Header -->
+            <div class="bg-gradient-to-r from-primary to-secondary p-4 flex justify-between items-center text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md">
+                        <span class="material-symbols-outlined text-[24px]">smart_toy</span>
+                    </div>
+                    <div>
+                        <h3 class="font-label-md font-bold text-white m-0">MediAI Clinical Assistant</h3>
+                        <p class="text-xs text-white/80 m-0">Powered by RAG</p>
+                    </div>
+                </div>
+                <button onclick="toggleDoctorAIChat()" class="text-white hover:bg-white/20 p-1 rounded-full transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            
+            <!-- Chat Body -->
+            <div class="flex-1 bg-surface-container-lowest/90 overflow-y-auto p-4 flex flex-col gap-4">
+                <div class="flex gap-3">
+                    <div class="w-8 h-8 rounded-full bg-secondary/10 flex-shrink-0 flex items-center justify-center text-secondary mt-1">
+                        <span class="material-symbols-outlined text-[18px]">smart_toy</span>
+                    </div>
+                    <div class="bg-surface-container-highest p-3 rounded-2xl rounded-tl-none max-w-[85%] border border-outline-variant/20">
+                        <p class="font-body-md text-sm text-on-surface m-0">Hello Dr. @(fullName.Split(' ')[0])! I am currently initializing my language models. Soon, I will be able to help you query patient histories, surface critical alerts, and suggest differential diagnoses.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Input -->
+            <div class="p-4 bg-white border-t border-outline-variant/20 flex gap-2 items-center">
+                <input type="text" disabled placeholder="Connecting to Clinical AI cluster..." class="flex-1 bg-surface-container-low border border-outline-variant/30 rounded-full px-4 py-2 font-body-md text-sm outline-none cursor-not-allowed opacity-70" />
+                <button disabled class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center cursor-not-allowed opacity-70">
+                    <span class="material-symbols-outlined text-[20px]">send</span>
+                </button>
+            </div>
+        </div>
     </main>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -172,6 +204,17 @@
     <script>
         function showComingSoon(featureName) {
             toastr.info(`${featureName} is currently in development!`, "Coming Soon");
+        }
+
+        function toggleDoctorAIChat() {
+            var chatWindow = $('#aiDoctorChatWindow');
+            if (chatWindow.hasClass('hidden')) {
+                chatWindow.removeClass('hidden');
+                setTimeout(() => chatWindow.removeClass('scale-0').addClass('scale-100'), 10);
+            } else {
+                chatWindow.removeClass('scale-100').addClass('scale-0');
+                setTimeout(() => chatWindow.addClass('hidden'), 300);
+            }
         }
 
         $(document).ready(function () {

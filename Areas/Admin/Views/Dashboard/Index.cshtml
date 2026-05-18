@@ -3,239 +3,245 @@
 }
 
 @using AIHospitalManagementSys.Models.Enums
-<div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-12">
-            <h2 class="mb-4">Admin Dashboard Overview</h2>
-        </div>
-    </div>
 
-    <div class="row">
-        <!-- Stats Cards -->
-        <div class="col-md-3 mb-4">
-            <div class="card bg-primary text-white shadow h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="text-white-50 small">Total Doctors</div>
-                            <div class="text-lg fw-bold h3 mb-0">@ViewBag.TotalDoctors</div>
-                        </div>
-                        <i class="fas fa-user-md fa-2x opacity-50"></i>
-                    </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between small">
-                    <a class="text-white stretched-link" asp-controller="Doctor" asp-action="Index">View Doctors</a>
-                    <div class="text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
+<div class="max-w-7xl mx-auto flex flex-col gap-section-gap pt-8 md:pt-0">
+    <!-- Header Section -->
+    <header class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
+        <div>
+            <p class="font-label-md text-label-md text-on-surface-variant mb-1">@DateTime.Today.ToString("dddd, MMMM dd")</p>
+            <h2 class="font-display-lg text-display-lg text-on-surface">System <span class="gradient-text">Overview</span></h2>
         </div>
+        <div class="flex gap-2">
+            <a asp-controller="Doctor" asp-action="Create" class="bg-primary text-on-primary font-label-md text-label-md px-4 py-2 rounded-xl shadow-sm hover:opacity-90 transition-opacity flex items-center gap-2">
+                <span class="material-symbols-outlined text-[20px]">person_add</span>
+                Add Doctor
+            </a>
+            <a asp-controller="Patient" asp-action="Create" class="bg-secondary text-on-secondary font-label-md text-label-md px-4 py-2 rounded-xl shadow-sm hover:opacity-90 transition-opacity flex items-center gap-2">
+                <span class="material-symbols-outlined text-[20px]">group_add</span>
+                New Patient
+            </a>
+        </div>
+    </header>
 
-        <div class="col-md-3 mb-4">
-            <div class="card bg-success text-white shadow h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="text-white-50 small">Total Patients</div>
-                            <div class="text-lg fw-bold h3 mb-0">@ViewBag.TotalPatients</div>
-                        </div>
-                        <i class="fas fa-user-injured fa-2x opacity-50"></i>
-                    </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between small">
-                    <a class="text-white stretched-link" asp-controller="Patient" asp-action="Index">View Patients</a>
-                    <div class="text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <div class="card bg-info text-white shadow h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="text-white-50 small">Total Appointments</div>
-                            <div class="text-lg fw-bold h3 mb-0">@ViewBag.TotalAppointments</div>
-                        </div>
-                        <i class="fas fa-calendar-check fa-2x opacity-50"></i>
-                    </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between small">
-                    <a class="text-white stretched-link" asp-controller="Appointment" asp-action="Index">View All</a>
-                    <div class="text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <div class="card bg-warning text-white shadow h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="text-white-50 small">Departments</div>
-                            <div class="text-lg fw-bold h3 mb-0">@ViewBag.TotalDepartments</div>
-                        </div>
-                        <i class="fas fa-hospital fa-2x opacity-50"></i>
-                    </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between small">
-                    <a class="text-white stretched-link" asp-controller="Department" asp-action="Index">Manage Depts</a>
-                    <div class="text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <!-- Area Chart -->
-        <div class="col-xl-8 col-lg-7">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Appointment Trends</h6>
-                </div>
-                <div class="card-body">
-                    <div class="chart-area">
-                        <canvas id="myAreaChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pie Chart -->
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Department Distribution</h6>
-                </div>
-                <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
-                        <canvas id="myPieChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-lg-8">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-primary">Recent Appointments</h6>
-                    <a asp-controller="Appointment" asp-action="Index" class="btn btn-sm btn-outline-primary">View All</a>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Patient</th>
-                                    <th>Doctor</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in ViewBag.RecentAppointments)
-                                {
-                                    <tr>
-                                        <td>@item.PatientName</td>
-                                        <td>@item.DoctorName</td>
-                                        <td>@item.AppointmentDate.ToString("yyyy-MM-dd")</td>
-                                        <td>
-                                            @switch (item.Status)
-                                            {
-                                                case AppointmentStatus.Pending:
-                                                    <span class="badge bg-warning text-dark">Pending</span>
-                                                    break;
-                                                case AppointmentStatus.Confirmed:
-                                                    <span class="badge bg-success">Confirmed</span>
-                                                    break;
-                                                case AppointmentStatus.Completed:
-                                                    <span class="badge bg-info">Completed</span>
-                                                    break;
-                                                case AppointmentStatus.Cancelled:
-                                                    <span class="badge bg-danger">Cancelled</span>
-                                                    break;
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Dashboard Bento Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
         
-        <div class="col-lg-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Quick Management</h6>
+        <!-- Key Metrics (Spans 3 cols each) -->
+        <div class="col-span-1 md:col-span-3 glass-panel rounded-xl p-6 flex flex-col justify-center">
+            <div class="flex justify-between items-start mb-2">
+                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined">stethoscope</span>
                 </div>
-                <div class="card-body">
-                    <div class="d-grid gap-3">
-                        <a asp-controller="Doctor" asp-action="Create" class="btn btn-primary btn-lg py-3"><i class="fas fa-user-plus me-2"></i> Add Doctor</a>
-                        <a asp-controller="Patient" asp-action="Create" class="btn btn-success btn-lg py-3"><i class="fas fa-user-injured me-2"></i> New Patient</a>
-                        <a asp-controller="Appointment" asp-action="Book" class="btn btn-info text-white btn-lg py-3"><i class="fas fa-calendar-alt me-2"></i> Book Slot</a>
+                <a asp-controller="Doctor" asp-action="Index" class="text-primary hover:bg-primary/10 rounded-full p-1 transition-colors">
+                    <span class="material-symbols-outlined">arrow_outward</span>
+                </a>
+            </div>
+            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total Doctors</h3>
+            <span class="font-display-lg text-display-lg font-bold text-on-surface mt-1">@ViewBag.TotalDoctors</span>
+        </div>
+
+        <div class="col-span-1 md:col-span-3 glass-panel rounded-xl p-6 flex flex-col justify-center">
+            <div class="flex justify-between items-start mb-2">
+                <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+                    <span class="material-symbols-outlined">groups</span>
+                </div>
+                <a asp-controller="Patient" asp-action="Index" class="text-secondary hover:bg-secondary/10 rounded-full p-1 transition-colors">
+                    <span class="material-symbols-outlined">arrow_outward</span>
+                </a>
+            </div>
+            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total Patients</h3>
+            <span class="font-display-lg text-display-lg font-bold text-on-surface mt-1">@ViewBag.TotalPatients</span>
+        </div>
+
+        <div class="col-span-1 md:col-span-3 glass-panel rounded-xl p-6 flex flex-col justify-center">
+            <div class="flex justify-between items-start mb-2">
+                <div class="w-10 h-10 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary">
+                    <span class="material-symbols-outlined">event</span>
+                </div>
+                <a asp-controller="Appointment" asp-action="Index" class="text-tertiary hover:bg-tertiary/10 rounded-full p-1 transition-colors">
+                    <span class="material-symbols-outlined">arrow_outward</span>
+                </a>
+            </div>
+            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Appointments</h3>
+            <span class="font-display-lg text-display-lg font-bold text-on-surface mt-1">@ViewBag.TotalAppointments</span>
+        </div>
+
+        <div class="col-span-1 md:col-span-3 glass-panel rounded-xl p-6 flex flex-col justify-center">
+            <div class="flex justify-between items-start mb-2">
+                <div class="w-10 h-10 rounded-full bg-error/10 flex items-center justify-center text-error">
+                    <span class="material-symbols-outlined">domain</span>
+                </div>
+                <a asp-controller="Department" asp-action="Index" class="text-error hover:bg-error/10 rounded-full p-1 transition-colors">
+                    <span class="material-symbols-outlined">arrow_outward</span>
+                </a>
+            </div>
+            <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Departments</h3>
+            <span class="font-display-lg text-display-lg font-bold text-on-surface mt-1">@ViewBag.TotalDepartments</span>
+        </div>
+
+        <!-- Appointment Trends Chart (Spans 8 cols) -->
+        <div class="col-span-1 md:col-span-8 glass-panel rounded-xl p-6 flex flex-col h-[400px]">
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-6">Appointment Trends</h3>
+            <div class="flex-1 w-full relative">
+                <canvas id="myAreaChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Quick Actions (Spans 4 cols) -->
+        <div class="col-span-1 md:col-span-4 glass-panel rounded-xl p-6 flex flex-col bg-gradient-to-br from-surface to-surface-container border border-outline-variant/30 relative overflow-hidden group">
+            <div class="flex items-center gap-2 mb-6 relative z-10">
+                <span class="material-symbols-outlined text-primary">bolt</span>
+                <h3 class="font-headline-md text-headline-md text-on-surface">Quick Actions</h3>
+            </div>
+            
+            <div class="flex flex-col gap-3 relative z-10">
+                <a asp-controller="Appointment" asp-action="Book" class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-lowest/80 border border-outline-variant/20 hover:bg-surface-container-lowest transition-colors group/item">
+                    <span class="material-symbols-outlined text-secondary bg-secondary/10 p-2 rounded-lg group-hover/item:scale-110 transition-transform">calendar_add_on</span>
+                    <span class="font-label-md text-label-md text-on-surface">Book Appointment</span>
+                </a>
+                
+                <a href="javascript:void(0)" onclick="showComingSoon('Generate Report')" class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-lowest/80 border border-outline-variant/20 hover:bg-surface-container-lowest transition-colors group/item">
+                    <span class="material-symbols-outlined text-tertiary bg-tertiary/10 p-2 rounded-lg group-hover/item:scale-110 transition-transform">summarize</span>
+                    <span class="font-label-md text-label-md text-on-surface">Generate Report</span>
+                </a>
+                
+                <a asp-controller="Department" asp-action="Index" class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-lowest/80 border border-outline-variant/20 hover:bg-surface-container-lowest transition-colors group/item">
+                    <span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg group-hover/item:scale-110 transition-transform">account_tree</span>
+                    <span class="font-label-md text-label-md text-on-surface">Manage Departments</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Appointments Table - Spans 12 cols -->
+        <div class="col-span-1 md:col-span-12 glass-panel rounded-xl p-6 flex flex-col mt-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-headline-md text-headline-md text-on-surface">Recent Appointments</h3>
+                <a asp-controller="Appointment" asp-action="Index" class="font-label-md text-label-md text-primary flex items-center gap-1 hover:underline">
+                    View All <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </a>
+            </div>
+
+            <div class="flex flex-col overflow-x-auto">
+                <div class="min-w-[800px]">
+                    <!-- Header -->
+                    <div class="grid grid-cols-12 gap-4 px-4 py-3 bg-surface-container/50 rounded-t-xl border-b border-outline-variant/30 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                        <div class="col-span-3">Patient</div>
+                        <div class="col-span-4">Doctor</div>
+                        <div class="col-span-3">Date</div>
+                        <div class="col-span-2 text-right">Status</div>
                     </div>
+
+                    @if (ViewBag.RecentAppointments != null)
+                    {
+                        var recent = (IEnumerable<dynamic>)ViewBag.RecentAppointments;
+                        if (!recent.Any())
+                        {
+                            <div class="py-12 text-center border-b border-outline-variant/10">
+                                <p class="font-body-md text-body-md text-on-surface-variant">No recent appointments found.</p>
+                            </div>
+                        }
+                        foreach (var item in recent)
+                        {
+                            var statusClass = "";
+                            var statusText = item.Status.ToString();
+                            
+                            switch ((AppointmentStatus)item.Status)
+                            {
+                                case AppointmentStatus.Pending: statusClass = "badge-pending"; break;
+                                case AppointmentStatus.Confirmed: statusClass = "badge-confirmed"; break;
+                                case AppointmentStatus.Completed: statusClass = "badge-completed"; break;
+                                case AppointmentStatus.Cancelled: statusClass = "badge-cancelled"; break;
+                            }
+
+                            <div class="grid grid-cols-12 gap-4 px-4 py-4 border-b border-outline-variant/10 items-center hover:bg-surface-container-lowest/50 transition-colors">
+                                <div class="col-span-3 font-label-md text-label-md text-on-surface font-bold">@item.PatientName</div>
+                                <div class="col-span-4 font-body-md text-body-md text-on-surface-variant flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">stethoscope</span>
+                                    Dr. @item.DoctorName
+                                </div>
+                                <div class="col-span-3 font-body-md text-body-md text-on-surface-variant">@item.AppointmentDate.ToString("MMM dd, yyyy - hh:mm tt")</div>
+                                <div class="col-span-2 flex justify-end">
+                                    <span class="badge @statusClass px-3 py-1 rounded-full font-label-sm text-label-sm">
+                                        @statusText
+                                    </span>
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
             </div>
         </div>
     </div>
+    <div class="h-8"></div>
 </div>
 
 @section Scripts {
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Set default Chart.js fonts to match our design system
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#6e7881';
+
         // Area Chart
         var ctx = document.getElementById("myAreaChart");
-        var myLineChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: @Html.Raw(ViewBag.MonthlyAppointmentLabels),
-                datasets: [{
-                    label: "Appointments",
-                    lineTension: 0.3,
-                    backgroundColor: "rgba(78, 115, 223, 0.05)",
-                    borderColor: "rgba(78, 115, 223, 1)",
-                    pointRadius: 3,
-                    pointBackgroundColor: "rgba(78, 115, 223, 1)",
-                    pointBorderColor: "rgba(78, 115, 223, 1)",
-                    pointHoverRadius: 3,
-                    pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-                    pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-                    pointHitRadius: 10,
-                    pointBorderWidth: 2,
-                    data: @Html.Raw(ViewBag.MonthlyAppointmentData),
-                }],
-            },
-            options: {
-                maintainAspectRatio: false,
-                scales: {
-                    y: { beginAtZero: true }
+        if (ctx) {
+            var myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: @Html.Raw(ViewBag.MonthlyAppointmentLabels ?? "[]"),
+                    datasets: [{
+                        label: "Appointments",
+                        lineTension: 0.4, // Smooth curves
+                        backgroundColor: "rgba(0, 101, 145, 0.1)", // Primary color with opacity
+                        borderColor: "#006591",
+                        pointRadius: 4,
+                        pointBackgroundColor: "#ffffff",
+                        pointBorderColor: "#006591",
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: "#006591",
+                        pointHoverBorderColor: "#ffffff",
+                        pointHitRadius: 10,
+                        pointBorderWidth: 2,
+                        fill: true,
+                        data: @Html.Raw(ViewBag.MonthlyAppointmentData ?? "[]"),
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(25, 28, 30, 0.9)',
+                            titleFont: { size: 13, family: 'Inter' },
+                            bodyFont: { size: 14, family: 'Inter', weight: 'bold' },
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + ' Appointments';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false, drawBorder: false }
+                        },
+                        y: { 
+                            beginAtZero: true,
+                            grid: { 
+                                color: 'rgba(110, 120, 129, 0.1)',
+                                drawBorder: false,
+                                borderDash: [5, 5]
+                            },
+                            ticks: {
+                                maxTicksLimit: 5,
+                                padding: 10
+                            }
+                        }
+                    }
                 }
-            }
-        });
-
-        // Pie Chart
-        var ctxPie = document.getElementById("myPieChart");
-        var myPieChart = new Chart(ctxPie, {
-            type: 'doughnut',
-            data: {
-                labels: ["Cardiology", "Neurology", "Pediatrics"],
-                datasets: [{
-                    data: [55, 30, 15],
-                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-                    hoverBorderColor: "rgba(234, 236, 244, 1)",
-                }],
-            },
-            options: {
-                maintainAspectRatio: false,
-                cutout: '80%',
-                plugins: { legend: { display: true, position: 'bottom' } }
-            },
-        });
+            });
+        }
     </script>
 }

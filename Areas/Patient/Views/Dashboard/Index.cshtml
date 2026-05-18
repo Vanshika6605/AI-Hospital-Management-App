@@ -6,74 +6,20 @@
 
 <div class="mb-section-gap">
 <h1 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">Good morning, @(Model.FullName?.Split(' ')[0] ?? "Patient").</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant">Your vital metrics are stable. The AI has detected a 5% improvement in your cardiovascular score.</p>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Welcome to your secure medical dashboard.</p>
 </div>
 <!-- Bento Grid Layout -->
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
 <!-- Hero: AI Health Summary (Spans 8 cols on desktop) -->
-<div class="md:col-span-8 glass-panel glass-glow p-container-margin relative overflow-hidden ai-glow">
-<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[60px] -z-10 -mr-10 -mt-10"></div>
-<div class="absolute bottom-0 left-0 w-48 h-48 bg-secondary/5 rounded-full blur-[50px] -z-10 -ml-10 -mb-10"></div>
-<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-section-gap gap-stack-md">
-<div>
-<div class="flex items-center gap-stack-sm mb-stack-sm">
-<span class="material-symbols-outlined text-tertiary">psychology</span>
-<span class="font-label-md text-label-md font-bold text-tertiary uppercase tracking-widest">AI Health Summary</span>
-</div>
-<h2 class="font-headline-md text-headline-md text-on-surface">Overall Wellness Score</h2>
-</div>
-<div class="bg-surface-bright rounded-full px-4 py-2 border border-outline-variant/30 flex items-center gap-stack-sm shadow-inner">
-<span class="relative flex h-3 w-3">
-<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-<span class="relative inline-flex rounded-full h-3 w-3 bg-secondary"></span>
-</span>
-<span class="font-label-sm text-label-sm text-on-surface">Real-time analysis active</span>
-</div>
-</div>
-<div class="flex flex-col lg:flex-row gap-section-gap items-center">
-<!-- Score Circle -->
-<div class="relative w-48 h-48 flex items-center justify-center shrink-0">
-<!-- Simulated Progress SVG -->
-<svg class="absolute inset-0 w-full h-full transform -rotate-90" viewbox="0 0 100 100">
-<circle cx="50" cy="50" fill="none" r="45" stroke="#e0e3e5" stroke-linecap="round" stroke-width="8"></circle>
-<circle class="drop-shadow-[0_0_8px_rgba(0,101,145,0.4)]" cx="50" cy="50" fill="none" r="45" stroke="#006591" stroke-dasharray="282.7" stroke-dashoffset="33.9" stroke-linecap="round" stroke-width="8"></circle>
-</svg>
-<div class="text-center z-10">
-<span class="block font-display-lg text-display-lg text-primary tracking-tighter">88</span>
-<span class="font-label-md text-label-md text-on-surface-variant">Out of 100</span>
-</div>
-</div>
-<!-- Metrics -->
-<div class="flex-1 grid grid-cols-2 gap-stack-md w-full">
-<div class="bg-surface-container-low/50 p-stack-md rounded-xl border border-white/50">
-<div class="flex items-center gap-stack-sm text-on-surface-variant mb-1">
-<span class="material-symbols-outlined text-[18px]">favorite</span>
-<span class="font-label-sm text-label-sm">Heart Rate</span>
-</div>
-<div class="flex items-end gap-2">
-<span class="font-headline-md text-headline-md text-on-surface">72</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant pb-1">bpm</span>
-</div>
-</div>
-<div class="bg-surface-container-low/50 p-stack-md rounded-xl border border-white/50">
-<div class="flex items-center gap-stack-sm text-on-surface-variant mb-1">
-<span class="material-symbols-outlined text-[18px]">water_drop</span>
-<span class="font-label-sm text-label-sm">Blood Pressure</span>
-</div>
-<div class="flex items-end gap-2">
-<span class="font-headline-md text-headline-md text-on-surface">118/76</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant pb-1">mmHg</span>
-</div>
-</div>
-<div class="bg-surface-container-low/50 p-stack-md rounded-xl border border-white/50 col-span-2">
-<div class="flex items-center gap-stack-sm text-tertiary mb-2">
-<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
-<span class="font-label-sm text-label-sm font-bold">AI Insight</span>
-</div>
-<p class="font-body-md text-body-md text-on-surface-variant">Your sleep patterns have stabilized over the past 48 hours, correlating with a 12% drop in resting heart rate. Continue current hydration protocols.</p>
-</div>
-</div>
-</div>
+<div class="md:col-span-8 glass-panel glass-glow p-container-margin relative overflow-hidden flex flex-col justify-center items-center text-center min-h-[300px]">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[60px] -z-10 -mr-10 -mt-10"></div>
+    <div class="absolute bottom-0 left-0 w-48 h-48 bg-secondary/5 rounded-full blur-[50px] -z-10 -ml-10 -mb-10"></div>
+    
+    <span class="material-symbols-outlined text-[48px] text-tertiary/50 mb-4">psychology</span>
+    <h2 class="font-headline-md text-headline-md text-on-surface mb-2">AI Health Insights</h2>
+    <p class="font-body-md text-body-md text-on-surface-variant max-w-lg">
+        Advanced AI analysis and personalized health scoring will become available after sufficient clinical data is collected from your upcoming appointments.
+    </p>
 </div>
 <!-- Smart Scheduling (Spans 4 cols on desktop) -->
 <div class="md:col-span-4 glass-panel glass-glow p-container-margin flex flex-col">

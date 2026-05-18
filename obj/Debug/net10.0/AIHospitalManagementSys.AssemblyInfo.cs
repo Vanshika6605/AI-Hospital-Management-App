@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AIHospitalManagementSys")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ab3bcf1a5d3adb274a8f51cb677d6c5e80076e8b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d4b693031f7056b804021c938199f6e33aca9311")]
 [assembly: System.Reflection.AssemblyProductAttribute("AIHospitalManagementSys")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AIHospitalManagementSys")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

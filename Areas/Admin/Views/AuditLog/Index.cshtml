@@ -1,0 +1,106 @@
+@model IEnumerable<AIHospitalManagementSys.Models.Domain.AuditLog>
+
+@{
+    ViewData["Title"] = "System Audit Logs";
+}
+
+<div class="max-w-7xl mx-auto flex flex-col gap-section-gap pt-8 md:pt-0 pb-12">
+    <!-- Header Section -->
+    <header class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
+        <div>
+            <p class="font-label-md text-label-md text-on-surface-variant mb-1">System Security</p>
+            <h2 class="font-display-lg text-display-lg text-on-surface">Audit <span class="gradient-text">Logs</span></h2>
+        </div>
+        <div class="flex gap-2">
+            <button class="bg-surface-container-high text-on-surface font-label-md text-label-md px-4 py-2 rounded-xl shadow-sm hover:opacity-90 transition-opacity flex items-center gap-2" onclick="window.print()">
+                <span class="material-symbols-outlined text-[20px]">print</span>
+                Export Report
+            </button>
+        </div>
+    </header>
+
+    <!-- Search and Filter (Glass Panel) -->
+    <div class="glass-panel p-6 flex flex-col md:flex-row gap-4 items-center justify-between no-print">
+        <form method="get" class="w-full flex gap-4">
+            <div class="flex-1 relative">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="w-full pl-10 pr-4 py-2 bg-surface-container-highest border border-outline-variant/30 rounded-lg text-on-surface focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-body-md" placeholder="Search logs by action, entity, or user..." />
+            </div>
+            <button type="submit" class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md text-label-md hover:bg-primary/90 transition-colors">Search</button>
+            <a asp-action="Index" class="bg-surface-container-highest text-on-surface px-6 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-variant transition-colors border border-outline-variant/20 flex items-center">Reset</a>
+        </form>
+    </div>
+
+    <!-- Logs Table (Glass Panel) -->
+    <div class="glass-panel rounded-xl flex flex-col overflow-hidden shadow-md">
+        <div class="overflow-x-auto">
+            <div class="min-w-[1000px]">
+                <!-- Header -->
+                <div class="grid grid-cols-12 gap-4 px-6 py-4 bg-surface-container/80 border-b border-outline-variant/30 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-bold">
+                    <div class="col-span-2">Timestamp</div>
+                    <div class="col-span-2">User</div>
+                    <div class="col-span-2">Action</div>
+                    <div class="col-span-2">Entity</div>
+                    <div class="col-span-4">Details</div>
+                </div>
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        var actionColor = item.Action.ToLower() switch
+                        {
+                            var a when a.Contains("create") || a.Contains("add") => "text-secondary",
+                            var a when a.Contains("delete") || a.Contains("remove") => "text-error",
+                            var a when a.Contains("update") || a.Contains("edit") => "text-primary",
+                            _ => "text-on-surface-variant"
+                        };
+
+                        var actionBg = item.Action.ToLower() switch
+                        {
+                            var a when a.Contains("create") || a.Contains("add") => "bg-secondary/10",
+                            var a when a.Contains("delete") || a.Contains("remove") => "bg-error/10",
+                            var a when a.Contains("update") || a.Contains("edit") => "bg-primary/10",
+                            _ => "bg-surface-container-highest"
+                        };
+
+                        <div class="grid grid-cols-12 gap-4 px-6 py-4 border-b border-outline-variant/10 items-center hover:bg-surface-container-lowest/50 transition-colors text-sm">
+                            <div class="col-span-2 text-on-surface-variant whitespace-nowrap">
+                                <span class="font-bold text-on-surface">@item.CreatedAt.ToString("MMM dd")</span> 
+                                <span class="text-xs">@item.CreatedAt.ToString("HH:mm:ss")</span>
+                            </div>
+                            <div class="col-span-2 font-label-md text-on-surface truncate" title="@(item.User?.FullName ?? "System")">
+                                @(item.User?.FullName ?? "System")
+                            </div>
+                            <div class="col-span-2">
+                                <span class="px-2 py-1 rounded-md font-label-sm @actionBg @actionColor whitespace-nowrap">
+                                    @item.Action
+                                </span>
+                            </div>
+                            <div class="col-span-2 text-on-surface-variant truncate" title="@item.EntityName (@item.EntityId)">
+                                <span class="font-bold text-on-surface">@item.EntityName</span>
+                                @if(!string.IsNullOrEmpty(item.EntityId))
+                                {
+                                    <span class="text-xs ml-1 opacity-70">#@item.EntityId</span>
+                                }
+                            </div>
+                            <div class="col-span-4 text-on-surface-variant text-xs font-mono bg-surface-container-lowest p-2 rounded border border-outline-variant/10 overflow-hidden text-ellipsis whitespace-nowrap" title="@item.Details">
+                                @(string.IsNullOrEmpty(item.Details) ? "-" : item.Details)
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="py-16 text-center">
+                        <div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mx-auto mb-4">
+                            <span class="material-symbols-outlined text-4xl text-on-surface-variant/50">history</span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">No Audit Logs Found</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">The system has not recorded any events matching your criteria.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

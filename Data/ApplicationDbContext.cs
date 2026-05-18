@@ -22,6 +22,7 @@ namespace AIHospitalManagementSys.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<DoctorSchedule> DoctorSchedules { get; set; }
         public DbSet<MedicineCatalog> MedicineCatalogs { get; set; }
+        public DbSet<AuditLog> AuditLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

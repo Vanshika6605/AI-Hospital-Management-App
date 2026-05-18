@@ -91,10 +91,9 @@
                                             @if (item.Status != AppointmentStatus.Cancelled && item.Status != AppointmentStatus.Completed)
                                             {
                                                 <li>
-                                                    <form asp-action="Cancel" method="post">
-                                                        <input type="hidden" name="id" value="@item.Id" />
-                                                        <button type="submit" class="dropdown-item text-danger"><i class="fas fa-times me-2"></i>Cancel</button>
-                                                    </form>
+                                                    <button type="button" class="dropdown-item text-danger" onclick="confirmCancel(@item.Id)">
+                                                        <i class="fas fa-times me-2"></i>Cancel
+                                                    </button>
                                                 </li>
                                             }
                                             <li><hr class="dropdown-divider"></li>
@@ -111,6 +110,29 @@
     </div>
 </div>
 
+<!-- Form used by SweetAlert to submit cancel request -->
+<form id="cancelForm" method="post" asp-action="Cancel" style="display:none;">
+    <input type="hidden" name="id" id="cancelAppointmentId" />
+</form>
+
 @section Scripts {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script>
+        function confirmCancel(id) {
+            Swal.fire({
+                title: 'Cancel Appointment',
+                text: 'Are you sure you want to cancel this appointment?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ba1a1a',
+                cancelButtonColor: '#6e7881',
+                confirmButtonText: 'Yes, cancel it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('cancelAppointmentId').value = id;
+                    document.getElementById('cancelForm').submit();
+                }
+            });
+        }
+    </script>
 }
