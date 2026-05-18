@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\devag\\OneDrive\\Desktop\\Hospital Management System\\AIHospitalManagementSys\\AIHospitalManagementSys\\AIHospitalManagementSys.csproj": {}
+    "D:\\Projects\\AI-Hospital-Management-App\\AIHospitalManagementSys.csproj": {}
   },
   "projects": {
-    "C:\\Users\\devag\\OneDrive\\Desktop\\Hospital Management System\\AIHospitalManagementSys\\AIHospitalManagementSys\\AIHospitalManagementSys.csproj": {
+    "D:\\Projects\\AI-Hospital-Management-App\\AIHospitalManagementSys.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\devag\\OneDrive\\Desktop\\Hospital Management System\\AIHospitalManagementSys\\AIHospitalManagementSys\\AIHospitalManagementSys.csproj",
+        "projectUniqueName": "D:\\Projects\\AI-Hospital-Management-App\\AIHospitalManagementSys.csproj",
         "projectName": "AIHospitalManagementSys",
-        "projectPath": "C:\\Users\\devag\\OneDrive\\Desktop\\Hospital Management System\\AIHospitalManagementSys\\AIHospitalManagementSys\\AIHospitalManagementSys.csproj",
-        "packagesPath": "C:\\Users\\devag\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\devag\\OneDrive\\Desktop\\Hospital Management System\\AIHospitalManagementSys\\AIHospitalManagementSys\\obj\\",
+        "projectPath": "D:\\Projects\\AI-Hospital-Management-App\\AIHospitalManagementSys.csproj",
+        "packagesPath": "C:\\Users\\karti\\.nuget\\packages\\",
+        "outputPath": "D:\\Projects\\AI-Hospital-Management-App\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\devag\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\karti\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

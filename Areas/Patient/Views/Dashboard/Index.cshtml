@@ -1,149 +1,454 @@
-@using AIHospitalManagementSys.Models.Enums
 @model AIHospitalManagementSys.ViewModels.PatientViewModel
+@{ Layout = null; }
+<!DOCTYPE html>
 
-@{
-    ViewData["Title"] = "My Health Dashboard";
-}
-
-<div class="container-fluid py-4">
-    <div class="row mb-4 align-items-center">
-        <div class="col-md-8">
-            <h2 class="fw-bold">Hello, @Model.FullName</h2>
-            <p class="text-muted">Welcome to your health dashboard. Manage your appointments and health records here.</p>
-        </div>
-        <div class="col-md-4 text-md-end">
-            <a href="#" class="btn btn-primary btn-lg"><i class="fas fa-calendar-plus me-2"></i> Book Appointment</a>
-        </div>
-    </div>
-
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 h-100 bg-white">
-                <div class="card-body">
-                    <h6 class="text-muted text-uppercase small fw-bold mb-3">Quick Info</h6>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Blood Group:</span>
-                        <span class="fw-bold text-danger">@Model.BloodGroup</span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Age:</span>
-                        <span class="fw-bold">@(DateTime.Now.Year - Model.DateOfBirth.Year) yrs</span>
-                    </li>
-                    <div class="d-flex justify-content-between">
-                        <span>Contact:</span>
-                        <span class="fw-bold">@Model.ContactNumber</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 h-100 bg-primary text-white">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                    <h6 class="text-white-50 text-uppercase small fw-bold mb-2">Pending Bills</h6>
-                    <h2 class="fw-bold mb-0">@(((IEnumerable<AIHospitalManagementSys.ViewModels.BillViewModel>)ViewBag.PendingBills).Count())</h2>
-                    <p class="small mb-0">Action Required</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-8">
-            <!-- Upcoming Appointments -->
-            <div class="card shadow mb-4 border-0">
-                <div class="card-header bg-white py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Upcoming Appointments</h6>
-                </div>
-                <div class="card-body">
-                    @foreach (var item in ViewBag.UpcomingAppointments)
-                    {
-                        <div class="d-flex align-items-center p-3 mb-3 border rounded">
-                            <div class="me-3 text-center bg-light p-2 rounded" style="min-width: 70px;">
-                                <div class="fw-bold">@item.AppointmentDate.ToString("MMM")</div>
-                                <div class="h4 mb-0 fw-bold">@item.AppointmentDate.Day</div>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1 fw-bold">Consultation with @item.DoctorName</h6>
-                                <p class="text-muted small mb-0"><i class="fas fa-clock me-1"></i> @item.AppointmentDate.ToString("hh:mm tt") | @item.DepartmentName</p>
-                            </div>
-                            <div>
-                                @if (item.Status == AppointmentStatus.Confirmed)
-                                {
-                                    <span class="badge bg-success">Confirmed</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-warning text-dark">Pending</span>
-                                }
-                            </div>
-                        </div>
-                    }
-                    @if (!((IEnumerable<AIHospitalManagementSys.ViewModels.AppointmentViewModel>)ViewBag.UpcomingAppointments).Any())
-                    {
-                        <div class="text-center py-4">
-                            <i class="fas fa-calendar-times fa-3x text-muted opacity-25 mb-3"></i>
-                            <p class="text-muted">No upcoming appointments scheduled.</p>
-                        </div>
-                    }
-                </div>
-            </div>
-
-            <!-- Recent Prescriptions -->
-            <div class="card shadow mb-4 border-0">
-                <div class="card-header bg-white py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Recent Prescriptions</h6>
-                </div>
-                <div class="card-body">
-                    @foreach (var item in ViewBag.RecentPrescriptions)
-                    {
-                        <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Prescription by @item.DoctorName</h6>
-                                <p class="small text-muted mb-0">@item.CreatedAt.ToString("MMM dd, yyyy")</p>
-                            </div>
-                            <a asp-area="Doctor" asp-controller="Prescription" asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">View Details</a>
-                        </div>
-                    }
-                    @if (!((IEnumerable<AIHospitalManagementSys.ViewModels.PrescriptionViewModel>)ViewBag.RecentPrescriptions).Any())
-                    {
-                        <p class="text-center text-muted py-3">No prescriptions found.</p>
-                    }
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card shadow mb-4 border-0">
-                <div class="card-header bg-white py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Health Profile</h6>
-                </div>
-                <div class="card-body">
-                    <div class="mb-4">
-                        <h6 class="small fw-bold text-muted text-uppercase mb-2">Allergies</h6>
-                        <div class="text-danger small">
-                            <i class="fas fa-exclamation-triangle me-1"></i> @(Model.Allergies ?? "None reported")
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <h6 class="small fw-bold text-muted text-uppercase mb-2">Conditions</h6>
-                        <div class="text-info small">
-                            <i class="fas fa-info-circle me-1"></i> @(Model.ExistingConditions ?? "No chronic conditions")
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card shadow border-0 bg-info text-white">
-                <div class="card-body">
-                    <h5 class="fw-bold"><i class="fas fa-lightbulb me-2"></i>Health Tip</h5>
-                    <p class="small mb-0">Drink at least 8 glasses of water a day and stay active for at least 30 minutes to maintain good health!</p>
-                </div>
-            </div>
-        </div>
-    </div>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MediAI - Patient Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "surface-bright": "#f7f9fb",
+                      "inverse-on-surface": "#eff1f3",
+                      "on-tertiary-fixed": "#23005c",
+                      "on-tertiary-container": "#3e0097",
+                      "on-primary": "#ffffff",
+                      "outline-variant": "#bec8d2",
+                      "secondary-container": "#6df5e1",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f2f4f6",
+                      "on-background": "#191c1e",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#e9ddff",
+                      "tertiary-fixed-dim": "#d0bcff",
+                      "primary-container": "#0ea5e9",
+                      "on-secondary-fixed-variant": "#005048",
+                      "surface-variant": "#e0e3e5",
+                      "surface": "#f7f9fb",
+                      "primary": "#006591",
+                      "on-tertiary-fixed-variant": "#5516be",
+                      "primary-fixed": "#c9e6ff",
+                      "error-container": "#ffdad6",
+                      "surface-container-highest": "#e0e3e5",
+                      "on-primary-container": "#003751",
+                      "on-primary-fixed-variant": "#004c6e",
+                      "surface-tint": "#006591",
+                      "on-error": "#ffffff",
+                      "on-secondary-container": "#006f64",
+                      "surface-container-high": "#e6e8ea",
+                      "surface-dim": "#d8dadc",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#a986ff",
+                      "inverse-primary": "#89ceff",
+                      "on-surface-variant": "#3e4850",
+                      "on-tertiary": "#ffffff",
+                      "primary-fixed-dim": "#89ceff",
+                      "secondary-fixed-dim": "#4fdbc8",
+                      "on-secondary-fixed": "#00201c",
+                      "secondary": "#006b5f",
+                      "surface-container": "#eceef0",
+                      "background": "#f7f9fb",
+                      "tertiary": "#6d3bd7",
+                      "secondary-fixed": "#71f8e4",
+                      "outline": "#6e7881",
+                      "inverse-surface": "#2d3133",
+                      "on-primary-fixed": "#001e2f",
+                      "on-surface": "#191c1e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "section-gap": "32px",
+                      "stack-sm": "8px",
+                      "container-margin": "24px",
+                      "gutter": "16px",
+                      "stack-md": "16px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @@layer utilities {
+            .glass-panel {
+                @@apply bg-surface-container-lowest/80 backdrop-blur-[20px] border border-white/40 shadow-sm rounded-xl;
+            }
+            .glass-glow {
+                @@apply shadow-[0_0_40px_rgba(0,101,145,0.05)];
+            }
+            .ai-glow {
+                @@apply relative;
+            }
+            .ai-glow::after {
+                content: '';
+                @@apply absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-[inherit] blur opacity-20 -z-10;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex antialiased">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-lowest/60 backdrop-blur-2xl dark:bg-surface-container/40 border-r border-white/20 shadow-[0_0_40px_rgba(0,101,145,0.05)] z-40 hidden md:flex flex-col p-container-margin gap-section-gap">
+<div class="flex items-center gap-stack-sm mb-section-gap">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1; font-size: 32px;">health_and_safety</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-black text-primary">MediAI</span>
 </div>
-
-@section Scripts {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+<div class="flex items-center gap-stack-md mb-stack-md p-3 rounded-xl bg-surface-container/50">
+<img alt="Dr. Smith Profile" class="w-12 h-12 rounded-full border-2 border-white/50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmor2NjTE0FtdQiCLgBJ3J5Ms9GuP_fAW7tbc-VVbEfqMqP6cXGQCAFkXUrQ-yB1RIkpn9kVv2Lnnrx3pq4pzTKTm8rkRnZU-dyCclD0nFTTwuTw6TmELr0Lp6_koNkCPxfe5Nn7FIvvhmJUA5su5fuBVVfoc_Eew6GmXmHfBk1Mc0MSMh_GpDeR3fnyOXmvCM3l-AhJ1ot4F4QJIJNnqkEEh5_MgXxV2NiqZtaCCVgoNw-mRd6ZIMkQUnfgaNAMksM8K5CKgPNCY"/>
+<div>
+<p class="font-label-md text-label-md font-bold text-on-surface">@Model.FullName</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Patient ID: M-@Model.Id.ToString("D4")</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-unit">
+<!-- Active Tab -->
+<a class="flex items-center gap-stack-md bg-secondary-container/30 text-on-secondary-container rounded-xl p-3 border-l-4 border-tertiary shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)] active:scale-[0.98] transition-transform" asp-area="Patient" asp-controller="Dashboard" asp-action="Index">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-md text-label-md font-bold">Dashboard</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 active:scale-[0.98]" href="javascript:void(0)" onclick="showComingSoon('Patient Profile')">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 active:scale-[0.98]" href="javascript:void(0)" onclick="showComingSoon('AI Insights')">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-md text-label-md">AI Insights</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 active:scale-[0.98]" href="javascript:void(0)" onclick="showComingSoon('Analytics')">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-md text-label-md">Analytics</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 active:scale-[0.98]" href="javascript:void(0)" onclick="showComingSoon('Schedules')">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-md text-label-md">Schedules</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 active:scale-[0.98]" href="javascript:void(0)" onclick="showComingSoon('Emergency Services')">
+<span class="material-symbols-outlined">emergency</span>
+<span class="font-label-md text-label-md">Emergency</span>
+</a>
+</nav>
+<button class="w-full py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-label-md text-label-md font-bold shadow-md hover:shadow-lg transition-all ai-glow active:scale-[0.98]" onclick="showComingSoon('AI Consultant')">
+            AI Consultant
+        </button>
+<div class="mt-auto pt-section-gap border-t border-outline-variant/30 flex flex-col gap-unit">
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 active:scale-[0.98]" href="javascript:void(0)" onclick="showComingSoon('Settings')">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-stack-md text-on-surface-variant p-3 hover:bg-surface-container-high/40 rounded-xl transition-all hover:translate-x-1 duration-200 active:scale-[0.98] w-full" href="/logout">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-[280px] p-container-margin lg:p-[48px] max-w-[1440px] mx-auto w-full">
+<!-- Header area for Mobile (hidden on desktop) -->
+<header class="md:hidden flex justify-between items-center mb-section-gap bg-surface-container-lowest/80 backdrop-blur-xl p-4 rounded-2xl shadow-sm border border-white/40">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-black text-primary">MediAI</span>
+<button class="p-2 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface">menu</span>
+</button>
+</header>
+<div class="mb-section-gap">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">Good morning, @(Model.FullName?.Split(' ')[0] ?? "Patient").</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Your vital metrics are stable. The AI has detected a 5% improvement in your cardiovascular score.</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Hero: AI Health Summary (Spans 8 cols on desktop) -->
+<div class="md:col-span-8 glass-panel glass-glow p-container-margin relative overflow-hidden ai-glow">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[60px] -z-10 -mr-10 -mt-10"></div>
+<div class="absolute bottom-0 left-0 w-48 h-48 bg-secondary/5 rounded-full blur-[50px] -z-10 -ml-10 -mb-10"></div>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-section-gap gap-stack-md">
+<div>
+<div class="flex items-center gap-stack-sm mb-stack-sm">
+<span class="material-symbols-outlined text-tertiary">psychology</span>
+<span class="font-label-md text-label-md font-bold text-tertiary uppercase tracking-widest">AI Health Summary</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Overall Wellness Score</h2>
+</div>
+<div class="bg-surface-bright rounded-full px-4 py-2 border border-outline-variant/30 flex items-center gap-stack-sm shadow-inner">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-secondary"></span>
+</span>
+<span class="font-label-sm text-label-sm text-on-surface">Real-time analysis active</span>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row gap-section-gap items-center">
+<!-- Score Circle -->
+<div class="relative w-48 h-48 flex items-center justify-center shrink-0">
+<!-- Simulated Progress SVG -->
+<svg class="absolute inset-0 w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#e0e3e5" stroke-linecap="round" stroke-width="8"></circle>
+<circle class="drop-shadow-[0_0_8px_rgba(0,101,145,0.4)]" cx="50" cy="50" fill="none" r="45" stroke="#006591" stroke-dasharray="282.7" stroke-dashoffset="33.9" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="text-center z-10">
+<span class="block font-display-lg text-display-lg text-primary tracking-tighter">88</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Out of 100</span>
+</div>
+</div>
+<!-- Metrics -->
+<div class="flex-1 grid grid-cols-2 gap-stack-md w-full">
+<div class="bg-surface-container-low/50 p-stack-md rounded-xl border border-white/50">
+<div class="flex items-center gap-stack-sm text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+<span class="font-label-sm text-label-sm">Heart Rate</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="font-headline-md text-headline-md text-on-surface">72</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant pb-1">bpm</span>
+</div>
+</div>
+<div class="bg-surface-container-low/50 p-stack-md rounded-xl border border-white/50">
+<div class="flex items-center gap-stack-sm text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[18px]">water_drop</span>
+<span class="font-label-sm text-label-sm">Blood Pressure</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="font-headline-md text-headline-md text-on-surface">118/76</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant pb-1">mmHg</span>
+</div>
+</div>
+<div class="bg-surface-container-low/50 p-stack-md rounded-xl border border-white/50 col-span-2">
+<div class="flex items-center gap-stack-sm text-tertiary mb-2">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span class="font-label-sm text-label-sm font-bold">AI Insight</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Your sleep patterns have stabilized over the past 48 hours, correlating with a 12% drop in resting heart rate. Continue current hydration protocols.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Smart Scheduling (Spans 4 cols on desktop) -->
+<div class="md:col-span-4 glass-panel glass-glow p-container-margin flex flex-col">
+<div class="flex items-center gap-stack-sm mb-section-gap">
+<span class="material-symbols-outlined text-secondary">event</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Upcoming Appointments</h3>
+</div>
+@if(ViewBag.UpcomingAppointments != null)
+{
+    foreach(var apt in (IEnumerable<AIHospitalManagementSys.ViewModels.AppointmentViewModel>)ViewBag.UpcomingAppointments)
+    {
+        <div class="bg-surface-bright rounded-xl border border-outline-variant/30 p-stack-md mb-3">
+        <div class="flex justify-between items-center mb-stack-sm">
+        <span class="font-label-md text-label-md font-bold text-on-surface">Dr. @apt.DoctorName</span>
+        <span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded-full font-label-sm text-label-sm">@apt.Status</span>
+        </div>
+        <p class="font-label-sm text-label-sm text-on-surface-variant mb-stack-md">@apt.Reason</p>
+        <div class="flex gap-2">
+        <button class="flex-1 bg-surface-container text-on-surface font-label-sm text-label-sm py-2 rounded-lg border border-outline-variant/50 hover:bg-surface-variant transition-colors">
+                                    @apt.AppointmentDate.ToString("MMM dd, yyyy")
+                                 </button>
+        <button class="flex-1 bg-surface-container text-on-surface font-label-sm text-label-sm py-2 rounded-lg border border-outline-variant/50 hover:bg-surface-variant transition-colors">
+                                    @apt.AppointmentDate.ToString("hh:mm tt")
+                                 </button>
+        </div>
+        </div>
+    }
 }
+</div>
+<!-- Medical History Timeline (Spans 6 cols on desktop) -->
+<div class="md:col-span-6 glass-panel glass-glow p-container-margin">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-section-gap">Recent Prescriptions</h3>
+<div class="relative pl-6 border-l border-outline-variant/30 space-y-section-gap">
+@if(ViewBag.RecentPrescriptions != null)
+{
+    foreach(var pres in (IEnumerable<AIHospitalManagementSys.ViewModels.PrescriptionViewModel>)ViewBag.RecentPrescriptions)
+    {
+        <div class="relative">
+        <div class="absolute -left-[35px] w-6 h-6 rounded-full bg-surface border-2 border-primary flex items-center justify-center">
+        <span class="w-2 h-2 rounded-full bg-primary"></span>
+        </div>
+        <p class="font-label-sm text-label-sm text-on-surface-variant mb-1">@pres.CreatedAt.ToString("MMM dd, yyyy")</p>
+        <h4 class="font-label-md text-label-md font-bold text-on-surface mb-1">Diagnosis: @(pres.Diagnosis ?? "General Checkup")</h4>
+        <div class="bg-surface-container-lowest/50 p-3 rounded-lg border border-white/40 flex items-center gap-stack-md">
+        <span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-full">medication</span>
+        <div>
+        <p class="font-label-md text-label-md text-on-surface">@(pres.Items.FirstOrDefault()?.MedicineName ?? "Prescription")</p>
+        <p class="font-label-sm text-label-sm text-on-surface-variant">@(pres.Items.FirstOrDefault()?.Dosage ?? "") - @(pres.Items.FirstOrDefault()?.Frequency ?? "")</p>
+        </div>
+        </div>
+        </div>
+    }
+}
+</div>
+</div>
+<!-- Pending Bills (Spans 6 cols on desktop) -->
+<div class="md:col-span-6 glass-panel glass-glow p-container-margin">
+<div class="flex justify-between items-center mb-section-gap">
+<h3 class="font-headline-md text-headline-md text-on-surface">Pending Bills</h3>
+<button class="text-primary font-label-sm text-label-sm hover:underline">View All</button>
+</div>
+<div class="space-y-stack-md">
+@if(ViewBag.PendingBills != null)
+{
+    foreach(var bill in (IEnumerable<AIHospitalManagementSys.ViewModels.BillViewModel>)ViewBag.PendingBills)
+    {
+        <div class="flex items-center justify-between p-stack-md bg-surface-container-lowest/50 rounded-xl border border-white/40 hover:bg-surface-container-lowest transition-colors group">
+        <div class="flex items-center gap-stack-md">
+        <div class="bg-error-container text-on-error-container p-2 rounded-lg flex items-center justify-center">
+        <span class="material-symbols-outlined">receipt_long</span>
+        </div>
+        <div>
+        <p class="font-label-md text-label-md font-bold text-on-surface">Invoice #@bill.Id.ToString("D4")</p>
+        <p class="font-label-sm text-label-sm text-on-surface-variant">@bill.CreatedAt.ToString("MMM dd, yyyy")</p>
+        </div>
+        </div>
+        <div class="flex items-center gap-stack-md">
+        <span class="flex items-center gap-1 text-error font-label-sm text-label-sm bg-error/10 px-2 py-1 rounded">
+        $@bill.TotalAmount.ToString("0.00")
+                                    </span>
+        <button class="text-on-surface-variant hover:text-primary transition-colors">
+        <span class="material-symbols-outlined">payment</span>
+        </button>
+        </div>
+        </div>
+    }
+}
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full py-section-gap mt-section-gap border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center px-container-margin gap-stack-md">
+<span class="font-label-md text-label-md font-bold text-on-surface">MediAI</span>
+<div class="flex gap-stack-md">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary underline-offset-4 hover:underline transition-opacity hover:opacity-80" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary underline-offset-4 hover:underline transition-opacity hover:opacity-80" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary underline-offset-4 hover:underline transition-opacity hover:opacity-80" href="#">HIPAA Compliance</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary underline-offset-4 hover:underline transition-opacity hover:opacity-80" href="#">Contact Support</a>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Â© 2024 MediAI Quantum Health. All rights reserved.</p>
+</footer>
+</main>
+<!-- Floating AI Chatbot -->
+<div class="fixed bottom-container-margin right-container-margin z-50 group">
+<!-- Chat Bubble Preview (hidden by default, shows on hover or active) -->
+<div class="absolute bottom-[80px] right-0 w-[300px] glass-panel p-stack-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none mb-stack-sm origin-bottom-right scale-95 group-hover:scale-100">
+<p class="font-label-md text-label-md text-on-surface mb-1 font-bold">MediAI Assistant</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Hello Alex, I noticed your CBC results have an AI flag. Would you like me to explain the findings?</p>
+</div>
+<button class="w-16 h-16 rounded-full bg-gradient-to-tr from-primary to-tertiary text-white shadow-[0_8px_32px_rgba(109,59,215,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform ai-glow">
+<span class="material-symbols-outlined text-[32px]">robot_2</span>
+<!-- Notification dot -->
+<span class="absolute top-0 right-0 w-4 h-4 bg-error rounded-full border-2 border-white flex items-center justify-center shadow-sm"></span>
+</button>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    function showComingSoon(featureName) {
+        toastr.info(`${featureName} is currently in development!`, "Coming Soon");
+    }
+</script>
+</body></html>
+
+

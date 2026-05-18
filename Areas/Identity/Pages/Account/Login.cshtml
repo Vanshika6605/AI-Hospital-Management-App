@@ -1,0 +1,285 @@
+@page
+@model AIHospitalManagementSys.Areas.Identity.Pages.Account.LoginModel
+@{ Layout = null; }
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MediAI - Secure Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "surface-bright": "#f7f9fb",
+                      "inverse-on-surface": "#eff1f3",
+                      "on-tertiary-fixed": "#23005c",
+                      "on-tertiary-container": "#3e0097",
+                      "on-primary": "#ffffff",
+                      "outline-variant": "#bec8d2",
+                      "secondary-container": "#6df5e1",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f2f4f6",
+                      "on-background": "#191c1e",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#e9ddff",
+                      "tertiary-fixed-dim": "#d0bcff",
+                      "primary-container": "#0ea5e9",
+                      "on-secondary-fixed-variant": "#005048",
+                      "surface-variant": "#e0e3e5",
+                      "surface": "#f7f9fb",
+                      "primary": "#006591",
+                      "on-tertiary-fixed-variant": "#5516be",
+                      "primary-fixed": "#c9e6ff",
+                      "error-container": "#ffdad6",
+                      "surface-container-highest": "#e0e3e5",
+                      "on-primary-container": "#003751",
+                      "on-primary-fixed-variant": "#004c6e",
+                      "surface-tint": "#006591",
+                      "on-error": "#ffffff",
+                      "on-secondary-container": "#006f64",
+                      "surface-container-high": "#e6e8ea",
+                      "surface-dim": "#d8dadc",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#a986ff",
+                      "inverse-primary": "#89ceff",
+                      "on-surface-variant": "#3e4850",
+                      "on-tertiary": "#ffffff",
+                      "primary-fixed-dim": "#89ceff",
+                      "secondary-fixed-dim": "#4fdbc8",
+                      "on-secondary-fixed": "#00201c",
+                      "secondary": "#006b5f",
+                      "surface-container": "#eceef0",
+                      "background": "#f7f9fb",
+                      "tertiary": "#6d3bd7",
+                      "secondary-fixed": "#71f8e4",
+                      "outline": "#6e7881",
+                      "inverse-surface": "#2d3133",
+                      "on-primary-fixed": "#001e2f",
+                      "on-surface": "#191c1e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px",
+                      "2xl": "1rem",
+                      "3xl": "1.5rem"
+              },
+              "spacing": {
+                      "section-gap": "32px",
+                      "stack-sm": "8px",
+                      "container-margin": "24px",
+                      "gutter": "16px",
+                      "stack-md": "16px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "label-md": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-surface-bright min-h-screen flex items-center justify-center relative overflow-y-auto font-body-md text-on-surface">
+<!-- Ambient Background -->
+<div class="absolute inset-0 z-0">
+<img alt="Clinical Background" class="w-full h-full object-cover opacity-40 mix-blend-luminosity" data-alt="A soft, abstract background depicting a sterile, high-tech medical laboratory environment. The image is significantly blurred, showing indistinct shapes of advanced clinical equipment and bright, cool white lighting. The color palette consists of pale frosty blues, clean whites, and subtle hints of teal, creating a calm, authoritative, and futuristic light-mode aesthetic suitable for a secure medical AI portal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiBgFw9-ryAeEf3pLd9LZbOH_rJbJNfndjBJTYbQtIoAhAfpZKTSTUQH3gHsLACKkwcux03RaizBDekeFk0GCSA_kg2NrP4KI-BQ_YmWiEfyQbyi6y7c9XnrUv8b5nxvH7m7aIEwVjFtJAZtf0wfhqm-sezYOK3Dl7TM8_ka0YXgGLcE-PxfIiGkjuFZPIy0fnU_pZrQuCXce0mJLT4DW45aJRyv6sfwjpVIVG5a1IxQsi2rU_nDz3rbTzPAmeDsPrOsbfmy-xTQs"/>
+<div class="absolute inset-0 bg-surface/70 backdrop-blur-[60px]"></div>
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[100px]"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary/10 blur-[100px]"></div>
+</div>
+<!-- Main Login Container -->
+<main class="relative z-10 w-full max-w-[480px] px-container-margin py-section-gap flex flex-col">
+<!-- Glassmorphic Card -->
+<div class="bg-surface-container-lowest/80 backdrop-blur-2xl border border-white/60 shadow-[0_16px_40px_rgba(0,101,145,0.08)] rounded-3xl p-8 md:p-10 flex flex-col gap-8 relative overflow-hidden">
+<!-- Subtle internal glow -->
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary opacity-50"></div>
+<!-- Header -->
+<div class="text-center flex flex-col gap-stack-sm items-center">
+<div class="w-12 h-12 rounded-2xl bg-primary-container/20 flex items-center justify-center mb-2 shadow-[inset_0_2px_10px_rgba(255,255,255,0.5)] border border-primary/10">
+<span class="material-symbols-outlined text-primary text-[28px]" data-icon="psychology" data-weight="fill">psychology</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">MediAI</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Secure Quantum Health Portal</p>
+</div>
+<!-- Role Selection -->
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-sm text-label-sm text-outline px-1">Select Access Role</label>
+<div class="grid grid-cols-4 gap-2">
+<!-- Admin -->
+<button id="role-admin" class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-surface/50 border border-transparent hover:bg-surface-container-high/50 hover:border-outline-variant/30 transition-all text-on-surface-variant group" type="button">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors" data-icon="shield_person">shield_person</span>
+<span class="font-label-sm text-[10px] uppercase tracking-wider">Admin</span>
+</button>
+<!-- Doctor -->
+<button id="role-doctor" class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-primary/10 border border-primary/30 shadow-[inset_0_2px_8px_rgba(0,101,145,0.1)] text-primary transition-all relative overflow-hidden group" type="button">
+<div class="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-50"></div>
+<span class="material-symbols-outlined text-[20px] relative z-10" data-icon="medical_services" data-weight="fill">medical_services</span>
+<span class="font-label-sm text-[10px] uppercase tracking-wider font-bold relative z-10">Doctor</span>
+</button>
+<!-- Patient -->
+<button id="role-patient" class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-surface/50 border border-transparent hover:bg-surface-container-high/50 hover:border-outline-variant/30 transition-all text-on-surface-variant group" type="button">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors" data-icon="person">person</span>
+<span class="font-label-sm text-[10px] uppercase tracking-wider">Patient</span>
+</button>
+<!-- Reception -->
+<button id="role-desk" class="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-surface/50 border border-transparent hover:bg-surface-container-high/50 hover:border-outline-variant/30 transition-all text-on-surface-variant group" type="button">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors" data-icon="support_agent">support_agent</span>
+<span class="font-label-sm text-[10px] uppercase tracking-wider">Desk</span>
+</button>
+</div>
+</div>
+<!-- Login Form -->
+<form id="account" method="post" class="flex flex-col gap-6">
+<div asp-validation-summary="ModelOnly" class="text-error font-label-sm" role="alert"></div>
+<!-- Email Input -->
+<div class="flex flex-col gap-stack-sm relative">
+<label asp-for="Input.Email" class="font-label-sm text-label-sm text-on-surface px-1">Clinical ID / Email</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-[20px]" data-icon="badge">badge</span>
+</div>
+<input asp-for="Input.Email" class="w-full pl-11 pr-4 py-3 rounded-xl bg-surface-container-low/50 border border-outline-variant/40 text-on-surface font-body-md text-body-md placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all" autocomplete="username" aria-required="true" placeholder="Enter your credentials" />
+</div>
+<span asp-validation-for="Input.Email" class="text-error font-label-sm px-1"></span>
+</div>
+
+<!-- Password Input -->
+<div class="flex flex-col gap-stack-sm">
+<div class="flex justify-between items-center px-1">
+<label asp-for="Input.Password" class="font-label-sm text-label-sm text-on-surface">Secure Password</label>
+<a class="font-label-sm text-label-sm text-primary hover:text-secondary transition-colors underline-offset-4 hover:underline" id="forgot-password" asp-page="./ForgotPassword">Forgot?</a>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline text-[20px]" data-icon="lock">lock</span>
+</div>
+<input asp-for="Input.Password" class="w-full pl-11 pr-11 py-3 rounded-xl bg-surface-container-low/50 border border-outline-variant/40 text-on-surface font-body-md text-body-md placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] transition-all" autocomplete="current-password" aria-required="true" placeholder="••••••••" />
+<button class="absolute inset-y-0 right-0 pr-4 flex items-center text-outline hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+</div>
+<span asp-validation-for="Input.Password" class="text-error font-label-sm px-1"></span>
+</div>
+<!-- OTP Verification Option -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-primary/5 border border-primary/10 mt-[-8px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="dialpad">dialpad</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Login via Secure OTP</span>
+</div>
+<!-- Toggle Switch (Neumorphic) -->
+<button class="w-10 h-6 rounded-full bg-surface-container-high border border-outline-variant/30 shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] relative transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20" type="button">
+<span class="absolute left-1 top-1 w-4 h-4 rounded-full bg-white shadow-sm transition-transform"></span>
+</button>
+</div>
+<!-- Submit Button -->
+<button id="login-submit" type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-label-md text-label-md shadow-[0_4px_14px_rgba(0,101,145,0.25)] hover:shadow-[0_6px_20px_rgba(0,101,145,0.35)] hover:-translate-y-0.5 transition-all flex justify-center items-center gap-2 relative overflow-hidden group">
+<div class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out"></div>
+<span class="relative z-10">Authenticate Identity</span>
+<span class="material-symbols-outlined text-[18px] relative z-10" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+<!-- Contextual Security Footer -->
+<div class="flex flex-col gap-4 pt-4 border-t border-outline-variant/20">
+    <div class="text-center">
+        <p class="font-label-sm text-label-sm text-on-surface-variant">
+            Don't have an account? <a asp-page="./Register" class="text-primary font-bold hover:underline">Create one here</a>
+        </p>
+    </div>
+    <div class="flex items-center justify-center gap-2 text-outline">
+        <span class="material-symbols-outlined text-[16px]" data-icon="encrypted">encrypted</span>
+        <span class="font-label-sm text-[11px] uppercase tracking-wider">End-to-End Encrypted Connection</span>
+    </div>
+</div>
+</div>
+<!-- System Status -->
+<div class="mt-8 text-center flex items-center justify-center gap-2 font-label-sm text-label-sm text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_rgba(0,107,95,0.6)] animate-pulse"></span>
+            MediAI Core System: Online
+        </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const roles = [
+            { id: "role-admin", email: "admin@hospital.com", icon: "shield_person", label: "Admin" },
+            { id: "role-doctor", email: "doctor@hospital.com", icon: "medical_services", label: "Doctor" },
+            { id: "role-patient", email: "patient@hospital.com", icon: "person", label: "Patient" },
+            { id: "role-desk", email: "desk@hospital.com", icon: "support_agent", label: "Desk" }
+        ];
+
+        const emailInput = document.getElementById("Input_Email");
+        const passwordInput = document.getElementById("Input_Password");
+        
+        roles.forEach(role => {
+            const btn = document.getElementById(role.id);
+            if (!btn) return;
+            btn.addEventListener("click", () => {
+                // Pre-fill demo credentials if available
+                if (role.email) {
+                    emailInput.value = role.email;
+                    passwordInput.value = role.label + "@@123";
+                } else {
+                    emailInput.value = "";
+                    passwordInput.value = "";
+                }
+
+                // Update UI classes
+                roles.forEach(r => {
+                    const rBtn = document.getElementById(r.id);
+                    if (r.id === role.id) {
+                        rBtn.className = "flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-primary/10 border border-primary/30 shadow-[inset_0_2px_8px_rgba(0,101,145,0.1)] text-primary transition-all relative overflow-hidden group";
+                        rBtn.innerHTML = `
+                            <div class="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-50"></div>
+                            <span class="material-symbols-outlined text-[20px] relative z-10" data-icon="${r.icon}" data-weight="fill">${r.icon}</span>
+                            <span class="font-label-sm text-[10px] uppercase tracking-wider font-bold relative z-10">${r.label}</span>
+                        `;
+                    } else {
+                        rBtn.className = "flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-surface/50 border border-transparent hover:bg-surface-container-high/50 hover:border-outline-variant/30 transition-all text-on-surface-variant group";
+                        rBtn.innerHTML = `
+                            <span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors" data-icon="${r.icon}">${r.icon}</span>
+                            <span class="font-label-sm text-[10px] uppercase tracking-wider">${r.label}</span>
+                        `;
+                    }
+                });
+            });
+        });
+    });
+</script>
+</body></html>

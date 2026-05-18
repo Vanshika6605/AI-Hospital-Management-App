@@ -23,11 +23,53 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home me-1"></i>Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Admin Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Doctor" asp-action="Index">Manage Doctors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Patient" asp-action="Index">Manage Patients</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Department" asp-action="Index">Manage Departments</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Appointment" asp-action="Index">Manage Appointments</a>
+                                </li>
+                            }
+                            else if (User.IsInRole("Receptionist"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Receptionist" asp-controller="Billing" asp-action="Index">Billing Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Appointment" asp-action="Index">Manage Appointments</a>
+                                </li>
+                            }
+                            else if (User.IsInRole("Doctor"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Doctor" asp-controller="Dashboard" asp-action="Index">Doctor Dashboard</a>
+                                </li>
+                            }
+                            else if (User.IsInRole("Patient"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Patient" asp-controller="Dashboard" asp-action="Index">Patient Dashboard</a>
+                                </li>
+                            }
+                        }
                     </ul>
                     <ul class="navbar-nav me-3">
                         <li class="nav-item dropdown" id="notificationDropdown">

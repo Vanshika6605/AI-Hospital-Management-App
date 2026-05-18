@@ -100,7 +100,7 @@ namespace AIHospitalManagementSys.Data
                             Qualifications = "MBBS, MD",
                             ConsultationFees = 500,
                             ExperienceYears = 10,
-                            AvailabilityStatus = "Available",
+                            AvailabilityStatus = true,
                             CreatedAt = DateTime.UtcNow
                         };
                         await context.Doctors.AddAsync(doctor);
@@ -109,6 +109,52 @@ namespace AIHospitalManagementSys.Data
                     }
                 }
             }
+            // Seed a Receptionist (Desk)
+            var deskEmail = "desk@hospital.com";
+            if (await userManager.FindByEmailAsync(deskEmail) == null)
+            {
+                Console.WriteLine($"--> Creating Desk User: {deskEmail}");
+                var deskUser = new ApplicationUser
+                {
+                    UserName = deskEmail,
+                    Email = deskEmail,
+                    FullName = "Front Desk",
+                    RoleName = "Receptionist",
+                    EmailConfirmed = true
+                };
+                if ((await userManager.CreateAsync(deskUser, "Desk@123")).Succeeded)
+                {
+                    await userManager.AddToRoleAsync(deskUser, "Receptionist");
+                }
+            }
+
+            // Seed a Patient
+            var patientEmail = "patient@hospital.com";
+            if (await userManager.FindByEmailAsync(patientEmail) == null)
+            {
+                Console.WriteLine($"--> Creating Patient User: {patientEmail}");
+                var patientUser = new ApplicationUser
+                {
+                    UserName = patientEmail,
+                    Email = patientEmail,
+                    FullName = "Jane Doe",
+                    RoleName = "Patient",
+                    EmailConfirmed = true
+                };
+                if ((await userManager.CreateAsync(patientUser, "Patient@123")).Succeeded)
+                {
+                    await userManager.AddToRoleAsync(patientUser, "Patient");
+                    var patientDomain = new AIHospitalManagementSys.Models.Domain.Patient
+                    {
+                        ApplicationUserId = patientUser.Id,
+                        DateOfBirth = DateTime.UtcNow.AddYears(-25),
+                        CreatedAt = DateTime.UtcNow
+                    };
+                    await context.Patients.AddAsync(patientDomain);
+                    await context.SaveChangesAsync();
+                }
+            }
+
             Console.WriteLine("--> Seeding Completed.");
         }
     }

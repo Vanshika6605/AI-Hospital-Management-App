@@ -27,8 +27,8 @@ namespace AIHospitalManagementSys.Services.Implementations
             {
                 Id = p.Id,
                 ApplicationUserId = p.ApplicationUserId,
-                FullName = p.ApplicationUser.FullName,
-                Email = p.ApplicationUser.Email!,
+                FullName = p.ApplicationUser?.FullName ?? "Unknown",
+                Email = p.ApplicationUser?.Email ?? "",
                 ContactNumber = p.ContactNumber,
                 BloodGroup = p.BloodGroup,
                 Gender = p.Gender,
@@ -45,8 +45,8 @@ namespace AIHospitalManagementSys.Services.Implementations
             {
                 Id = p.Id,
                 ApplicationUserId = p.ApplicationUserId,
-                FullName = p.ApplicationUser.FullName,
-                Email = p.ApplicationUser.Email!,
+                FullName = p.ApplicationUser?.FullName ?? "Unknown",
+                Email = p.ApplicationUser?.Email ?? "",
                 ContactNumber = p.ContactNumber,
                 DateOfBirth = p.DateOfBirth,
                 Gender = p.Gender,
