@@ -1,0 +1,282 @@
+@model IEnumerable<AIHospitalManagementSys.ViewModels.AppointmentViewModel>
+
+@{
+    ViewData["Title"] = "Operations Center";
+    var draftBills = ViewBag.DraftBills as IEnumerable<AIHospitalManagementSys.ViewModels.BillViewModel>;
+}
+
+<div class="max-w-7xl mx-auto flex flex-col gap-section-gap pt-8 md:pt-0 pb-12">
+    <!-- Header Section -->
+    <header class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
+        <div>
+            <p class="font-label-md text-label-md text-on-surface-variant mb-1">Receptionist Portal</p>
+            <h2 class="font-display-lg text-display-lg text-on-surface">Operations <span class="gradient-text">Center</span></h2>
+        </div>
+        <div class="flex gap-2">
+            <a asp-area="Admin" asp-controller="Appointment" asp-action="Create" class="bg-primary text-on-primary font-label-md text-label-md px-6 py-2 rounded-xl shadow-md hover:bg-primary/90 transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined text-[20px]">add</span>
+                New Appointment
+            </a>
+        </div>
+    </header>
+
+    <!-- Daily Operational Metrics (Glass Panels) -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+        <div class="glass-panel p-6 flex flex-col justify-center border-l-4 border-l-primary">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined">event_available</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface">@ViewBag.TodayAppointmentsCount</h3>
+            </div>
+            <span class="font-label-md text-label-md text-on-surface-variant">Today's Appointments</span>
+        </div>
+
+        <div class="glass-panel p-6 flex flex-col justify-center border-l-4 border-l-status-pending-text">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-status-pending-bg flex items-center justify-center text-status-pending-text">
+                    <span class="material-symbols-outlined">pending_actions</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface">@ViewBag.PendingConfirmationsCount</h3>
+            </div>
+            <span class="font-label-md text-label-md text-on-surface-variant">Pending Confirmations</span>
+        </div>
+
+        <div class="glass-panel p-6 flex flex-col justify-center border-l-4 border-l-error">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-error/10 flex items-center justify-center text-error">
+                    <span class="material-symbols-outlined">receipt_long</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface">@ViewBag.DraftBillsCount</h3>
+            </div>
+            <span class="font-label-md text-label-md text-on-surface-variant">Draft Bills (Verification)</span>
+        </div>
+
+        <div class="glass-panel p-6 flex flex-col justify-center border-l-4 border-l-status-completed-text">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-full bg-status-completed-bg flex items-center justify-center text-status-completed-text">
+                    <span class="material-symbols-outlined">check_circle</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface">@ViewBag.CompletedConsultationsCount</h3>
+            </div>
+            <span class="font-label-md text-label-md text-on-surface-variant">Completed Consultations</span>
+        </div>
+    </section>
+
+    <!-- Operational Workflow Visualization -->
+    <section class="glass-panel p-6">
+        <h3 class="font-headline-md text-headline-md text-on-surface mb-6">Patient Journey & Workflow</h3>
+        <div class="flex flex-col md:flex-row justify-between items-center relative gap-4">
+            <!-- connecting line -->
+            <div class="hidden md:block absolute top-1/2 left-[5%] right-[5%] h-1 bg-surface-variant -translate-y-1/2 -z-10 rounded-full"></div>
+            
+            <div class="flex flex-col items-center gap-2 bg-surface-container-lowest p-2 rounded-xl">
+                <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-md">
+                    <span class="material-symbols-outlined">event</span>
+                </div>
+                <span class="font-label-sm text-label-sm text-center font-bold">1. Appointment</span>
+            </div>
+            
+            <span class="material-symbols-outlined text-outline-variant md:hidden">arrow_downward</span>
+            
+            <div class="flex flex-col items-center gap-2 bg-surface-container-lowest p-2 rounded-xl">
+                <div class="w-12 h-12 rounded-full bg-secondary text-white flex items-center justify-center shadow-md">
+                    <span class="material-symbols-outlined">stethoscope</span>
+                </div>
+                <span class="font-label-sm text-label-sm text-center font-bold">2. Consultation</span>
+            </div>
+
+            <span class="material-symbols-outlined text-outline-variant md:hidden">arrow_downward</span>
+
+            <div class="flex flex-col items-center gap-2 bg-surface-container-lowest p-2 rounded-xl">
+                <div class="w-12 h-12 rounded-full bg-tertiary text-white flex items-center justify-center shadow-md">
+                    <span class="material-symbols-outlined">prescriptions</span>
+                </div>
+                <span class="font-label-sm text-label-sm text-center font-bold">3. Prescription</span>
+            </div>
+
+            <span class="material-symbols-outlined text-outline-variant md:hidden">arrow_downward</span>
+
+            <div class="flex flex-col items-center gap-2 bg-surface-container-lowest p-2 rounded-xl">
+                <div class="w-12 h-12 rounded-full bg-error text-white flex items-center justify-center shadow-md">
+                    <span class="material-symbols-outlined">receipt_long</span>
+                </div>
+                <span class="font-label-sm text-label-sm text-center font-bold">4. Draft Bill</span>
+            </div>
+
+            <span class="material-symbols-outlined text-outline-variant md:hidden">arrow_downward</span>
+
+            <div class="flex flex-col items-center gap-2 bg-surface-container-lowest p-2 rounded-xl">
+                <div class="w-12 h-12 rounded-full bg-status-completed-text text-white flex items-center justify-center shadow-md">
+                    <span class="material-symbols-outlined">payments</span>
+                </div>
+                <span class="font-label-sm text-label-sm text-center font-bold">5. Paid Invoice</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Two-Column Layout for Main Content -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+        
+        <!-- Left Column: Today's Appointment Queue -->
+        <div class="lg:col-span-2 glass-panel flex flex-col overflow-hidden shadow-md">
+            <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container/30">
+                <h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">groups</span>
+                    Today's Queue
+                </h3>
+                <a asp-area="Admin" asp-controller="Appointment" asp-action="Index" class="text-primary font-label-sm font-bold hover:underline">View All</a>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-surface-container/50 border-b border-outline-variant/30 text-on-surface-variant font-label-sm uppercase tracking-wider">
+                            <th class="p-4 font-bold">Time</th>
+                            <th class="p-4 font-bold">Patient</th>
+                            <th class="p-4 font-bold">Doctor</th>
+                            <th class="p-4 font-bold">Status</th>
+                            <th class="p-4 font-bold text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var appt in Model)
+                            {
+                                <tr class="border-b border-outline-variant/10 hover:bg-surface-container-lowest/50 transition-colors">
+                                    <td class="p-4 font-label-md font-bold text-on-surface whitespace-nowrap">
+                                        @appt.AppointmentDate.ToString("hh:mm tt")
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="font-label-md font-bold text-on-surface">@appt.PatientName</div>
+                                        <div class="text-xs text-on-surface-variant">Patient</div>
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-8 h-8 rounded-full bg-secondary-container/50 text-on-secondary-container flex items-center justify-center text-xs font-bold uppercase">
+                                                @(appt.DoctorName?.Substring(0,1) ?? "D")
+                                            </div>
+                                            <span class="font-label-md text-on-surface">Dr. @appt.DoctorName</span>
+                                        </div>
+                                    </td>
+                                    <td class="p-4">
+                                        @switch (appt.Status)
+                                        {
+                                            case AIHospitalManagementSys.Models.Enums.AppointmentStatus.Pending:
+                                                <span class="px-3 py-1 rounded-full text-xs font-bold badge-pending flex items-center gap-1 w-max">
+                                                    <span class="w-2 h-2 rounded-full bg-status-pending-text"></span> Pending
+                                                </span>
+                                                break;
+                                            case AIHospitalManagementSys.Models.Enums.AppointmentStatus.Confirmed:
+                                                <span class="px-3 py-1 rounded-full text-xs font-bold badge-confirmed flex items-center gap-1 w-max">
+                                                    <span class="w-2 h-2 rounded-full bg-status-confirmed-text"></span> Confirmed
+                                                </span>
+                                                break;
+                                            case AIHospitalManagementSys.Models.Enums.AppointmentStatus.Completed:
+                                                <span class="px-3 py-1 rounded-full text-xs font-bold badge-completed flex items-center gap-1 w-max">
+                                                    <span class="w-2 h-2 rounded-full bg-status-completed-text"></span> Completed
+                                                </span>
+                                                break;
+                                            case AIHospitalManagementSys.Models.Enums.AppointmentStatus.Cancelled:
+                                                <span class="px-3 py-1 rounded-full text-xs font-bold badge-cancelled flex items-center gap-1 w-max">
+                                                    <span class="w-2 h-2 rounded-full bg-status-cancelled-text"></span> Cancelled
+                                                </span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td class="p-4 text-center">
+                                        @if (appt.Status == AIHospitalManagementSys.Models.Enums.AppointmentStatus.Pending)
+                                        {
+                                            <a asp-area="Admin" asp-controller="Appointment" asp-action="Edit" asp-route-id="@appt.Id" class="text-primary hover:text-primary/80 font-bold text-sm bg-primary/10 px-3 py-1 rounded-lg">Review</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-area="Admin" asp-controller="Appointment" asp-action="Details" asp-route-id="@appt.Id" class="text-on-surface-variant hover:text-primary font-bold text-sm">View</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="p-8 text-center text-on-surface-variant">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <span class="material-symbols-outlined text-4xl opacity-50 mb-2">event_busy</span>
+                                        <p>No appointments scheduled for today.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Right Column: Verification & Quick Actions -->
+        <div class="flex flex-col gap-gutter">
+            
+            <!-- Draft Bills Verification Panel -->
+            <div class="glass-panel p-6 shadow-md border-t-4 border-t-error">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-error">receipt_long</span>
+                        Requires Verification
+                    </h3>
+                </div>
+                
+                <div class="flex flex-col gap-3">
+                    @if (draftBills != null && draftBills.Any())
+                    {
+                        foreach (var bill in draftBills)
+                        {
+                            <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-3 flex justify-between items-center hover:shadow-md transition-shadow">
+                                <div>
+                                    <p class="font-label-md font-bold text-on-surface">@bill.PatientName</p>
+                                    <p class="text-xs text-on-surface-variant">@bill.TotalAmount.ToString("C")</p>
+                                </div>
+                                <form asp-area="Receptionist" asp-controller="Billing" asp-action="MarkPending" asp-route-id="@bill.Id" method="post">
+                                    <button type="submit" class="bg-error/10 text-error hover:bg-error hover:text-white px-3 py-1 rounded-lg text-sm font-bold transition-colors">
+                                        Finalize
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                        if (ViewBag.DraftBillsCount > 5)
+                        {
+                            <a asp-area="Receptionist" asp-controller="Billing" asp-action="Index" class="text-center text-sm font-bold text-primary mt-2">View all @ViewBag.DraftBillsCount pending</a>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-6 text-on-surface-variant">
+                            <span class="material-symbols-outlined text-3xl opacity-50 mb-2">task_alt</span>
+                            <p class="text-sm">All bills verified.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="glass-panel p-6 shadow-md">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <a asp-area="Admin" asp-controller="Patient" asp-action="Create" class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-highest hover:bg-surface-variant transition-colors text-on-surface text-center">
+                        <span class="material-symbols-outlined text-secondary">person_add</span>
+                        <span class="font-label-sm font-bold">Add Patient</span>
+                    </a>
+                    <a asp-area="Admin" asp-controller="Appointment" asp-action="Create" class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-highest hover:bg-surface-variant transition-colors text-on-surface text-center">
+                        <span class="material-symbols-outlined text-primary">event</span>
+                        <span class="font-label-sm font-bold">Book Appt</span>
+                    </a>
+                    <a asp-area="Receptionist" asp-controller="Billing" asp-action="Index" class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-highest hover:bg-surface-variant transition-colors text-on-surface text-center col-span-2">
+                        <span class="material-symbols-outlined text-tertiary">point_of_sale</span>
+                        <span class="font-label-sm font-bold">Go to Billing Desk</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

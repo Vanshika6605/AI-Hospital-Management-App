@@ -1,128 +1,174 @@
+
 @model AIHospitalManagementSys.ViewModels.BillViewModel
 
 @{
-    ViewData["Title"] = "Invoice";
+    ViewData["Title"] = "Invoice #" + Model.Id.ToString("D5");
 }
 
-<div class="container py-5">
-    <div class="card shadow border-0" id="invoiceCard">
-        <div class="card-header bg-white p-4 border-bottom">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <h2 class="text-primary fw-bold mb-0">AI HOSPITAL</h2>
-                    <p class="text-muted mb-0">Care with Technology</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <h4 class="mb-0">INVOICE</h4>
-                    <p class="text-muted mb-0">#INV-@Model.Id.ToString("D5")</p>
-                    <p class="text-muted mb-0">Date: @Model.CreatedAt.ToString("MMM dd, yyyy")</p>
-                </div>
+<div class="max-w-4xl mx-auto flex flex-col gap-section-gap pt-8 md:pt-0 pb-12 print:pt-0 print:pb-0">
+    <!-- Screen Header (Hidden on Print) -->
+    <header class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md no-print">
+        <div class="flex items-center gap-4">
+            <a asp-action="Index" class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </a>
+            <div>
+                <p class="font-label-md text-label-md text-on-surface-variant mb-1">Billing Details</p>
+                <h2 class="font-display-lg text-display-lg text-on-surface">Invoice <span class="gradient-text">#@Model.Id.ToString("D5")</span></h2>
             </div>
         </div>
-        <div class="card-body p-4">
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <h6 class="text-muted text-uppercase small fw-bold">Billed To:</h6>
-                    <h5 class="mb-1">@Model.PatientName</h5>
-                    <p class="text-muted small">Patient ID: #PAT-@Model.AppointmentId</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <h6 class="text-muted text-uppercase small fw-bold">Consultant:</h6>
-                    <h5 class="mb-1">@Model.DoctorName</h5>
-                    <p class="text-muted small">Date of Service: @Model.AppointmentDate.ToString("MMM dd, yyyy")</p>
-                </div>
-            </div>
+        <div class="flex gap-2">
+            @if (Model.PaymentStatus == "Draft")
+            {
+                <form asp-action="MarkPending" method="post" class="inline">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="bg-error/10 text-error font-label-md text-label-md px-4 py-2 rounded-xl shadow-sm hover:bg-error hover:text-white transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                        Finalize Invoice
+                    </button>
+                </form>
+            }
+            else if (Model.PaymentStatus == "Pending")
+            {
+                <form asp-action="MarkPaid" method="post" class="inline">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="bg-status-completed-bg text-status-completed-text font-label-md text-label-md px-4 py-2 rounded-xl shadow-sm hover:bg-status-completed-text hover:text-white transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">payments</span>
+                        Mark as Paid
+                    </button>
+                </form>
+            }
+            <button class="bg-surface-container-high text-on-surface font-label-md text-label-md px-4 py-2 rounded-xl shadow-sm hover:opacity-90 transition-opacity flex items-center gap-2" onclick="window.print()">
+                <span class="material-symbols-outlined text-[20px]">print</span>
+                Print Invoice
+            </button>
+        </div>
+    </header>
 
-            <div class="table-responsive">
-                <table class="table table-borderless">
-                    <thead class="border-bottom">
-                        <tr>
-                            <th class="py-3">Description</th>
-                            <th class="py-3 text-end">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="py-3">Consultation Fee</td>
-                            <td class="py-3 text-end">@Model.ConsultationCharges.ToString("C")</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3">Medicine Charges</td>
-                            <td class="py-3 text-end">@Model.MedicineCharges.ToString("C")</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3">Lab & Diagnostics</td>
-                            <td class="py-3 text-end">@Model.LabCharges.ToString("C")</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3">Miscellaneous Services</td>
-                            <td class="py-3 text-end">@Model.ServiceCharges.ToString("C")</td>
-                        </tr>
-                    </tbody>
-                    <tfoot class="border-top">
-                        <tr>
-                            <td class="py-4 h4 fw-bold">Total Amount</td>
-                            <td class="py-4 h4 fw-bold text-end text-primary">@Model.TotalAmount.ToString("C")</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-
-            <div class="mt-4 p-3 bg-light rounded d-flex justify-content-between align-items-center">
+    <!-- Invoice Paper Wrapper -->
+    <div class="glass-panel p-8 md:p-12 print:p-0 print:border-none print:shadow-none print:bg-transparent flex flex-col gap-8 bg-white/90">
+        
+        <!-- Hospital Header -->
+        <div class="flex justify-between items-start border-b border-outline-variant/30 pb-6 print:border-black/20">
+            <div class="flex items-center gap-3">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-white shadow-md print:border print:border-black print:bg-none print:text-black">
+                    <span class="material-symbols-outlined text-[36px]">local_hospital</span>
+                </div>
                 <div>
-                    <span class="text-muted me-2">Payment Status:</span>
+                    <h1 class="font-headline-lg-mobile text-headline-lg-mobile font-black text-primary print:text-black">MediAI</h1>
+                    <p class="font-label-sm text-label-sm text-on-surface-variant print:text-black/70">Healthcare Technology Solutions</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <h2 class="font-headline-md text-headline-md text-on-surface tracking-widest uppercase mb-2 print:text-black">Invoice</h2>
+                <p class="font-body-md text-on-surface-variant font-mono print:text-black">#INV-@Model.Id.ToString("D5")</p>
+                <p class="font-body-md text-on-surface-variant print:text-black">Issued: @Model.CreatedAt.ToString("MMM dd, yyyy")</p>
+                
+                <div class="mt-4 no-print inline-block">
                     @if (Model.PaymentStatus == "Paid")
                     {
-                        <span class="badge bg-success px-3 py-2">PAID</span>
+                        <span class="px-4 py-1.5 rounded-full text-sm font-bold badge-completed flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[16px]">check_circle</span> PAID
+                        </span>
                     }
                     else if (Model.PaymentStatus == "Draft")
                     {
-                        <span class="badge bg-secondary px-3 py-2">DRAFT</span>
+                        <span class="px-4 py-1.5 rounded-full text-sm font-bold bg-error/10 text-error flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[16px]">edit_document</span> DRAFT
+                        </span>
                     }
                     else
                     {
-                        <span class="badge bg-warning text-dark px-3 py-2">PENDING</span>
+                        <span class="px-4 py-1.5 rounded-full text-sm font-bold badge-pending flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[16px]">pending_actions</span> PENDING
+                        </span>
                     }
                 </div>
-                <div>
-                    @if (Model.PaymentStatus == "Draft")
-                    {
-                        <form asp-action="MarkPending" method="post" class="d-inline">
-                            <input type="hidden" name="id" value="@Model.Id" />
-                            <button type="submit" class="btn btn-outline-success"><i class="fas fa-check me-2"></i>Finalize</button>
-                        </form>
-                    }
-                    else if (Model.PaymentStatus == "Pending")
-                    {
-                        <form asp-action="MarkPaid" method="post" class="d-inline">
-                            <input type="hidden" name="id" value="@Model.Id" />
-                            <button type="submit" class="btn btn-success"><i class="fas fa-money-bill-wave me-2"></i>Mark as Paid</button>
-                        </form>
-                    }
-                    <button class="btn btn-outline-secondary ms-2" onclick="window.print()"><i class="fas fa-print me-2"></i>Print</button>
+                
+                <div class="hidden print:block mt-2 font-bold text-lg">
+                    Status: @Model.PaymentStatus.ToUpper()
                 </div>
             </div>
         </div>
-        <div class="card-footer bg-white p-4 border-top text-center text-muted small">
-            <p class="mb-0">Thank you for choosing AI Hospital Management System.</p>
-            <p class="mb-0">For any queries, please contact support@hospital.com</p>
+
+        <!-- Billed To & Service Details -->
+        <div class="grid grid-cols-2 gap-8 print:gap-4">
+            <div>
+                <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-bold mb-2 print:text-black/60">Billed To</p>
+                <h3 class="font-headline-md text-headline-md text-on-surface print:text-black">@Model.PatientName</h3>
+                <p class="font-body-md text-on-surface-variant print:text-black">Patient ID: #PAT-@Model.AppointmentId</p>
+            </div>
+            <div class="text-right">
+                <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-bold mb-2 print:text-black/60">Consulting Physician</p>
+                <h3 class="font-body-lg text-body-lg font-bold text-on-surface print:text-black">Dr. @Model.DoctorName</h3>
+                <p class="font-body-md text-on-surface-variant print:text-black">Date of Service: @Model.AppointmentDate.ToString("MMM dd, yyyy")</p>
+            </div>
         </div>
-    </div>
-    
-    <div class="mt-4">
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+
+        <!-- Charges Table -->
+        <div class="mt-4">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-surface-container/50 print:bg-transparent border-b-2 border-outline-variant/50 print:border-black font-label-md uppercase tracking-wider text-on-surface-variant print:text-black">
+                        <th class="p-4 print:p-2 font-bold w-2/3">Description of Service</th>
+                        <th class="p-4 print:p-2 font-bold text-right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody class="font-body-md text-on-surface print:text-black">
+                    <tr class="border-b border-outline-variant/20 print:border-black/20">
+                        <td class="p-4 print:p-2">Consultation Fee</td>
+                        <td class="p-4 print:p-2 text-right">@Model.ConsultationCharges.ToString("C")</td>
+                    </tr>
+                    <tr class="border-b border-outline-variant/20 print:border-black/20">
+                        <td class="p-4 print:p-2">Medicine Charges</td>
+                        <td class="p-4 print:p-2 text-right">@Model.MedicineCharges.ToString("C")</td>
+                    </tr>
+                    <tr class="border-b border-outline-variant/20 print:border-black/20">
+                        <td class="p-4 print:p-2">Lab & Diagnostics</td>
+                        <td class="p-4 print:p-2 text-right">@Model.LabCharges.ToString("C")</td>
+                    </tr>
+                    <tr class="border-b border-outline-variant/20 print:border-black/20">
+                        <td class="p-4 print:p-2">Miscellaneous Services</td>
+                        <td class="p-4 print:p-2 text-right">@Model.ServiceCharges.ToString("C")</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="border-t-2 border-outline-variant/50 print:border-black bg-surface-container-lowest print:bg-transparent">
+                        <td class="p-4 print:p-2 font-headline-md text-headline-md text-on-surface print:text-black font-bold">Total Amount Due</td>
+                        <td class="p-4 print:p-2 font-headline-md text-headline-md text-primary print:text-black font-bold text-right">@Model.TotalAmount.ToString("C")</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 pt-8 border-t border-outline-variant/30 print:border-black/20 text-center flex flex-col gap-2">
+            <p class="font-body-md font-bold text-on-surface print:text-black">Thank you for choosing MediAI Hospital.</p>
+            <p class="font-label-sm text-on-surface-variant print:text-black/60">If you have any questions about this invoice, please contact billing support at 1-800-MEDIAI.</p>
+        </div>
     </div>
 </div>
 
 @section Scripts {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
         @@media print {
-            .btn, .navbar, footer { display: none !important; }
-            .container { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
-            .card { border: none !important; box-shadow: none !important; }
-            .card-header, .card-footer { border: none !important; }
-            body { background: white !important; }
+            body * { visibility: hidden; }
+            .print\:block { display: block !important; }
+            .print\:border-black { border-color: black !important; }
+            .print\:text-black { color: black !important; }
+            .print\:bg-transparent { background-color: transparent !important; }
+            .no-print { display: none !important; }
+            .max-w-4xl { max-width: 100% !important; margin: 0 !important; }
+            .glass-panel { box-shadow: none !important; backdrop-filter: none !important; border: none !important; background: transparent !important; }
+            
+            /* Make the invoice paper wrapper the only visible thing */
+            .glass-panel, .glass-panel * { visibility: visible; }
+            .glass-panel {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
         }
     </style>
 }

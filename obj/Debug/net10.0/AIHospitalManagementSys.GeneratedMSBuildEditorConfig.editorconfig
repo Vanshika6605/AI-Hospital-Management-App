@@ -219,6 +219,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVjZXB0aW9uaXN0XFZpZXdzXEJpbGxpbmdcSW52b2ljZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/devag/OneDrive/Desktop/Hospital Management System/AIHospitalManagementSys/AIHospitalManagementSys/Areas/Receptionist/Views/Dashboard/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVjZXB0aW9uaXN0XFZpZXdzXERhc2hib2FyZFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/devag/OneDrive/Desktop/Hospital Management System/AIHospitalManagementSys/AIHospitalManagementSys/Areas/Receptionist/Views/Shared/_ReceptionistLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVjZXB0aW9uaXN0XFZpZXdzXFNoYXJlZFxfUmVjZXB0aW9uaXN0TGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/devag/OneDrive/Desktop/Hospital Management System/AIHospitalManagementSys/AIHospitalManagementSys/Areas/Receptionist/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVjZXB0aW9uaXN0XFZpZXdzXF9WaWV3SW1wb3J0cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -237,6 +245,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/devag/OneDrive/Desktop/Hospital Management System/AIHospitalManagementSys/AIHospitalManagementSys/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/devag/OneDrive/Desktop/Hospital Management System/AIHospitalManagementSys/AIHospitalManagementSys/Views/Shared/_AiAssistantPanel.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BaUFzc2lzdGFudFBhbmVsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/devag/OneDrive/Desktop/Hospital Management System/AIHospitalManagementSys/AIHospitalManagementSys/Views/Shared/_LoginPartial.cshtml]

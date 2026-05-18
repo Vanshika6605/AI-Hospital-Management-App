@@ -580,3 +580,4 @@ D:\Projects\AI-Hospital-Management-App\obj\Debug\net10.0\AIHospit.3BF34FF9.Up2Da
 D:\Projects\AI-Hospital-Management-App\obj\Debug\net10.0\AIHospitalManagementSys.genruntimeconfig.cache
 D:\Projects\AI-Hospital-Management-App\obj\Debug\net10.0\ref\AIHospitalManagementSys.dll
 C:\Users\devag\OneDrive\Desktop\Hospital Management System\AIHospitalManagementSys\AIHospitalManagementSys\obj\Debug\net10.0\AIHospitalManagementSys.sourcelink.json
+C:\Users\devag\OneDrive\Desktop\Hospital Management System\AIHospitalManagementSys\AIHospitalManagementSys\obj\Debug\net10.0\compressed\9lkmfeyu1c-{0}-hy59lvobmx-hy59lvobmx.gz

@@ -41,6 +41,12 @@ builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IBillingService, BillingService>();
 builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+
+builder.Services.AddHttpClient<IAiService, AiService>(client => 
+{
+    client.BaseAddress = new Uri("http://127.0.0.1:8000/");
+});
+
 builder.Services.AddSignalR();
 
 var app = builder.Build();
